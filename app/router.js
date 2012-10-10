@@ -42,10 +42,9 @@ function(app, Playlist) {
     var baseView = Backbone.LayoutView.extend({ template: "base" });
     baseLayout.insertView( new baseView() );
 
-    console.log(app);
-    // insert subviews. move this?
+    // insert subviews
     var playlist = new Playlist.Views.PlaylistView();
-    baseLayout.setView('#controlsLeft', playlist );
+    baseLayout.setView('#controlsLeft .controls-inner', playlist );
 
     baseLayout.render();
     //nav.render();
