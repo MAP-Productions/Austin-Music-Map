@@ -193,6 +193,10 @@ module.exports = function(grunt) {
 			stylus: {
 				files: ["grunt.js", "assets/css/**/*.styl"],
 				tasks: "stylus:dev"
+			},
+			less: {
+				files: ["assets/css/less/*.less"],
+				tasks: "less:main"
 			}
 		},
 
