@@ -1,5 +1,23 @@
+html {
+  height: 100%;
+}
 body {
-  background: #fff;
+  height: 100%;
+  overflow: auto;
+}
+#main {
+  min-width: 1005px;
+  min-height: 100%;
+  position: relative;
+}
+#appBase {
+  background: #aaa;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
 }
 #logo {
   left: 50%;
@@ -11,6 +29,7 @@ body {
 #logo img {
   width: 264px;
 }
+/* controls areas to left and right of window */
 .controls {
   height: 52px;
   position: absolute;
@@ -20,10 +39,6 @@ body {
   font-family: Arial, sans-serif;
   letter-spacing: 0.3em;
 }
-.controls .controls-inner {
-  background: rgba(59, 60, 62, 0.9);
-  float: left;
-}
 .controls .edge {
   width: 13px;
   height: 52px;
@@ -32,6 +47,24 @@ body {
   height: 52px;
   top: 0;
   background-image: url(../img/controls-edge-sprite.png);
+}
+.controls#controlsLeft {
+  left: 0;
+}
+.controls#controlsLeft .edge {
+  right: -13px;
+  background-position: -65px;
+}
+.controls#controlsRight {
+  right: 0;
+}
+.controls#controlsRight .edge {
+  left: -13px;
+  background-position: 0;
+}
+.controls .controls-inner {
+  background: rgba(59, 60, 62, 0.9);
+  float: left;
 }
 .controls .secondary-controls {
   float: left;
@@ -45,14 +78,6 @@ body {
   width: 26px;
   top: 0;
 }
-.controls#controlsRight .secondary-controls {
-  margin-left: 26px;
-}
-.controls#controlsRight .secondary-controls .edge {
-  margin-left: 26px;
-  left: -52px;
-  background-position: -91px 0;
-}
 .controls#controlsLeft .secondary-controls {
   margin-right: 26px;
 }
@@ -60,6 +85,14 @@ body {
   margin-right: 26px;
   right: -52px;
   background-position: -117px 0;
+}
+.controls#controlsRight .secondary-controls {
+  margin-left: 26px;
+}
+.controls#controlsRight .secondary-controls .edge {
+  margin-left: 26px;
+  left: -52px;
+  background-position: -91px 0;
 }
 .controls a {
   line-height: 52px;
@@ -70,75 +103,70 @@ body {
   text-transform: uppercase;
   font-size: 11px;
   text-decoration: none;
-  vertical-align: middle;
+  vertical-align: top;
 }
 .controls img {
   vertical-align: middle;
 }
-#controlsLeft {
-  left: 0;
-}
-#controlsLeft .edge {
-  right: -13px;
-  background-position: -65px;
-}
-#controlsRight {
-  right: 0;
-}
-#controlsRight .edge {
-  left: -13px;
-  background-position: 0;
-}
-#appBase {
-  background: #aaa;
-  bottom: 0;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 10;
-}
+/* playlist control */
 .playlist-control {
   overflow: hidden;
-  min-width: 360px;
+  min-width: 320px;
 }
 .playlist-control .toggle-playlist {
   cursor: pointer;
   float: left;
-  width: 11px;
+  width: 41px;
   height: 52px;
   background-image: url(../img/icon_arrow-down.png);
   background-size: 11px 8px;
   background-repeat: no-repeat;
   background-position: center center;
-  width: 65px;
+  border-left: 1px solid #535453;
+  border-right: 1px solid #535453;
 }
 .playlist-control .toggle-playlist.open {
   background-image: url(../img/icon_arrow-up.png);
 }
 .playlist-control .now-playing {
   min-width: 155px;
-  height: 44px;
+  height: 43px;
   overflow: hidden;
-  padding: 8px 8px 0;
+  padding: 9px 18px 0;
   float: left;
 }
 .playlist-control .now-playing .playing-title {
   font-size: 11px;
   text-transform: uppercase;
-  margin: 0 0 3px;
+  margin: 0 0 4px;
 }
 .playlist-control .now-playing .playing-subtitle {
-  font-size: 11px;
+  font-size: 10px;
   margin: 0;
   letter-spacing: 0.1em;
+}
+.playlist-control .now-playing .progress-bar {
+  height: 4px;
+  background: #77787b;
+  border-radius: 2px;
+  margin-top: 6px;
+  position: relative;
+  cursor: pointer;
+}
+.playlist-control .now-playing .progress-bar .elapsed {
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  background: #f1f1f1;
 }
 .playlist-control .transport {
   float: left;
   height: 52px;
   line-height: 52px;
   vertical-align: middle;
-  padding: 0 8px;
 }
 .playlist-control .transport .back {
   cursor: pointer;
@@ -170,10 +198,59 @@ body {
   background-repeat: no-repeat;
   vertical-align: middle;
 }
+/* playlist rollout */
 .playlist-container {
   position: absolute;
-  width: 294px;
-  left: 66px;
+  width: 293px;
+  left: 0;
   top: 52px;
-  background: #fff;
+  background: rgba(147, 149, 152, 0.9);
+}
+.playlist-container ul.playlist {
+  border-top: 1px solid #58595b;
+  border-bottom: 1px solid #58595b;
+}
+.playlist-container ul.playlist li {
+  line-height: 22px;
+  border-top: 1px solid #58595b;
+  padding-left: 18px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  vertical-align: middle;
+}
+.playlist-container ul.playlist li:first-child {
+  border-top: none;
+}
+.playlist-container ul.playlist li.active {
+  background: #f26532;
+}
+.playlist-container ul.playlist li .play-pause {
+  display: inline-block;
+  width: 7px;
+  height: 10px;
+  cursor: pointer;
+}
+.playlist-container ul.playlist li .play-pause {
+  background: url(../img/icon_play-sm.png);
+  background-size: 7px 9px;
+  vertical-align: middle;
+}
+.playlist-container ul.playlist li .play-pause.pause {
+  background: url(../img/icon_pause-sm.png);
+  background-size: 7px 10px;
+}
+.playlist-container ul.playlist li .media-type {
+  display: inline-block;
+  width: 14px;
+  height: 11px;
+  cursor: pointer;
+  vertical-align: middle;
+}
+.playlist-container ul.playlist li .media-type.audio {
+  background: url(../img/icon_audio.png);
+  background-size: 14px 11px;
+}
+.playlist-container ul.playlist li .media-type.video {
+  background: url(../img/icon_video.png);
+  background-size: 14px 11px;
 }
