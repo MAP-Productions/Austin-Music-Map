@@ -3,20 +3,31 @@ define([
   "app",
 
   // Modules.
-  "modules/playlist"
+  "modules/playlist",
+  "modules/participate"
 ],
 
-function(app, Playlist) {
+function(App, Playlist, Participate) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
     routes: {
-      "": "index"
+      "": "index",
+      "participate": "participate"
     },
 
     index: function() {
       initialize('map');
-    }
+    },
+
+    participate : function()
+    {
+      initialize('modal');
+      App.modal = new Participate.Model();
+      //$('.selected').removeClass('selected'); 
+      //$('#nav-participate').addClass('selected');
+    },
+
   });
 
   /*******************  BEGIN PRIMARY   **********************/
@@ -30,7 +41,7 @@ function(app, Playlist) {
 
   function initialize(to) {
     initAMM();
-    //cleanup(to);
+    cleanup(to);
   };
 
   var initAMM = _.once( init ); // ensure this happens only once 
@@ -59,30 +70,32 @@ function(app, Playlist) {
     // if closing a modal, and a player exists, then make the player play
     // modal, page, return, player 
 
-    if( Zeega.page && Zeega.page.player )
+    /*
+    if( App.page && App.page.player )
     {
       switch(to)
       {
         case 'modal':
-          Zeega.page.player.pause();
+          App.page.player.pause();
           break;
         case 'page':
-          Zeega.page.exit();
+          App.page.exit();
           break;
         case 'player':
-          Zeega.page.exit();
+          App.page.exit();
           break;
         case 'resume':
-          Zeega.page.player.play();
+          App.page.player.play();
           break;
       }
     }
+    */
 
     // remove modal if it exists
-    if(Zeega.modal)
+    if(App.modal)
     {
-      Zeega.modal.remove();
-      Zeega.modal = null;
+      App.modal.remove();
+      App.modal = null;
     }
 
   }
