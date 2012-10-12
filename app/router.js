@@ -54,11 +54,10 @@ function(App, Playlist, Participate) {
     baseLayout.insertView( new baseView() );
 
     // insert subviews
-    var playlist = new Playlist.Views.PlaylistView();
-    baseLayout.setView('#controlsLeft .controls-inner', playlist );
+    // playlist view - this should be moved to wherever the playlist is initialized
+    baseLayout.setView('#controlsLeft .controls-inner', new Playlist.Views.PlaylistView() );
 
     baseLayout.render();
-    //nav.render();
   }
 
   // happens on every router change
