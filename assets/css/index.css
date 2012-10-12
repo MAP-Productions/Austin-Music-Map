@@ -94,18 +94,18 @@ body {
   left: -52px;
   background-position: -91px 0;
 }
-.controls .controls-inner > a {
+.controls .controls-inner > a,
+.controls .secondary-controls > a {
   line-height: 52px;
-  float: left;
   color: #fff;
   letter-spacing: 0.3em;
   padding: 0 8px;
   text-transform: uppercase;
   font-size: 11px;
   text-decoration: none;
-  vertical-align: top;
+  vertical-align: middle;
 }
-.controls .controls-inner > img {
+.controls img {
   vertical-align: middle;
 }
 /* stories / remix slider - PLACEHOLDER for layout purposes */
