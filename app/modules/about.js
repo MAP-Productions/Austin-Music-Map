@@ -7,28 +7,28 @@ define([
 
 ], function(App, Backbone, Modal) {
 	
-	var Participate = App.module();
+	var About = App.module();
 
-	Participate.Model = Modal.Model.extend({
+	About.Model = Modal.Model.extend({
 		defaults: {
-			title: 'Participate',
+			title: 'About',
 			modalTemplate: 'modal'
 		},
 
 		initialize: function() {
-			console.log('initialize participate modal modal');
+			console.log('initialize about modal');
 			this.layout = this.getLayout();
-			this.layout.setView('.modal-content', new ParticipateView() );
+			this.layout.setView('.modal-content', new AboutView() );
 			this.layout.render();
 			$('body').append( this.layout.el );
 		}
 	});
 
-	var ParticipateView = Backbone.LayoutView.extend({
-		template: 'participate'
+	var AboutView = Backbone.LayoutView.extend({
+		template: 'about'
 	});
 
 	// Required, return the module for AMD compliance
-	return Participate;
+	return About;
 
 });

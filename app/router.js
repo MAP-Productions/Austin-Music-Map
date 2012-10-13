@@ -4,29 +4,46 @@ define([
 
   // Modules.
   "modules/playlist",
-  "modules/participate"
+  "modules/participate",
+  "modules/about",
+  "modules/contact"
 ],
 
-function(App, Playlist, Participate) {
+function(App, Playlist, Participate, About, Contact) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
     routes: {
       "": "index",
-      "participate": "participate"
+      "participate": "participate",
+      "about": "about",
+      "contact": "contact"
     },
 
     index: function() {
       initialize('map');
     },
 
-    participate : function()
-    {
+    participate : function() {
       initialize('modal');
       App.modal = new Participate.Model();
       //$('.selected').removeClass('selected'); 
       //$('#nav-participate').addClass('selected');
     },
+
+    about : function() {
+      initialize('modal');
+      App.modal = new About.Model();
+      //$('.selected').removeClass('selected'); 
+      //$('#nav-participate').addClass('selected');
+    },
+
+    contact : function() {
+      initialize('modal');
+      App.modal = new Contact.Model();
+      //$('.selected').removeClass('selected'); 
+      //$('#nav-participate').addClass('selected');
+    }
 
   });
 
