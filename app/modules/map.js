@@ -15,13 +15,14 @@ define([
 		},
 
 		initialize: function() {
+			
 			var mapCollection = new MapCollection();
 			
 			mapCollection.fetch({success:function(collection,response){
 				console.log(collection,response);
 				var mapView = new MapView({collection:collection});
 				mapView.render();
-				$('#appBase').append( mapView.el );
+				$('#appBase').empty().append( mapView.el );
 			}})
 
 			
@@ -84,14 +85,14 @@ define([
 						position: "absolute",
 						top: y+"px",
 						left: x+"px",
-						zIndex: 100002,
+						zIndex: 102,
 						width:"200px",
 						height:"200px",
 						cursoer: "pointer",
 	
 					}
 				});
-				// Insert a headline into that popup ADJUST STYLE HERE
+		
 				var hed = $("<div id='wrapper-"+feature.id+"' style='opacity:.8'><canvas id='canvas-"+feature.id+"' width='200' height='200'></canvas></div>").appendTo(popup);
 				// Add the popup to the map
 				popup.appendTo($('body'))
@@ -99,17 +100,23 @@ define([
 				var thumbImg = document.createElement('img');
 
 				thumbImg.src = feature.properties.thumbnail_url;
-				thumbImg.onload = function() {
+				var r=0;
+				function drawThumb(){
 
-						var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
+					var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
 					 	tmpCtx.save();
 						tmpCtx.beginPath();
-						tmpCtx.arc(100, 100, 100, 0, Math.PI * 2, true);
+						tmpCtx.arc(100, 100, 100*r, 0, Math.PI * 2, true);
 						tmpCtx.closePath();
 						tmpCtx.clip();
 						tmpCtx.drawImage(thumbImg, 0, 0, 200, 200);
 						tmpCtx.restore();
-				};
+						if(r>=1)clearInterval(drawThumbAnim);
+						r=parseFloat(r)+0.025;
+				}
+				var drawThumbAnim=setInterval(drawThumb,20);
+
+
 				
 				
 				popup.on('mousemove',function(e){
