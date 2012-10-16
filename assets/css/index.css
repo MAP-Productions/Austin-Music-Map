@@ -324,21 +324,68 @@ body {
   right: 0;
   bottom: 0;
   background: url(../img/marker-circle.png);
-  z-index: 20;
+  z-index: -1;
 }
 .map-featured .content {
-  width: 216px;
-  height: 216px;
-  border: 1px solid transparent;
-  border-radius: 108px;
-  margin-left: 10px;
-  margin-top: 8px;
-  z-index: 10;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  width: 218px;
+  height: 218px;
+  border-radius: 109px;
+  margin-left: 11px;
+  margin-top: 5px;
+  z-index: 20;
   overflow: hidden;
   background-clip: padding-box;
-  -webkit-background-clip: padding-box;
-  /* Safari */
-
+}
+.map-featured .content .top {
+  height: 109px;
+  background: rgba(39, 121, 155, 0.5);
+  overflow: hidden;
+}
+.map-featured .content .bottom {
+  height: 109px;
+  background: rgba(61, 115, 138, 0.67);
+  overflow: hidden;
+}
+.map-featured h3 {
+  font-size: 10px;
+  line-height: 1.5em;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  margin: 38px auto 14px;
+  width: 65%;
+  letter-spacing: 0.3em;
+}
+.map-featured .attrib {
+  font-size: 9px;
+  line-height: 1.5em;
+  color: #f5f5f5;
+  width: 85%;
+  letter-spacing: 0.2em;
+}
+.map-featured h4 {
+  font-size: 10px;
+  line-height: 1.5em;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  margin: 12px auto 6px;
+  width: 85%;
+  letter-spacing: 0.3em;
+}
+.map-featured .in-playlists a {
+  display: block;
+  font-size: 10px;
+  line-height: 1.5em;
+  color: #f5f5f5;
+  text-transform: uppercase;
+  margin: 6px auto;
+  width: 85%;
+  letter-spacing: 0.3em;
+  text-decoration: none;
+}
+.map-featured a:hover {
+  color: #3c3d3f;
 }
 
 .modal-overlay {
