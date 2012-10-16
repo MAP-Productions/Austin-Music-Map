@@ -6,10 +6,11 @@ define([
   "modules/playlist",
   "modules/participate",
   "modules/about",
-  "modules/contact"
+  "modules/contact",
+  "modules/map"
 ],
 
-function(App, Playlist, Participate, About, Contact) {
+function(App, Playlist, Participate, About, Contact,Map) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -21,6 +22,9 @@ function(App, Playlist, Participate, About, Contact) {
     },
 
     index: function() {
+      App.on('base_layout_ready', function(){
+          App.page = new Map.Model();
+      });
       initialize('map');
     },
 
@@ -73,8 +77,11 @@ function(App, Playlist, Participate, About, Contact) {
     // insert subviews
     // playlist view - this should be moved to wherever the playlist is initialized
     baseLayout.setView('#controlsLeft .controls-inner', new Playlist.Views.PlaylistView() );
-
+    baseLayout.afterRender=function(){
+      App.trigger('base_layout_ready');
+    }
     baseLayout.render();
+    
   }
 
   // happens on every router change
@@ -115,6 +122,8 @@ function(App, Playlist, Participate, About, Contact) {
     }
 
   }
+
+
 
   return Router;
 
