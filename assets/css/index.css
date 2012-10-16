@@ -310,6 +310,36 @@ body {
 .playlist-container .related ul a:hover {
   color: #434446;
 }
+/* map featured item popup */
+.map-featured {
+  width: 234px;
+  height: 229px;
+  position: absolute;
+  z-index: 15;
+}
+.map-featured .marker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: url(../img/marker-circle.png);
+  z-index: 20;
+}
+.map-featured .content {
+  width: 216px;
+  height: 216px;
+  border: 1px solid transparent;
+  border-radius: 108px;
+  margin-left: 10px;
+  margin-top: 8px;
+  z-index: 10;
+  overflow: hidden;
+  background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  /* Safari */
+
+}
 
 .modal-overlay {
   position: absolute;
