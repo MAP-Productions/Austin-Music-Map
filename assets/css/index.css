@@ -12,12 +12,13 @@ body {
 }
 #appBase {
   background: #aaa;
-  bottom: 0;
   left: 0;
   position: absolute;
-  right: 0;
   top: 0;
   z-index: 10;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 #logo {
   left: 50%;
@@ -386,6 +387,25 @@ body {
 }
 .map-featured a:hover {
   color: #3c3d3f;
+}
+
+.leaflet-popup-close-button {
+  display: none !important;
+}
+.leaflet-popup-tip {
+  display: none !important;
+}
+.leaflet-popup-content-wrapper {
+  background: transparent !important;
+  box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+#base-map {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .modal-overlay {

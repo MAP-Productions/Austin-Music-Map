@@ -7,10 +7,11 @@ define([
   "modules/mapfeatured",
   "modules/participate",
   "modules/about",
-  "modules/contact"
+  "modules/contact",
+  "modules/map"
 ],
 
-function(App, Playlist, MapFeatured, Participate, About, Contact) {
+function(App, Playlist, MapFeatured, Participate, About, Contact,Map) {
 
   // Defining the application router, you can attach sub routers here.
   var Router = Backbone.Router.extend({
@@ -22,6 +23,9 @@ function(App, Playlist, MapFeatured, Participate, About, Contact) {
     },
 
     index: function() {
+      App.on('base_layout_ready', function(){
+          App.page = new Map.Model();
+      });
       initialize('map');
     },
 
@@ -78,7 +82,11 @@ function(App, Playlist, MapFeatured, Participate, About, Contact) {
     // map featured
     baseLayout.setView('#appBase', new MapFeatured.Views.MapFeaturedView() );
 
+    baseLayout.afterRender=function(){
+      App.trigger('base_layout_ready');
+    }
     baseLayout.render();
+    
   }
 
   // happens on every router change
@@ -119,6 +127,8 @@ function(App, Playlist, MapFeatured, Participate, About, Contact) {
     }
 
   }
+
+
 
   return Router;
 
