@@ -65,7 +65,7 @@ function(App, Playlist, Participate, About, Contact,Map) {
   function initialize(to) {
     initAMM();
     cleanup(to);
-  };
+  }
 
   var initAMM = _.once( init ); // ensure this happens only once 
 
@@ -82,7 +82,7 @@ function(App, Playlist, Participate, About, Contact,Map) {
 
     baseLayout.afterRender=function(){
       App.trigger('base_layout_ready');
-    }
+    };
     baseLayout.render();
     
   }
