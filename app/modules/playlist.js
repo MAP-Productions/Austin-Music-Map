@@ -8,11 +8,11 @@ function(app, Backbone)
 {
 
 	// Create a new module
-	var App = app.module();
+	var Playlist = app.module();
 
-	App.Views = App.Views || {};
+	Playlist.Views = Playlist.Views || {};
 
-	App.Views.PlaylistView = Backbone.LayoutView.extend({
+	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
 		initialize: function() {
 			_.bindAll(this, 'render', 'togglePlaylist', 'goToTime');
 		},
@@ -35,5 +35,5 @@ function(app, Backbone)
 	});
 
 	// Required, return the module for AMD compliance
-	return App;
+	return Playlist;
 });
