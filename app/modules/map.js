@@ -131,8 +131,11 @@ define([
 					thumbImg.src = feature.properties.thumbnail_url;
 					var r=0;
 					function drawThumb(){
-						if(_.isNull(document.getElementById("canvas-"+feature.id))) clearInterval(drawThumbAnim);
-						var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
+						if(_.isNull(document.getElementById("canvas-"+feature.id))){
+							clearInterval(drawThumbAnim);
+						} 
+						else{
+							var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
 							tmpCtx.save();
 							tmpCtx.beginPath();
 							tmpCtx.arc(radius, radius, radius*r, 0, Math.PI * 2, true);
@@ -142,6 +145,7 @@ define([
 							tmpCtx.restore();
 							if(r>=1)clearInterval(drawThumbAnim);
 							r=parseFloat(r)+0.05;
+						}
 					}
 					var drawThumbAnim=setInterval(drawThumb,20);
 
@@ -199,122 +203,131 @@ define([
 								
 								function drawLargeImage(){
 									if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
-									var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-									tmpCtx.globalCompositeOperation = 'destination-over';
+									else
+									{
+										var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+										tmpCtx.globalCompositeOperation = 'destination-over';
+										
+										tmpCtx.save();
+										tmpCtx.beginPath();
+										tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
+										tmpCtx.arc(layer._point.x, layer._point.y, (radius+20) + (1-i)*(d-(radius+20)), 0, Math.PI * 2, false);
+										tmpCtx.closePath();
+										tmpCtx.clip();
+										tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+										tmpCtx.restore();
+										
+										var thumbctx=document.getElementById("canvas-"+feature.id).getContext("2d");
+										thumbctx.globalCompositeOperation = 'destination-over';
+										thumbctx.clearRect(0,0,diameter,diameter);
+
+										thumbctx.save();
+										thumbctx.beginPath();
+										thumbctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
+										thumbctx.arc(radius, radius, i*radius, 0, Math.PI * 2, false);
+										thumbctx.closePath();
+										thumbctx.clip();
+										if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
 									
-									tmpCtx.save();
-									tmpCtx.beginPath();
-									tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
-									tmpCtx.arc(layer._point.x, layer._point.y, (radius+20) + (1-i)*(d-(radius+20)), 0, Math.PI * 2, false);
-									tmpCtx.closePath();
-									tmpCtx.clip();
-									tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-									tmpCtx.restore();
-									
-									var thumbctx=document.getElementById("canvas-"+feature.id).getContext("2d");
-									thumbctx.globalCompositeOperation = 'destination-over';
-									thumbctx.clearRect(0,0,diameter,diameter);
+										thumbctx.restore();
 
-									thumbctx.save();
-									thumbctx.beginPath();
-									thumbctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
-									thumbctx.arc(radius, radius, i*radius, 0, Math.PI * 2, false);
-									thumbctx.closePath();
-									thumbctx.clip();
-									if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
-								
-									thumbctx.restore();
+										if(i>=1) {
+											clearInterval(drawLargeImageAnim);
+											$('#wrapper-'+feature.id).remove();
+											$('#marker-container').addClass('marker').fadeIn('fast');
+											var shrinkGapAnim,expandGapAnim,
+												gapState = 'small';
 
-									if(i>=1) {
-										clearInterval(drawLargeImageAnim);
-										$('#wrapper-'+feature.id).remove();
-										$('#marker-container').addClass('marker').fadeIn('fast');
-										var shrinkGapAnim,expandGapAnim,
-											gapState = 'small';
-
-											
-										$('.map-overlay').on('mousemove',function(e){
-											var i=0;
-											var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-											function expandGap(){
-													
-													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-													tmpCtx.globalCompositeOperation = 'destination-over';
-													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
 												
-													tmpCtx.save();
-													tmpCtx.beginPath();
-													tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-													tmpCtx.arc(layer._point.x, layer._point.y,(radius+20) + i*30, 0, Math.PI * 2, false);
-													tmpCtx.closePath();
-													tmpCtx.clip();
-													tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-													tmpCtx.restore();
-												
-													if(i>=1) {
+											$('.map-overlay').on('mousemove',function(e){
+												var i=0;
+												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
+												function expandGap(){
+													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
 														clearInterval(expandGapAnim);
-														expandGapAnim=false;
-														gapState='large';
-														$('.back-to-map').fadeIn('fast');
-														
 													}
-													i=parseFloat(i)+0.1	;	
-											}	
-											function shrinkGap(){
-													$('.back-to-map').hide();
-													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-													tmpCtx.globalCompositeOperation = 'destination-over';
-													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-												
-													tmpCtx.save();
-													tmpCtx.beginPath();
-													tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-													tmpCtx.arc(layer._point.x, layer._point.y,radius+50 - i*30, 0, Math.PI * 2, false);
-													tmpCtx.closePath();
-													tmpCtx.clip();
-													tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-													tmpCtx.restore();
+													else{	
+														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+														tmpCtx.globalCompositeOperation = 'destination-over';
+														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
 													
-					
-												
-												
-													if(i>=1) {
-														clearInterval(shrinkGapAnim);	
-														shrinkGapAnim=false;
-														gapState='small';
+														tmpCtx.save();
+														tmpCtx.beginPath();
+														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+														tmpCtx.arc(layer._point.x, layer._point.y,(radius+20) + i*30, 0, Math.PI * 2, false);
+														tmpCtx.closePath();
+														tmpCtx.clip();
+														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+														tmpCtx.restore();
+													
+														if(i>=1) {
+															clearInterval(expandGapAnim);
+															expandGapAnim=false;
+															gapState='large';
+															$('.back-to-map').fadeIn('fast');
+															
+														}
+														i=parseFloat(i)+0.1	;
 													}
-													i=parseFloat(i)+0.1;	
-											}
-
-											if(d>radius&&d<radius+20&&gapState=='small'){
-												clearInterval(shrinkGapAnim);
-												if(!expandGapAnim){
-													i=0;
-													expandGapAnim=setInterval(expandGap,30);
+												}	
+												function shrinkGap(){
+													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
+														clearInterval(expandGapAnim);
+													}
+													else
+													{
+														$('.back-to-map').hide();
+														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+														tmpCtx.globalCompositeOperation = 'destination-over';
+														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+													
+														tmpCtx.save();
+														tmpCtx.beginPath();
+														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+														tmpCtx.arc(layer._point.x, layer._point.y,radius+50 - i*30, 0, Math.PI * 2, false);
+														tmpCtx.closePath();
+														tmpCtx.clip();
+														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+														tmpCtx.restore();
+						
+														if(i>=1) {
+															clearInterval(shrinkGapAnim);	
+															shrinkGapAnim=false;
+															gapState='small';
+														}
+														i=parseFloat(i)+0.1;
+													}
 												}
-											}
 
-											else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
-												clearInterval(expandGapAnim);
-												if(!shrinkGapAnim){
-													shrinkGapAnim=setInterval(shrinkGap,30);
-													i=0;
+												if(d>radius&&d<radius+20&&gapState=='small'){
+													clearInterval(shrinkGapAnim);
+													if(!expandGapAnim){
+														i=0;
+														expandGapAnim=setInterval(expandGap,30);
+													}
 												}
-											}
 
-										});
-									
-									
-										overlay.on('click',function(e){
-											var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-											if(d>radius&&d<radius+50){
-												$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
-												map.featureOn=false;
-											}									
-										});
-									}
+												else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
+													clearInterval(expandGapAnim);
+													if(!shrinkGapAnim){
+														shrinkGapAnim=setInterval(shrinkGap,30);
+														i=0;
+													}
+												}
+
+											});
+										
+										
+											overlay.on('click',function(e){
+												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
+												if(d>radius&&d<radius+50){
+													$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
+													map.featureOn=false;
+												}									
+											});
+										}
 									i=parseFloat(i)+0.015;	
-
+									}
 								}
 								};
 							
