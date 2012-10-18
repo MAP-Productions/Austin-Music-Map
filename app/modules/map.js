@@ -16,13 +16,13 @@ define([
 		},
 
 		initialize: function() {
-			
+			console.log('init map');
 			var mapCollection = new MapCollection();
 			var _this=this;
 			mapCollection.fetch({success:function(collection,response){
 				_this.mapView = new Map.Views.Main({collection:collection});
-				_this.mapView.render();
 				$('#appBase').empty().append( _this.mapView.el );
+				_this.mapView.render();
 			}});
 
 			
@@ -63,6 +63,8 @@ define([
 		},
 
 		afterRender:function(){
+			
+			
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
@@ -364,6 +366,7 @@ define([
 		
 		url:'http://alpha.zeega.org/api/items/41366/items',
 		parse: function(response){
+			console.log('returned collection');
 			return response.items;
 		}
 
