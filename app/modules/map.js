@@ -20,7 +20,6 @@ define([
 			var mapCollection = new MapCollection();
 			var _this=this;
 			mapCollection.fetch({success:function(collection,response){
-				console.log(collection,response);
 				_this.mapView = new Map.Views.Main({collection:collection});
 				_this.mapView.render();
 				$('#appBase').empty().append( _this.mapView.el );
@@ -365,9 +364,7 @@ define([
 		
 		url:'http://alpha.zeega.org/api/items/41366/items',
 		parse: function(response){
-			console.log(response);
 			return response.items;
-		
 		}
 
 	});
