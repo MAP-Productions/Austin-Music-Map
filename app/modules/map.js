@@ -21,8 +21,8 @@ define([
 			var _this=this;
 			mapCollection.fetch({success:function(collection,response){
 				_this.mapView = new Map.Views.Main({collection:collection});
-				_this.mapView.render();
 				$('#appBase').empty().append( _this.mapView.el );
+				_this.mapView.render();
 			}});
 
 			
@@ -63,7 +63,8 @@ define([
 		},
 
 		afterRender:function(){
-			console.log('map view after render');
+			
+			
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
