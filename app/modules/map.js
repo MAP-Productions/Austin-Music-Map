@@ -308,7 +308,7 @@ define([
 										overlay.on('click',function(e){
 											var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
 											if(d>radius&&d<radius+50){
-												$('.map-overlay').fadeOut('slow',function(){console.log('faded out');$(this).remove()});
+												$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 												map.featureOn=false;
 											}									
 										});
@@ -323,7 +323,7 @@ define([
 								var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
 								
 								if(d>100&&d<150){
-									$('.map-overlay').fadeOut('slow',function(){console.log('faded out');$(this).remove()});
+									$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 									map.featureOn=false;
 								}
 							}
