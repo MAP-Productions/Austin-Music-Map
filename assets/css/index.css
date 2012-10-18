@@ -391,7 +391,7 @@ body {
 
 /* map featured item popup */
 .map-featured {
-  top: 0px;
+  top: 30px;
   left: 0px;
   width: 228px;
   height: 228px;
@@ -407,6 +407,16 @@ body {
   background-position: -5px 0px;
   background-repeat: none;
   z-index: -1;
+}
+#marker-container {
+  display: none;
+}
+.back-to-map {
+  background: url(../img/back-to-map.png);
+  background-position-y: -23px;
+  width: 229px;
+  height: 50px;
+  display: none;
 }
 .map-featured .content {
   font-family: Arial, sans-serif;

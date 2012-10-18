@@ -64,7 +64,7 @@ define([
 		},
 
 		afterRender:function(){
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-6q59zzty/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
 			this.map = new L.Map(this.el,{
@@ -106,7 +106,8 @@ define([
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
 					var x=layer._point.x-radius;
-					var y=layer._point.y-radius;
+					var y=layer._point.y-radius-30;
+					var height = diameter+30;
 					var popup = $("<div></div>", {
 						id: "popup-" + feature.id,
 						css: {
@@ -115,13 +116,13 @@ define([
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:diameter+"px",
+							height:height+"px",
 							cursor: "pointer"
 		
 						}
 					}).addClass('map-overlay');
 					
-					var hed = $("<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; opacity:.8'><canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas></div>").appendTo(popup);
+					var hed = $("<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'><canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas></div>").appendTo(popup);
 					// Add the popup to the map
 					popup.appendTo($('body'));
 					
@@ -225,6 +226,7 @@ define([
 								
 									if(i>=1) {
 										clearInterval(drawLargeImageAnim);
+										$('#wrapper-'+feature.id).remove();
 										$('#marker-container').addClass('marker').fadeIn('fast');
 										var shrinkGapAnim,expandGapAnim,
 											gapState = 'small';
@@ -252,12 +254,13 @@ define([
 														clearInterval(expandGapAnim);
 														expandGapAnim=false;
 														gapState='large';
+														$('.back-to-map').fadeIn('fast');
 														
 													}
 													i=parseFloat(i)+0.1	;	
 											}	
 											function shrinkGap(){
-													
+													$('.back-to-map').hide();
 													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 													tmpCtx.globalCompositeOperation = 'destination-over';
 													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
