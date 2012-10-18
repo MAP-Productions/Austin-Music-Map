@@ -39,7 +39,7 @@ define([
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
-		latLng: new L.LatLng(42.365520169045,-71.106262207031),
+		latLng: new L.LatLng(30.266702991845,-97.745532989502),
 		
 		initialize : function(options){
 			_.extend(this,options);
@@ -64,7 +64,7 @@ define([
 
 		afterRender:function(){
 			
-			
+
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
@@ -364,7 +364,7 @@ define([
 		
 		},
 		
-		url:'http://alpha.zeega.org/api/items/41366/items',
+		url:'http://alpha.zeega.org/api/items/49295/items',
 		parse: function(response){
 			console.log('returned collection');
 			return response.items;
