@@ -25,7 +25,15 @@ define([
 	});
 
 	var ParticipateView = Backbone.LayoutView.extend({
-		template: 'participate'
+		template: 'participate',
+		events: {
+			'click .remix-sites-list li' : 'switchContent'
+		},
+		switchContent: function(e) {
+			var clicked = $(e.currentTarget);
+			clicked.addClass('active').siblings().removeClass('active');
+			$('.remix-sites-info div').eq( clicked.index() ).show().siblings().hide();
+		}
 	});
 
 	// Required, return the module for AMD compliance
