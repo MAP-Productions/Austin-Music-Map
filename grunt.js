@@ -221,7 +221,14 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-
+                copy: {
+                        dist: {
+                                files: {
+                                        "dist/release/img/": "assets/img/**"
+                                }
+                                , options: { "basePath" : "/", "flatten" : true }
+                        }
+                },
 	});
 
 	// The debug task will remove all contents inside the dist/ folder, lint
@@ -233,6 +240,6 @@ module.exports = function(grunt) {
 
 	// The release task will run the debug tasks and then minify the
 	// dist/debug/require.js file and CSS files.
-	grunt.registerTask("release", "debug min mincss");
+	grunt.registerTask("release", "debug min mincss copy");
 
 };
