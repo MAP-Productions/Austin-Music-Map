@@ -12,7 +12,7 @@ define([
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
 		defaults: {
-			title: 'Map',
+			title: 'Map'
 		},
 
 		initialize: function() {
@@ -20,11 +20,10 @@ define([
 			var mapCollection = new MapCollection();
 			var _this=this;
 			mapCollection.fetch({success:function(collection,response){
-				console.log(collection,response);
 				_this.mapView = new Map.Views.Main({collection:collection});
 				_this.mapView.render();
 				$('#appBase').empty().append( _this.mapView.el );
-			}})
+			}});
 
 			
 		}
@@ -48,26 +47,23 @@ define([
 		
 		createPoints:function(){
 
-			var p =[];	
-  		
-	  		_.each(_.toArray(this.collection), function(item){
-	  		
-	  			p.push({ 
-	  				"type": "Feature", 
-	  				"geometry": {
-	  					"type": "Point", 
-	  					"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
-	  				}, 
-	  				"properties":item.attributes,
-	  				"id":item.id,
-	  			});
-	  		
-	  		});
-			return { "type": "FeatureCollection", "features": p}
+			var p =[];
+			_.each(_.toArray(this.collection), function(item){
+				p.push({
+					"type": "Feature",
+					"geometry": {
+						"type": "Point",
+						"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
+					},
+					"properties":item.attributes,
+					"id":item.id
+				});
+			});
+			return { "type": "FeatureCollection", "features": p};
 		},
 
 		afterRender:function(){
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-6q59zzty/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
 			this.map = new L.Map(this.el,{
@@ -76,7 +72,7 @@ define([
 				scrollWheelZoom:false,
 				doubleClickZoom:false,
 				boxZoom:false,
-				zoomControl:false,
+				zoomControl:false
 			});
 			this.map.setView(this.latLng, 15).addLayer(cloudmade).addLayer(homemade);
 			this.map.featureOn=false;
@@ -109,25 +105,25 @@ define([
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
 					var x=layer._point.x-radius;
-					var y=layer._point.y-radius;
+					var y=layer._point.y-radius-30;
+					var height = diameter+30;
 					var popup = $("<div></div>", {
 						id: "popup-" + feature.id,
-						class: "map-overlay",
 						css: {
 							position: "absolute",
 							top: y+"px",
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:diameter+"px",
-							cursor: "pointer",
+							height:height+"px",
+							cursor: "pointer"
 		
 						}
-					});
+					}).addClass('map-overlay');
 					
-					var hed = $("<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; opacity:.8'><canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas></div>").appendTo(popup);
+					var hed = $("<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'><canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas></div>").appendTo(popup);
 					// Add the popup to the map
-					popup.appendTo($('body'))
+					popup.appendTo($('body'));
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
@@ -135,7 +131,7 @@ define([
 					function drawThumb(){
 						if(_.isNull(document.getElementById("canvas-"+feature.id))) clearInterval(drawThumbAnim);
 						var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
-						 	tmpCtx.save();
+							tmpCtx.save();
 							tmpCtx.beginPath();
 							tmpCtx.arc(radius, radius, radius*r, 0, Math.PI * 2, true);
 							tmpCtx.closePath();
@@ -167,7 +163,6 @@ define([
 								map.featureOn=true;
 								var overlay = $("<div></div>", {
 									id: "overlay-" + feature.id,
-									class: "map-overlay",
 									css: {
 										cursor: "pointer",
 										position: "absolute",
@@ -175,10 +170,10 @@ define([
 										left: "0px",
 										zIndex: 11,
 										width:"100%",
-										height:"100%",
+										height:"100%"
 					
 									}
-								});
+								}).addClass('map-overlay');
 								
 								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
@@ -187,7 +182,7 @@ define([
 								largeImg.src = feature.properties.uri;
 								largeImg.onload = function() {
 										
-									var i=.01;
+									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
 						
 								//Want animation radius to be large enough such that begins at farthest corner of the screen
@@ -230,19 +225,16 @@ define([
 								
 									if(i>=1) {
 										clearInterval(drawLargeImageAnim);
+										$('#wrapper-'+feature.id).remove();
 										$('#marker-container').addClass('marker').fadeIn('fast');
 										var shrinkGapAnim,expandGapAnim,
 											gapState = 'small';
 
 											
-										popup.on('mousemove',function(e){
+										$('.map-overlay').on('mousemove',function(e){
 											var i=0;
 											var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-											
-											if(d>radius&&d<radius+20&&gapState=='small'){
-												clearInterval(shrinkGapAnim);
-												
-												function expandGap(){
+											function expandGap(){
 													
 													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 													tmpCtx.globalCompositeOperation = 'destination-over';
@@ -261,21 +253,13 @@ define([
 														clearInterval(expandGapAnim);
 														expandGapAnim=false;
 														gapState='large';
+														$('.back-to-map').fadeIn('fast');
 														
 													}
 													i=parseFloat(i)+0.1	;	
-
-												}	
-												if(!expandGapAnim){
-													i=0;
-													expandGapAnim=setInterval(expandGap,30);
-												}
-											}
-
-											else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
-												clearInterval(expandGapAnim);
-												function shrinkGap(){
-													
+											}	
+											function shrinkGap(){
+													$('.back-to-map').hide();
 													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 													tmpCtx.globalCompositeOperation = 'destination-over';
 													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
@@ -298,9 +282,22 @@ define([
 														gapState='small';
 													}
 													i=parseFloat(i)+0.1;	
+											}
 
-												}	
-												if(!shrinkGapAnim)shrinkGapAnim=setInterval(shrinkGap,30);
+											if(d>radius&&d<radius+20&&gapState=='small'){
+												clearInterval(shrinkGapAnim);
+												if(!expandGapAnim){
+													i=0;
+													expandGapAnim=setInterval(expandGap,30);
+												}
+											}
+
+											else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
+												clearInterval(expandGapAnim);
+												if(!shrinkGapAnim){
+													shrinkGapAnim=setInterval(shrinkGap,30);
+													i=0;
+												}
 											}
 
 										});
@@ -313,85 +310,12 @@ define([
 												popup.fadeOut('fast').remove();
 												map.featureOn=false;
 											}									
-										}).on('mousemove',function(e){
-											
-											var i=0;
-											var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-											
-											if(d>radius&&d<radius+20&&gapState=='small'){
-												clearInterval(shrinkGapAnim);
-											
-												function expandGap(){
-													
-													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-													tmpCtx.globalCompositeOperation = 'destination-over';
-													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-												
-													tmpCtx.save();
-													tmpCtx.beginPath();
-													tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-													tmpCtx.arc(layer._point.x, layer._point.y,(radius+20) + i*30, 0, Math.PI * 2, false);
-													tmpCtx.closePath();
-													tmpCtx.clip();
-													tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-													tmpCtx.restore();
-												
-													if(i>=1) {
-														clearInterval(expandGapAnim);
-														expandGapAnim=false;
-														gapState='large';
-														
-													}
-													i=parseFloat(i)+0.1	;	
-
-												}	
-												if(!expandGapAnim){
-													i=0;
-													expandGapAnim=setInterval(expandGap,30);
-												}
-											}
-
-											else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
-												clearInterval(expandGapAnim);
-												function shrinkGap(){
-													
-													var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-													tmpCtx.globalCompositeOperation = 'destination-over';
-													tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-												
-													tmpCtx.save();
-													tmpCtx.beginPath();
-													tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-													tmpCtx.arc(layer._point.x, layer._point.y,radius+50 - i*30, 0, Math.PI * 2, false);
-													tmpCtx.closePath();
-													tmpCtx.clip();
-													tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-													tmpCtx.restore();
-													
-					
-												
-												
-													if(i>=1) {
-														clearInterval(shrinkGapAnim);	
-														shrinkGapAnim=false;
-														gapState='small';
-													}
-													i=parseFloat(i)+0.1;	
-
-												}	
-												if(!shrinkGapAnim)shrinkGapAnim=setInterval(shrinkGap,30);
-											}
-
 										});
 									}
 									i=parseFloat(i)+0.015;	
 
 								}
-								
-								
-								
-								
-								}
+								};
 							
 							}else{
 							
@@ -440,9 +364,7 @@ define([
 		
 		url:'http://alpha.zeega.org/api/items/41366/items',
 		parse: function(response){
-			console.log(response);
 			return response.items;
-		
 		}
 
 	});
