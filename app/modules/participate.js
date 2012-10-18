@@ -32,7 +32,7 @@ define([
 		switchContent: function(e) {
 			var clicked = $(e.currentTarget);
 			clicked.addClass('active').siblings().removeClass('active');
-			$('.remix-sites-info div').eq( clicked.index() ).show().siblings().hide();
+			$('.remix-sites-info > div').eq( clicked.index() ).show().siblings().hide();
 		}
 	});
 
