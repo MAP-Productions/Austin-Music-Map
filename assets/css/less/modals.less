@@ -32,6 +32,7 @@
 	color: #f5f5f5;
 }
 
+/* content directly in modal-content */
 .modal-overlay .modal .modal-content h1 {
 	color: #fff;
 	font-size: 18px;
@@ -52,11 +53,59 @@
 	text-transform: uppercase;
 }
 
+.modal-content .remix-sites-info div {
+	overflow: hidden;
+}
+
+.modal-content .left {
+	float: left;
+	width: 375px;
+}
+
+.modal-content .right {
+	float: right;
+	width: 375px;
+}
+
+.modal-overlay .modal .modal-content .left h1,
+.modal-overlay .modal .modal-content .right h1 {
+	text-align: left;
+}
+
+/* info box definitions */
 .modal-content .info-box {
 	color: #77787B;
 	padding: 27px;
 }
 
+/* tall two-up */
+.modal-content .info-box-split {
+	margin: 45px auto 0;
+	overflow: hidden;
+}
+
+.modal-content .info-box-split .info-box {
+	width: 313px;
+	height: 421px;
+	background: url(../img/info-box-tall.png);
+}
+
+.modal-content .info-box-split .info-box.left {
+	float: left;
+}
+
+.modal-content .info-box-split .info-box.right {
+	float: right;
+}
+
+/* wide */
+.modal-content .info-box.wide {
+	background: url(../img/info-box-wide.png);
+	width: 663px;
+	height: 264px
+}
+
+/* info-box content */
 .modal-content .info-box h2 {
 	color: #333132;
 	font-size: 18px;
@@ -66,11 +115,6 @@
 	font-weight: bold;
 	margin: 0 0 20px;
 	line-height: 1.3em;
-}
-
-.modal-content .info-box strong {
-	color: #333132;
-	font-weight: bold;
 }
 
 .modal-content .info-box p {
@@ -101,6 +145,11 @@
 .modal-content .info-box ol li {
 	list-style-type: decimal;
 	margin-left: 48px;
+}
+
+.modal-content .info-box strong {
+	color: #333132;
+	font-weight: bold;
 }
 
 .modal-content .info-box .record-btn {
@@ -164,40 +213,6 @@
 	background: url(../img/share-icon-outline.png);
 }
 
-.modal-content .info-box-split {
-	margin: 45px auto 0;
-	overflow: hidden;
-}
-
-.modal-content .info-box-split .info-box {
-	width: 313px;
-	height: 421px;
-	background: url(../img/info-box-tall.png);
-}
-
-.modal-content .info-box-split .info-box.left {
-	float: left;
-}
-
-.modal-content .info-box-split .info-box.right {
-	float: right;
-}
-
-.modal-content .remix-sites-info div {
-	overflow: hidden;
-}
-
-.modal-content .left {
-	float: left;
-	width: 375px;
-}
-
-.modal-content .right {
-	float: right;
-	width: 375px;
-}
-
-.modal-overlay .modal .modal-content .left h1,
-.modal-overlay .modal .modal-content .right h1 {
-	text-align: left;
+.modal-content .info-box label {
+	
 }
