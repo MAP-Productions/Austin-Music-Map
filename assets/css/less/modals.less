@@ -6,14 +6,17 @@
 	right: 0;
 	background: rgba(60,61,63,0.9);
 	z-index: 20;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .modal-overlay .modal {
 	width: 780px;
 	margin: 0 auto;
-	margin-top: 190px;
-	position: relative;
+	position: absolute;
+	top: 190px;
+	bottom: 20px;
+	left: 50%;
+	margin-left: -390px;
 }
 
 .modal-overlay .modal .close-modal {
@@ -30,6 +33,7 @@
 
 .modal-overlay .modal .modal-content {
 	color: #f5f5f5;
+	font-family: Arial, sans-serif;
 }
 
 /* content directly in modal-content */
@@ -41,6 +45,25 @@
 	text-transform: uppercase;
 	font-weight: bold;
 	margin: 0 0 20px;
+}
+
+
+.modal-overlay .modal .modal-content .modal-textblock {
+	overflow: auto;
+	position: absolute;
+	left: 0;
+	top: 35px;
+	bottom: 35px;
+	right: 0;
+}
+
+.modal-overlay .modal .modal-content .modal-textblock p {
+	letter-spacing: 0.1em;
+	line-height: 1.4em;
+	font-size: 13px;
+	margin-bottom: 15px;
+	text-align: center;
+	width: 730px;
 }
 
 .modal-overlay .modal .modal-content p.intro {
