@@ -675,12 +675,27 @@ body {
   font-weight: bold;
 }
 .modal-content .info-box .record-btn {
-  background: url(../img/icon-record.png);
+  background: url(../img/record-icons-sprite.png);
   display: block;
   margin: 30px auto;
   width: 65px;
   height: 64px;
   text-indent: -9999px;
+}
+.modal-content .info-box .record-btn:hover {
+  background-position: -65px 0;
+}
+.modal-content .info-box .record-btn.stop {
+  background-position: -130px 0;
+}
+.modal-content .info-box .record-btn.stop:hover {
+  background-position: -195px 0;
+}
+.modal-content .info-box .record-btn.play {
+  background-position: -260px 0;
+}
+.modal-content .info-box .record-btn.play:hover {
+  background-position: -325px 0;
 }
 .modal-overlay .modal .modal-content .info-box .call {
   margin: 35px 0 50px;
