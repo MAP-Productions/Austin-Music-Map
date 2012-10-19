@@ -31,7 +31,7 @@ define([
 		},
 		afterRender : function(){
 			$("#soundcloud-record").click(function(e){
-				updateTimer(0);
+				
 				SC.record({
 					start: function(){
 						window.console.log('starting');
@@ -40,7 +40,7 @@ define([
 						}, 5000);
 					},
 					progress: function(ms, avgPeak){
-						//updateTimer(ms);
+						
 						console.log(ms);
 					}
 				});
