@@ -506,13 +506,16 @@ body {
   right: 0;
   background: rgba(60, 61, 63, 0.9);
   z-index: 20;
-  overflow: auto;
+  overflow: hidden;
 }
 .modal-overlay .modal {
   width: 780px;
   margin: 0 auto;
-  margin-top: 190px;
-  position: relative;
+  position: absolute;
+  top: 190px;
+  bottom: 20px;
+  left: 50%;
+  margin-left: -390px;
 }
 .modal-overlay .modal .close-modal {
   cursor: pointer;
@@ -527,6 +530,7 @@ body {
 }
 .modal-overlay .modal .modal-content {
   color: #f5f5f5;
+  font-family: Arial, sans-serif;
 }
 /* content directly in modal-content */
 .modal-overlay .modal .modal-content h1 {
@@ -538,6 +542,22 @@ body {
   font-weight: bold;
   margin: 0 0 20px;
 }
+.modal-overlay .modal .modal-content .modal-textblock {
+  overflow: auto;
+  position: absolute;
+  left: 0;
+  top: 35px;
+  bottom: 35px;
+  right: 0;
+}
+.modal-overlay .modal .modal-content .modal-textblock p {
+  letter-spacing: 0.1em;
+  line-height: 1.4em;
+  font-size: 13px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 730px;
+}
 .modal-overlay .modal .modal-content p.intro {
   font-family: Arial, sans-serif;
   font-size: 13px;
@@ -547,24 +567,10 @@ body {
   text-align: center;
   text-transform: uppercase;
 }
-.modal-content .remix-sites-info div {
-  overflow: hidden;
-}
-.modal-content .left {
-  float: left;
-  width: 375px;
-}
-.modal-content .right {
-  float: right;
-  width: 375px;
-}
-.modal-overlay .modal .modal-content .left h1,
-.modal-overlay .modal .modal-content .right h1 {
-  text-align: left;
-}
 /* info box definitions */
 .modal-content .info-box {
   color: #77787B;
+  font-family: Arial, sans-serif;
   padding: 27px;
 }
 /* tall two-up */
@@ -590,11 +596,21 @@ body {
   height: 264px;
 }
 /* info-box content */
+.modal-content .split {
+  overflow: hidden;
+}
+.modal-content .split-left {
+  float: left;
+  width: 50%;
+}
+.modal-content .split-right {
+  float: right;
+  width: 50%;
+}
 .modal-content .info-box h2 {
   color: #333132;
   font-size: 18px;
   text-align: center;
-  font-family: Arial, sans-serif;
   text-transform: uppercase;
   font-weight: bold;
   margin: 0 0 20px;
@@ -604,7 +620,6 @@ body {
   letter-spacing: 0.1em;
   line-height: 1.4em;
   font-size: 13px;
-  font-family: Arial, sans-serif;
 }
 .modal-content .info-box p.action {
   font-size: 11px;
@@ -619,7 +634,6 @@ body {
   letter-spacing: 0.1em;
   line-height: 1.4em;
   font-size: 13px;
-  font-family: Arial, sans-serif;
 }
 .modal-content .info-box ol li {
   list-style-type: decimal;
@@ -678,4 +692,34 @@ body {
 }
 .modal-content .info-box .remix-sites-list li.active {
   background: url(../img/share-icon-outline.png);
+}
+.modal-content .info-box label {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  margin: 6px 0;
+}
+.modal-content .info-box input[type=text] {
+  border: none;
+  border-radius: 3px;
+  width: 295px;
+  height: 14px;
+  padding: 2px 4px;
+  margin-bottom: 10px;
+}
+.modal-content .info-box textarea {
+  border: none;
+  width: 100%;
+  height: 130px;
+  color: red;
+  margin-bottom: 10px;
+}
+.modal-content .info-box .btn-submit {
+  background: url(../img/btn-submit.png);
+  border: none;
+  cursor: pointer;
+  float: right;
+  height: 35px;
+  text-indent: -9999px;
+  width: 90px;
 }
