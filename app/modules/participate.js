@@ -3,7 +3,8 @@ define([
 	// Libs
 	"backbone",
 	// submodules
-	"modules/submodules/modals"
+	"modules/submodules/modals",
+	"//connect.soundcloud.com/sdk.js"
 
 ], function(App, Backbone, Modal) {
 	
@@ -19,8 +20,9 @@ define([
 			console.log('initialize participate modal modal');
 			this.layout = this.getLayout();
 			this.layout.setView('.modal-content', new ParticipateView() );
-			this.layout.render();
+			
 			$('body').append( this.layout.el );
+			this.layout.render();
 		}
 	});
 
@@ -30,23 +32,97 @@ define([
 			'click .remix-sites-list li' : 'switchContent'
 		},
 		afterRender : function(){
-			$("#soundcloud-record").click(function(e){
+			SC.initialize({
+						client_id: "3b1730e670b204fc2bc9611a88461ee2",
+						redirect_uri: "http://dev.zeega.org/ammcallback/callback.html"
+			});
+			function updateProgress(ms){
+			 	$("#sc-record-progress").text(SC.Helper.millisecondsToHMS(ms));
+			}
+
+			var state='waiting';
+
+			$("#sc-upload").click(function(){
+
 				
-				SC.record({
-					start: function(){
-						window.console.log('starting');
-						window.setTimeout(function(){
-							SC.recordPlay();
-						}, 5000);
-					},
-					progress: function(ms, avgPeak){
-						
-						console.log(ms);
-					}
-				});
-			
+				SC.connect({
+				      connected: function(){
+				        $("#sc-upload-status").html("Uploading...");
+				        SC.recordUpload({
+				          track: {
+				            title: "Untitled Recording",
+				            sharing: "private"
+				          }
+				        }, function(track){
+				          $("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
+				        });
+				      }
+				    });
+
 				return false;
 			});
+
+			$("#sc-record").click(function(){
+				
+				if(state=='waiting'){
+					updateProgress(0);
+					updateState('recording');
+					SC.record({
+						start: function(){
+							
+						},
+						progress: function(ms){
+							updateProgress(ms);
+
+						}
+					});
+					
+					
+					$('#recorderFlashContainer').css({"z-index":10000});
+
+				}
+				else if(state=="recording"){
+					updateState('recorded');
+					SC.recordStop();
+				}
+				else if(state=="recorded"){
+					updateState('playing');
+					SC.recordPlay({
+						start: function(){
+							
+						},
+						progress: function(ms){
+							updateProgress(ms);
+
+						},
+						finished:function(){
+							if(state!='waiting') updateState('recorded');
+						}
+					});
+					
+				}
+
+
+				return false;
+
+				
+				
+			});
+			$('#sc-cancel-record').click(function(){
+				
+				updateState('waiting');
+				SC.recordStop();
+			});
+
+			function updateState(newState){
+				state=newState;
+				if(newState=='recorded'){
+					$("#sc-record-total").text($("#sc-record-progress").text());
+					updateProgress(0);
+				}
+				
+
+			}
 
 			
 
