@@ -4,7 +4,7 @@ define([
 	"backbone",
 	// submodules
 	"modules/submodules/modals",
-	"//connect.soundcloud.com/sdk.js"
+	
 
 ], function(App, Backbone, Modal) {
 	
