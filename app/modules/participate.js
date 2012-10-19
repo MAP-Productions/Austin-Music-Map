@@ -3,7 +3,7 @@ define([
 	// Libs
 	"backbone",
 	// submodules
-	"modules/submodules/modals",
+	"modules/submodules/modals"
 	
 
 ], function(App, Backbone, Modal) {
