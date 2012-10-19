@@ -29,6 +29,29 @@ define([
 		events: {
 			'click .remix-sites-list li' : 'switchContent'
 		},
+		afterRender : function(){
+			$("#soundcloud-record").click(function(e){
+				
+				SC.record({
+					start: function(){
+						window.console.log('starting');
+						window.setTimeout(function(){
+							SC.recordPlay();
+						}, 5000);
+					},
+					progress: function(ms, avgPeak){
+						
+						console.log(ms);
+					}
+				});
+			
+				return false;
+			});
+
+			
+
+
+		},
 		switchContent: function(e) {
 			var clicked = $(e.currentTarget);
 			clicked.addClass('active').siblings().removeClass('active');
