@@ -37,27 +37,25 @@ define([
 						redirect_uri: "http://dev.zeega.org/ammcallback/callback.html"
 			});
 			function updateProgress(ms){
-			 	$("#sc-record-progress").text(SC.Helper.millisecondsToHMS(ms));
+				$("#sc-record-progress").text(SC.Helper.millisecondsToHMS(ms));
 			}
 
 			var state='waiting';
 
 			$("#sc-upload").click(function(){
-
-				
 				SC.connect({
-				      connected: function(){
-				        $("#sc-upload-status").html("Uploading...");
-				        SC.recordUpload({
-				          track: {
-				            title: "Untitled Recording",
-				            sharing: "private"
-				          }
-				        }, function(track){
-				          $("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
-				        });
-				      }
-				    });
+					connected: function(){
+						$("#sc-upload-status").html("Uploading...");
+						SC.recordUpload({
+							track: {
+								title: "Untitled Recording",
+								sharing: "private"
+							}
+						}, function(track){
+							$("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
+						});
+					}
+				});
 
 				return false;
 			});
