@@ -4,11 +4,11 @@ define([
 	"backbone"
 ],
 
-function(app, Backbone)
+function(App, Backbone)
 {
 
 	// Create a new module
-	var Playlist = app.module();
+	var Playlist = App.module();
 
 	Playlist.Views = Playlist.Views || {};
 
@@ -17,6 +17,26 @@ function(app, Backbone)
 			_.bindAll(this, 'render', 'togglePlaylist', 'goToTime');
 		},
 		template : 'playlist',
+		fetch: function(path) {
+			// Initialize done for use in async-mode
+			var done;
+
+			// Concatenate the file extension.
+			path = 'app/templates/'+ path + ".html";
+
+			// If cached, use the compiled template.
+			if (JST[path]) {
+				return JST[path];
+			} else {
+				// Put fetch into `async-mode`.
+				done = this.async();
+
+				// Seek out the template asynchronously.
+				return $.ajax({ url: App.root + path }).then(function(contents) {
+					done(JST[path] = _.template(contents));
+				});
+			}
+		},
 		events : {
 			'click .toggle-playlist' : 'togglePlaylist',
 			'click .progress-bar' : 'goToTime'
