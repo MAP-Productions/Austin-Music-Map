@@ -10,8 +10,6 @@ function(app, Backbone)
 	// Create a new module
 	var MapFeatured = app.module();
 
-	MapFeatured.Views = MapFeatured.Views || {};
-
 	MapFeatured.Views.MapFeaturedView = Backbone.LayoutView.extend({
 		template : 'mapfeatured',
 		fetch: function(path) {
@@ -33,6 +31,22 @@ function(app, Backbone)
 					done(JST[path] = _.template(contents));
 				});
 			}
+		},
+		initialize : function()
+		{
+			console.log('delegate events',this.events);
+			this.delegateEvents();
+		},
+
+		events : {
+			'click .amm-featured-player' : 'goToFeaturedPlayer'
+		},
+
+		goToFeaturedPlayer : function()
+		{
+			console.log('do this');
+			console.log('go to featured');
+	//		return false;
 		}
 	});
 

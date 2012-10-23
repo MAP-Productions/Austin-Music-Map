@@ -2,10 +2,14 @@ define([
 	"app",
 	// Libs
 	"backbone",
-	"libs/leaflet"
+	// submodules
+	"modules/submodules/zeega-player",
+
+	// plugins
+	"libs/leaflet",
 
 
-], function(App, Backbone) {
+], function(App, Backbone, PlayerSlider) {
 	
 	var Map = App.module();
 
@@ -53,6 +57,17 @@ define([
 					done(JST[path] = _.template(contents));
 				});
 			}
+		},
+
+		events : {
+			'click .amm-featured-player' : 'goToFeaturedPlayer'
+		},
+
+		goToFeaturedPlayer : function()
+		{
+			console.log('do this');
+			console.log('go to featured');
+	//		return false;
 		}
 	});
 
