@@ -23,12 +23,14 @@ require.config({
   shim: {
     // Backbone library depends on lodash and jQuery.
     backbone: {
-      deps: ["lodash", "jquery"],
+      deps: ["jquery", "lodash"],
       exports: "Backbone"
     },
 
-    zeegaplayer: ["jquery"],
-      
+    zeegaplayer: {
+      deps: [ 'jquery' ],
+      exports: "Zeega"
+    },
 
     // Backbone.LayoutManager depends on Backbone.
     "plugins/backbone.layoutmanager": ["backbone"]

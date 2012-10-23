@@ -6,8 +6,7 @@ define([
 	"modules/submodules/zeega-player",
 
 	// plugins
-	"libs/leaflet",
-
+	"libs/leaflet"
 
 ], function(App, Backbone, PlayerSlider) {
 	

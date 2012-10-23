@@ -723,3 +723,17 @@ body {
   text-indent: -9999px;
   width: 90px;
 }
+
+.player-slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 29;
+}
+.player-slider .player-window {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}

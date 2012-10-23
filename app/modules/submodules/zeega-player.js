@@ -2,6 +2,7 @@ define([
 	"app",
 	// Libs
 	"backbone",
+
 	"zeegaplayer"
 ],
 
