@@ -66,7 +66,7 @@ function(App, Backbone)
 				var projectView = new PlayerTargetView({
 					args: {
 						div_id: projectID,
-						project_url: this.model.get('project_url'),
+						url: this.model.get('project_url'),
 						keyboard: false
 						//autoplay: false
 					},
@@ -87,7 +87,7 @@ function(App, Backbone)
 				var remixView = new PlayerTargetView({
 					args: {
 						div_id: remixID,
-						collection_url: this.model.get('remix_url'),
+						url: this.model.get('remix_url'),
 						collection_mode: 'slideshow', // standard, slideshow,
 						keyboard: false
 						//autoplay: false

@@ -48,6 +48,7 @@ define([
 					done(JST[path] = _.template(contents));
 				});
 			}
+		},
 		initialize: function() {
 			this.setView('.sc-upload', new SoundUpload.View() );
 		},
