@@ -2,6 +2,6 @@
 [Tt]humbs.db
 *.DS_Store
 node_modules
-dist/
+/dist/
 index.html
 index_test.html
