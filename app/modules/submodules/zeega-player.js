@@ -51,7 +51,7 @@ function(App, Backbone)
 						//autoplay: false
 					},
 					attributes:{
-						class: 'player-window player-project',
+						'class': 'player-window player-project',
 						id: projectID
 					}
 				});
@@ -74,7 +74,7 @@ function(App, Backbone)
 
 					},
 					attributes:{
-						class: 'player-window player-remix',
+						'class': 'player-window player-remix',
 						id: remixID
 					}
 				});

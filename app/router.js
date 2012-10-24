@@ -107,7 +107,9 @@ function(App, Base, Playlist, Participate, About, Contact,Map) {
 	function cleanup(to)
 	{
 		// hide left controls if any
-		App.BaseLayout.hideLeftMenu();
+		App.BaseLayout.hideLeftMenu({
+			next: to
+		});
 		// remove modal if it exists
 		if(App.modal)
 		{
