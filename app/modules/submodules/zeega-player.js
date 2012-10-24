@@ -1,18 +1,13 @@
 define([
 	"app",
 	// Libs
-	"backbone",
-
-	"zeegaplayer"
+	"backbone"
 ],
 
 function(App, Backbone)
 {
-	console.log('zp');
-
 	// Create a new module
 	var ProjectPlayer = App.module();
-	console.log('zp',App, Backbone, ProjectPlayer);
 
 	ProjectPlayer.Model = Backbone.Model.extend({
 
@@ -57,42 +52,61 @@ function(App, Backbone)
 				});
 			}
 		},
-		className : 'player-slider',
+		className : 'player-slider-wrapper',
 
 		initialize: function()
 		{
-			console.log('init', this);
-/*
+			// init project and/or remix players and register them in App
+			// default to project
+			App.projectPlayers = {};
+
 			if(this.model.get('project_url'))
 			{
 				var projectID = 'player-project-'+ this.model.get('parent').id;
-				this.insertView( new PlayerTargetView({
+				var projectView = new PlayerTargetView({
 					args: {
 						div_id: projectID,
-						project_url: this.model.get('project_url')
+						project_url: this.model.get('project_url'),
+						keyboard: false
+						//autoplay: false
 					},
 					attributes:{
 						class: 'player-window player-project',
 						id: projectID
 					}
-				}));
+				});
+				this.insertView('.player-slider', projectView );
+
+				this.projectPlayer = App.currentPlayer = projectView.project;
+				App.projectPlayers.project = this.projectPlayer;
 			}
+
 			if(this.model.get('remix_url'))
 			{
 				var remixID = 'player-remix-'+ this.model.get('parent').id;
-				this.insertView( new PlayerTargetView({
+				var remixView = new PlayerTargetView({
 					args: {
 						div_id: remixID,
 						collection_url: this.model.get('remix_url'),
-						collection_mode: 'slideshow' // standard, slideshow
+						collection_mode: 'slideshow', // standard, slideshow,
+						keyboard: false
+						//autoplay: false
+
 					},
 					attributes:{
 						class: 'player-window player-remix',
 						id: remixID
 					}
-				}));
+				});
+				this.insertView( '.player-slider', remixView );
+
+				this.remixPlayer = remixView.project;
+				if( !this.model.get('project_url') ) App.currentPlayer = this.remixPlayer;
+				App.projectPlayers.remix = this.remixPlayer;
 			}
-			*/
+			
+			
+			
 		},
 
 		afterRender: function()
@@ -111,10 +125,8 @@ function(App, Backbone)
 		fetch: function(path) {
 			// Initialize done for use in async-mode
 			var done;
-
 			// Concatenate the file extension.
 			path = 'app/templates/'+ path + ".html";
-
 			// If cached, use the compiled template.
 			if (JST[path]) {
 				return JST[path];
@@ -128,22 +140,22 @@ function(App, Backbone)
 				});
 			}
 		},
+
 		initialize : function()
 		{
-			console.log('target view', this, this.options);
+			this.project = new Zeega.player({window_fit:true});			
 		},
 
 		initPlayer : function()
 		{
-			// console.log('initplayer', this, Zeega);
-
-			// var project = new Zeega.player({window_fit:true});
-			// project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:',e,obj);});
-			// project.load(this.options.args);
-			// console.log('project', project);
+			console.log('initplayer', this, Zeega);
+			var _this = this;
+			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.project.id,e,obj);});
+			this.project.on('data_loaded', function(){ _this.project.play(); });
+			this.project.load(this.options.args);
+			console.log('project', this.project);
 		}
 	});
 
-	// Required, return the module for AMD compliance
 	return ProjectPlayer;
 });

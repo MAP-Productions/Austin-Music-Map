@@ -39,7 +39,10 @@ function(App, Backbone)
 		},
 		events : {
 			'click .toggle-playlist' : 'togglePlaylist',
-			'click .progress-bar' : 'goToTime'
+			'click .progress-bar' : 'goToTime',
+			'click .remix-toggle' : 'remixToggle',
+			'click .back' : 'playerPrev',
+			'click .forward' : 'playerNext'
 		},
 		togglePlaylist: function(e) {
 			$(e.target).toggleClass('open');
@@ -51,6 +54,24 @@ function(App, Backbone)
 			var progressBar = $(e.currentTarget);
 			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
 			this.$('.elapsed').css('width',percentClicked + '%');
+		},
+		remixToggle : function()
+		{
+			console.log('toggle remix', App);
+			if(Object.keys(App.projectPlayers).length == 2)
+			{
+				$('.player-slider').toggleClass('view-remix');
+				if( $('.player-slider').hasClass('view-remix') ) App.currentPlayer = App.projectPlayers.remix;
+				else App.currentPlayer = App.projectPlayers.project;
+			}
+		},
+		playerPrev : function()
+		{
+			App.currentPlayer.cuePrev();
+		},
+		playerNext : function()
+		{
+			App.currentPlayer.cueNext();
 		}
 	});
 

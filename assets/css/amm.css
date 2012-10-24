@@ -724,16 +724,46 @@ body {
   width: 90px;
 }
 
-.player-slider {
+.player-slider-wrapper {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
+  overflow: hidden;
   width: 100%;
   z-index: 29;
 }
-.player-slider .player-window {
+.player-slider-wrapper .player-slider {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  top: 0%;
+  transition: top 1s;
+  -moz-transition: top 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: top 1s;
+  /* Safari and Chrome */
+
+  -o-transition: top 1s;
+  /* Opera */
+
+}
+.player-slider-wrapper .player-slider .player-window {
   position: relative;
   height: 100%;
   width: 100%;
+}
+.player-slider-wrapper .player-slider.view-remix {
+  top: -100%;
+  transition: top 1s;
+  -moz-transition: top 1s;
+  /* Firefox 4 */
+
+  -webkit-transition: top 1s;
+  /* Safari and Chrome */
+
+  -o-transition: top 1s;
+  /* Opera */
+
 }

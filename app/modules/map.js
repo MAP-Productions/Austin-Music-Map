@@ -65,8 +65,11 @@ define([
 		goToFeaturedPlayer : function()
 		{
 			console.log('do this');
-			console.log('go to featured');
-	//		return false;
+			App.Player = new PlayerSlider.Model({
+				parent: this.model,
+				project_url: "http://alpha.zeega.org/api/projects/2259",
+				remix_url: "http://alpha.zeega.org/api/items/49217"
+			});
 		}
 	});
 

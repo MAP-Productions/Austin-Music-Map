@@ -2,7 +2,7 @@
 require.config({
 
   // Initialize the application with the main application file.
-  deps: ["main"],
+  deps: ['zeegaplayer', "main"],
 
   paths: {
     // JavaScript folders.
@@ -23,14 +23,11 @@ require.config({
   shim: {
     // Backbone library depends on lodash and jQuery.
     backbone: {
-      deps: ["jquery", "lodash"],
+      deps: ["jquery", "lodash",'zeegaplayer'],
       exports: "Backbone"
     },
 
-    zeegaplayer: {
-      deps: [ 'jquery' ],
-      exports: "Zeega"
-    },
+    zeegaplayer: ['jquery'],
 
     // Backbone.LayoutManager depends on Backbone.
     "plugins/backbone.layoutmanager": ["backbone"]
