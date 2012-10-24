@@ -3,6 +3,7 @@ define([
 	"app",
 
 	// Modules.
+	"modules/base",
 	"modules/playlist",
 	"modules/participate",
 	"modules/about",
@@ -10,7 +11,7 @@ define([
 	"modules/map"
 ],
 
-function(App, Playlist, Participate, About, Contact,Map) {
+function(App, Base, Playlist, Participate, About, Contact,Map) {
 
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
@@ -86,65 +87,27 @@ function(App, Playlist, Participate, About, Contact,Map) {
 
 	*/
 
-
-
 	function initialize(to) {
 		initAMM();
 		cleanup(to);
 	}
 
-	var initAMM = _.once( init ); // ensure this happens only once 
+	// ensure this happens only once
+	var initAMM = _.once( init );
 
-	function init() {
-		console.log('initing');
-		// render the base layout into the dom
-		var baseLayout = new Backbone.Layout({ el: "#main" });
-		var baseView = Backbone.LayoutView.extend({
-			template: "base"
-		});
-		baseLayout.insertView( new baseView() );
-
-		// insert subviews
-		// playlist view - this should be moved to wherever the playlist is initialized
-		baseLayout.setView('#controlsLeft .controls-inner', new Playlist.Views.PlaylistView() );
-
-		baseLayout.afterRender=function(){
-			App.trigger('base_layout_ready');
-		};
-		baseLayout.render();
-		
+	function init()
+	{
+		// draw the base layout
+		App.BaseLayout = new Base();
+		App.BaseLayout.render();
 	}
 
 	// happens on every router change
 	// we must update this with new cases for AMM as we will have the map, player and modals
 	function cleanup(to)
 	{
-		// if going to a modal, make sure the player is paused
-		// if going to a grid, exit the player
-		// if closing a modal, and a player exists, then make the player play
-		// modal, page, return, player 
-
-		/*
-		if( App.page && App.page.player )
-		{
-			switch(to)
-			{
-				case 'modal':
-					App.page.player.pause();
-					break;
-				case 'page':
-					App.page.exit();
-					break;
-				case 'player':
-					App.page.exit();
-					break;
-				case 'resume':
-					App.page.player.play();
-					break;
-			}
-		}
-		*/
-
+		// hide left controls if any
+		App.BaseLayout.hideLeftMenu();
 		// remove modal if it exists
 		if(App.modal)
 		{

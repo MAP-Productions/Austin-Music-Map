@@ -36,26 +36,6 @@ function(App, Backbone)
 	});
 
 	var modalLayout = Backbone.Layout.extend({
-		fetch: function(path) {
-			// Initialize done for use in async-mode
-			var done;
-
-			// Concatenate the file extension.
-			path = 'app/templates/layouts/'+ path + ".html";
-
-			// If cached, use the compiled template.
-			if (JST[path]) {
-				return JST[path];
-			} else {
-				// Put fetch into `async-mode`.
-				done = this.async();
-
-				// Seek out the template asynchronously.
-				return $.ajax({ url: App.root + path }).then(function(contents) {
-					done(JST[path] = _.template(contents));
-				});
-			}
-		},
 
 		className : 'modal-overlay',
 
