@@ -19,10 +19,15 @@ define([
 			console.log('init map');
 			var mapCollection = new MapCollection();
 			var _this=this;
-			mapCollection.fetch({success:function(collection,response){
-				_this.mapView = new Map.Views.Main({collection:collection});
-				$('#appBase').empty().append( _this.mapView.el );
-				_this.mapView.render();
+			App.playlistCollection = new PlaylistCollection();
+			App.playlistCollection.fetch({success:function(collection,response){
+				App.playlistCollection.createKeys();
+				App.playlistCollection.getMatches(['Blues']);
+				mapCollection.fetch({success:function(collection,response){
+					_this.mapView = new Map.Views.Main({collection:collection});
+					$('#appBase').empty().append( _this.mapView.el );
+					_this.mapView.render();
+				}});
 			}});
 
 			
@@ -49,15 +54,23 @@ define([
 
 			var p =[];
 			_.each(_.toArray(this.collection), function(item){
-				p.push({
-					"type": "Feature",
-					"geometry": {
-						"type": "Point",
-						"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
-					},
-					"properties":item.attributes,
-					"id":item.id
-				});
+				if(!_.isNull(item.get('media_geo_longitude')))
+				{
+
+					item.attributes.playlists=App.playlistCollection.getMatches(item.get('tags'));
+
+
+						
+					p.push({
+						"type": "Feature",
+						"geometry": {
+							"type": "Point",
+							"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
+						},
+						"properties":item.attributes,
+						"id":item.id
+					});
+				}
 			});
 			return { "type": "FeatureCollection", "features": p};
 		},
@@ -162,6 +175,9 @@ define([
 						.on('click',function(e){
 							if(!map.featureOn){
 
+
+
+								console.log(feature.properties);
 								var featuredView = new Map.Views.Featured({model:new Backbone.Model(feature.properties)});
 								featuredView.render();
 								$('#popup-'+feature.id).append(featuredView.el);
@@ -375,9 +391,46 @@ define([
 		
 		},
 		
-		url:'http://alpha.zeega.org/api/items/49295/items',
+		url:'http://alpha.zeega.org/api/items/50229/items',
 		parse: function(response){
 			console.log('returned collection');
+			return response.items;
+		}
+
+	});
+
+	var PlaylistCollection = Backbone.Collection.extend({
+
+	
+		initialize:function(){
+			
+		
+		},
+		
+		url:function(){
+			return 'http://alpha.zeega.org/api/items/50264/items';
+		},
+
+		createKeys:function(){
+			var keys=[];
+			_.each(this.models,function(model){
+				keys.push(model.get('title').toLowerCase())
+			});
+			this.keys=keys;
+		},
+
+		getMatches:function(candidates){
+			var matches = [];
+			var models = this.models;
+			
+			_.each(_.intersection(this.keys,candidates),function(key){
+				matches.push(_.find(models, function(model){ return key == model.get('title').toLowerCase(); }));
+			});
+			return matches;
+		},
+		
+		parse: function(response){
+			
 			return response.items;
 		}
 
