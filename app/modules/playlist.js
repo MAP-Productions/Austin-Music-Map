@@ -42,9 +42,11 @@ function(App, Backbone)
 			console.log('toggle remix', App);
 			if( App.Player.players.story && App.Player.players.remix )
 			{
+				App.Player.currentPlayer.pause();
 				$('.player-slider').toggleClass('view-remix');
 				if( $('.player-slider').hasClass('view-remix') ) App.Player.currentPlayer = App.Player.players.remix;
 				else App.Player.currentPlayer = App.Player.players.story;
+				App.Player.currentPlayer.play();
 			}
 			return false;
 		},

@@ -74,14 +74,13 @@ function(App, Backbone)
 
 			if( this.model.get('storyItems').items[0].child_items.length )
 			{
-				console.log('-- story items',this.model.get('storyItems'));
 				var projectID = _.uniqueId('player-project-');
 				var projectView = new PlayerTargetView({
 					args: {
 						autoplay: true,
 						collection_mode: 'slideshow',
-						//data: this.model.get('storyItems'),
-						url: 'http://alpha.zeega.org/api/items/49217',
+						data: this.model.get('storyItems'),
+						//url: 'http://alpha.zeega.org/api/items/49217',
 						div_id: projectID,
 						keyboard: false
 					},
@@ -96,25 +95,23 @@ function(App, Backbone)
 			}
 			if( this.model.get('remixItems').items[0].child_items.length )
 			{
-				// console.log('-- remix items',this.model.get('remixItems'));
+				var remixID = 'player-remix';
+				var remixView = new PlayerTargetView({
+					args: {
+						autoplay: false,
+						collection_mode: 'slideshow', // standard, slideshow,
+						data: this.model.get('remixItems'),
+						div_id: remixID,
+						keyboard: false
+					},
+					attributes:{
+						'class': 'player-window player-remix',
+						id: remixID
+					}
+				});
+				this.insertView( '.player-slider', remixView );
 
-				// var remixID = 'player-remix';
-				// var remixView = new PlayerTargetView({
-				// 	args: {
-				// 		autoplay: true,
-				// 		collection_mode: 'slideshow', // standard, slideshow,
-				// 		data: this.model.get('remixItems'),
-				// 		div_id: remixID,
-				// 		keyboard: false
-				// 	},
-				// 	attributes:{
-				// 		'class': 'player-window player-remix',
-				// 		id: remixID
-				// 	}
-				// });
-				// this.insertView( '.player-slider', remixView );
-
-				// this.model.players.remix = remixView.project;
+				this.model.players.remix = remixView.project;
 			}
 
 			this.model.currentPlayer = this.model.players.story ? this.model.players.story : this.model.players.remix;
@@ -145,7 +142,7 @@ function(App, Backbone)
 			var _this = this;
 			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			this.project.on('data_loaded', function(){ _this.project.play(); });
-			console.log('--------visible:', $('#player-project').is(':visible'));
+			console.log('--------visible:', $('#'+ this.options.args.div_id).is(':visible'), this.options.args.div_id);
 			this.project.load(this.options.args);
 			
 			console.log('project', this.project);
