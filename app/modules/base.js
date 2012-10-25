@@ -34,7 +34,6 @@ function(App, Backbone, Playlist, Search )
 			{
 				var _this = this;
 				this.$('#controlsLeft').hide('slide',{direction:'left'}, function(){
-					console.log('after hide', opts);
 					_this.drawLeftMenu(opts.next);
 				});
 			}
@@ -70,14 +69,13 @@ function(App, Backbone, Playlist, Search )
 		{
 			var playlistView = new Playlist.Views.PlaylistView();
 			this.setView('#controlsLeft .controls-inner', playlistView );
-			this.$('#controlsLeft').hide('slide',{direction:'right'});
+			this.$('#controlsLeft').hide('slide',{direction:'right'},1000);
 			playlistView.render();
 			this.expandLeftMenu();
 		},
 
 		expandLeftMenu : function()
 		{
-			console.log('show left menu');
 			this.$('#controlsLeft').show('slide');
 		}
 

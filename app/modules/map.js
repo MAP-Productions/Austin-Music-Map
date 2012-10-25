@@ -2,13 +2,12 @@ define([
 	"app",
 	// Libs
 	"backbone",
-	// submodules
-	"modules/submodules/zeega-player",
+	
 
 	// plugins
 	"libs/leaflet"
 
-], function(App, Backbone, PlayerSlider) {
+], function(App, Backbone) {
 	
 	var Map = App.module();
 
@@ -41,21 +40,7 @@ define([
 
 	Map.Views.Featured = Backbone.LayoutView.extend({
 		template : 'mapfeatured',
-		serialize : function(){ return this.model.toJSON(); },
-
-		events : {
-			'click .amm-featured-player' : 'goToFeaturedPlayer'
-		},
-
-		goToFeaturedPlayer : function()
-		{
-			console.log('do this');
-			App.Player = new PlayerSlider.Model({
-				parent: this.model,
-				project_url: "http://alpha.zeega.org/api/projects/2259",
-				remix_url: "http://alpha.zeega.org/api/items/49217"
-			});
-		}
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	Map.Views.Main  = Backbone.LayoutView.extend({

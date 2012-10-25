@@ -8,10 +8,13 @@ define([
 	"modules/participate",
 	"modules/about",
 	"modules/contact",
-	"modules/map"
+	"modules/map",
+
+	// submodules
+	"modules/submodules/player-slider"
 ],
 
-function(App, Base, Playlist, Participate, About, Contact,Map) {
+function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
@@ -67,6 +70,14 @@ function(App, Base, Playlist, Participate, About, Contact,Map) {
 		{
 			console.log('go to story', collectionID, itemID);
 			initialize('playlist');
+
+			App.Player = new PlayerSlider.Model({
+				collection_id: collectionID,
+				item_id: itemID
+
+				//project_url: "http://alpha.zeega.org/api/projects/2259",
+				//remix_url: "http://alpha.zeega.org/api/items/49217"
+			});
 
 		},
 		goToRemix : function(collectionID,itemID)
