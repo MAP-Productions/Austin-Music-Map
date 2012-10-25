@@ -30,6 +30,7 @@ function(App, Backbone)
 
 		superFetch : function()
 		{
+			var _this = this;
 			var key = this.url();
 			this.on('change:remixItems', this.renderSlider, this);
 			if( sessionStorage.getItem( this.url() ))
