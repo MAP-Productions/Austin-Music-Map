@@ -10,9 +10,11 @@
 		<div class="bottom">
 			<h4>Play this track in:</h4>
 			<ul class="in-playlists">
-				<li><a href="#">Secret Show</a></li>
-				<li><a href="#">Minor Mishap</a></li>
-				<li><a href="#">Zilker</a></li>
+				<% if( playlists[0] ){ %><li><a href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[0].attributes.title %></a></li><% } %>
+				<% if( playlists[1] ){ %><li><a href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[1].attributes.title %></a></li><% } %>
+				<% if( playlists[2] ){ %><li><a href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[2].attributes.title %></a></li><% } %>
+
+				
 		</div>
 	</div>
 </div>
