@@ -11,6 +11,8 @@ function(App, Backbone)
 
 	ProjectPlayer.Model = Backbone.Model.extend({
 
+		players : {},
+
 		defaults : {
 			collection_id: null,
 			item_id: null
@@ -69,28 +71,19 @@ function(App, Backbone)
 			// init project and/or remix players and register them in App
 			// default to project
 			this.model.projectPlayers = {};
-			console.log('slider init', this);
 
-			if( this.model.get('remixItems').items[0].child_items.length )
-			{
-				console.log('init remix player', this.model.get('remixItems') );
-
-			}
 			if( this.model.get('storyItems').items[0].child_items.length )
 			{
-				console.log('init story player', this.model.get('storyItems') );
-
-			}
-/*
-			if(this.model.get('project_url'))
-			{
-				var projectID = 'player-project-'+ this.model.get('parent').id;
+				console.log('-- story items',this.model.get('storyItems'));
+				var projectID = _.uniqueId('player-project-');
 				var projectView = new PlayerTargetView({
 					args: {
+						autoplay: true,
+						collection_mode: 'slideshow',
+						//data: this.model.get('storyItems'),
+						url: 'http://alpha.zeega.org/api/items/49217',
 						div_id: projectID,
-						url: this.model.get('project_url'),
 						keyboard: false
-						//autoplay: false
 					},
 					attributes:{
 						'class': 'player-window player-project',
@@ -99,43 +92,40 @@ function(App, Backbone)
 				});
 				this.insertView('.player-slider', projectView );
 
-				this.projectPlayer = App.currentPlayer = projectView.project;
-				App.projectPlayers.project = this.projectPlayer;
+				this.model.players.story = projectView.project;
 			}
-
-			if(this.model.get('remix_url'))
+			if( this.model.get('remixItems').items[0].child_items.length )
 			{
-				var remixID = 'player-remix-'+ this.model.get('parent').id;
-				var remixView = new PlayerTargetView({
-					args: {
-						div_id: remixID,
-						url: this.model.get('remix_url'),
-						collection_mode: 'slideshow', // standard, slideshow,
-						keyboard: false
-						//autoplay: false
+				// console.log('-- remix items',this.model.get('remixItems'));
 
-					},
-					attributes:{
-						'class': 'player-window player-remix',
-						id: remixID
-					}
-				});
-				this.insertView( '.player-slider', remixView );
+				// var remixID = 'player-remix';
+				// var remixView = new PlayerTargetView({
+				// 	args: {
+				// 		autoplay: true,
+				// 		collection_mode: 'slideshow', // standard, slideshow,
+				// 		data: this.model.get('remixItems'),
+				// 		div_id: remixID,
+				// 		keyboard: false
+				// 	},
+				// 	attributes:{
+				// 		'class': 'player-window player-remix',
+				// 		id: remixID
+				// 	}
+				// });
+				// this.insertView( '.player-slider', remixView );
 
-				this.remixPlayer = remixView.project;
-				if( !this.model.get('project_url') ) App.currentPlayer = this.remixPlayer;
-				App.projectPlayers.remix = this.remixPlayer;
+				// this.model.players.remix = remixView.project;
 			}
-	*/		
-			
+
+			this.model.currentPlayer = this.model.players.story ? this.model.players.story : this.model.players.remix;
 			
 		},
 
 		afterRender: function()
 		{
-			// this.getViews(function(view){
-			// 	view.initPlayer();
-			// });
+			this.getViews(function(view){
+				view.initPlayer();
+			});
 		},
 
 		serialize : function(){ return this.model.toJSON(); }
@@ -152,11 +142,12 @@ function(App, Backbone)
 
 		initPlayer : function()
 		{
-			console.log('initplayer', this, Zeega);
 			var _this = this;
-			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.project.id,e,obj);});
+			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			this.project.on('data_loaded', function(){ _this.project.play(); });
+			console.log('--------visible:', $('#player-project').is(':visible'));
 			this.project.load(this.options.args);
+			
 			console.log('project', this.project);
 		}
 	});

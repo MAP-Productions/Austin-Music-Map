@@ -74,9 +74,6 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
 				item_id: itemID
-
-				//project_url: "http://alpha.zeega.org/api/projects/2259",
-				//remix_url: "http://alpha.zeega.org/api/items/49217"
 			});
 
 		},

@@ -23,7 +23,8 @@ function(App, Backbone)
 			'click .progress-bar' : 'goToTime',
 			'click .remix-toggle' : 'remixToggle',
 			'click .back' : 'playerPrev',
-			'click .forward' : 'playerNext'
+			'click .forward' : 'playerNext',
+			'click .play-pause' : 'playPause'
 		},
 		togglePlaylist: function(e) {
 			$(e.target).toggleClass('open');
@@ -39,20 +40,25 @@ function(App, Backbone)
 		remixToggle : function()
 		{
 			console.log('toggle remix', App);
-			if(Object.keys(App.projectPlayers).length == 2)
+			if( App.Player.players.story && App.Player.players.remix )
 			{
 				$('.player-slider').toggleClass('view-remix');
-				if( $('.player-slider').hasClass('view-remix') ) App.currentPlayer = App.projectPlayers.remix;
-				else App.currentPlayer = App.projectPlayers.project;
+				if( $('.player-slider').hasClass('view-remix') ) App.Player.currentPlayer = App.Player.players.remix;
+				else App.Player.currentPlayer = App.Player.players.story;
 			}
+			return false;
 		},
 		playerPrev : function()
 		{
-			App.currentPlayer.cuePrev();
+			App.Player.currentPlayer.cuePrev();
 		},
 		playerNext : function()
 		{
-			App.currentPlayer.cueNext();
+			App.Player.currentPlayer.cueNext();
+		},
+		playPause : function()
+		{
+			App.Player.currentPlayer.playPause();
 		}
 	});
 
