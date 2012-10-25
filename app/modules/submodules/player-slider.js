@@ -71,12 +71,14 @@ function(App, Backbone)
 			this.model.projectPlayers = {};
 			console.log('slider init', this);
 
-			if( this.model.get('remixItems').length )
+			if( this.model.get('remixItems').items[0].child_items.length )
 			{
+				console.log('init remix player', this.model.get('remixItems') );
 
 			}
-			if( this.model.get('storyItems').length )
+			if( this.model.get('storyItems').items[0].child_items.length )
 			{
+				console.log('init story player', this.model.get('storyItems') );
 
 			}
 /*
@@ -168,8 +170,9 @@ function(App, Backbone)
 			else remixItems.push(item);
 		});
 		model.set({
-			storyItems: storyItems,
-			remixItems: remixItems
+			// I have to wrap this stuff for now until the api is updated
+			storyItems: {items:[{child_items:storyItems}]},
+			remixItems: {items:[{child_items:remixItems}]}
 		});
 	};
 
