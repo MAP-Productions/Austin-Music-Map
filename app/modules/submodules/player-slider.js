@@ -6,7 +6,6 @@ define([
 
 function(App, Backbone)
 {
-	"use strict";
 	// Create a new module
 	var ProjectPlayer = App.module();
 

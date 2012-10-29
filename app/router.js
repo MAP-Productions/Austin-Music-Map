@@ -15,7 +15,6 @@ define([
 ],
 
 function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
-	"use strict";
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		routes: {
