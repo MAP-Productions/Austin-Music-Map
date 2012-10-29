@@ -6,10 +6,13 @@ define([
 
 function(App, Backbone)
 {
+	"use strict";
 	// Create a new module
 	var ProjectPlayer = App.module();
 
 	ProjectPlayer.Model = Backbone.Model.extend({
+
+		loaded : false,
 
 		players : {},
 
@@ -25,6 +28,11 @@ function(App, Backbone)
 
 		initialize : function()
 		{
+			var _this = this;
+			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
+			this.collectionModel.fetch().success(function(){
+				_this.updatePlaylistTitle(_this.collectionModel);
+			});
 			this.superFetch();
 		},
 
@@ -37,15 +45,29 @@ function(App, Backbone)
 			{
 				this.set( JSON.parse(sessionStorage[key] ) );
 				parseResponse(this);
+				this.renderPlaylist();
 			}
 			else
 			{
 				this.fetch().success(function(res){
 					sessionStorage[ key ] = JSON.stringify(res);
-					console.log('fetched and stored:',sessionStorage[key], res, JSON.parse(sessionStorage[key] ) );
 					parseResponse(_this);
+					_this.renderPlaylist();
 				});
 			}
+		},
+
+		renderPlaylist : function()
+		{
+			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
+			this.ready = true;
+		},
+
+		updatePlaylistTitle : function()
+		{
+			this.set('playlist_title', this.collectionModel.get('title'));
+			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
+			this.ready = true;
 		},
 
 		renderSlider : function()
@@ -59,6 +81,18 @@ function(App, Backbone)
 		remove : function()
 		{
 			this.layout.remove();
+		}
+	});
+
+	// I need this model for the title only really
+	var FeaturedCollectionModel = Backbone.Model.extend({
+		url : function()
+		{
+			return "http://alpha.zeega.org/api/items/"+ this.get('collection_id');
+		},
+		parse : function(res)
+		{
+			return res.items[0];
 		}
 	});
 
@@ -92,7 +126,8 @@ function(App, Backbone)
 				});
 				this.insertView('.player-slider', projectView );
 
-				this.model.players.story = projectView.project;
+				App.players.set('story', projectView.project );
+				//this.model.players.story = projectView.project;
 			}
 			if( this.model.get('remixItems').items[0].child_items.length )
 			{
@@ -111,11 +146,13 @@ function(App, Backbone)
 					}
 				});
 				this.insertView( '.player-slider', remixView );
-
-				this.model.players.remix = remixView.project;
+				App.players.set('remix', remixView.project );
+				//this.model.players.remix = remixView.project;
 			}
 
-			this.model.currentPlayer = this.model.players.story ? this.model.players.story : this.model.players.remix;
+			App.players.set('current', this.model.players.story ? App.players.get('story') : App.players.get('remix') );
+
+			//this.model.currentPlayer = this.model.players.story ? this.model.players.story : this.model.players.remix;
 			
 		},
 
@@ -143,7 +180,6 @@ function(App, Backbone)
 			var _this = this;
 			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			this.project.on('data_loaded', function(){ _this.project.play(); });
-			console.log('--------visible:', $('#'+ this.options.args.div_id).is(':visible'), this.options.args.div_id);
 			this.project.load(this.options.args);
 			
 			console.log('project', this.project);

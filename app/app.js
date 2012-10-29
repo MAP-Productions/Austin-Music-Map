@@ -9,12 +9,14 @@ define([
 ],
 
 function($, _, Backbone) {
-
+	"use strict";
 	// Provide a global location to place configuration settings and module
 	// creation.
 	var app = {
 		// The root path to run the application.
-		root: "/"
+		root: "/",
+
+		players : new Backbone.Model()
 	};
 
 	// Localize or create a new JavaScript Template object.
