@@ -137,7 +137,12 @@ function(App, Backbone)
 			console.log('***** on frame change', App.players.get('current').getProjectData() );
 			this.$('.playlist-container .playlist').empty();
 			_.each( App.players.get('current').getProjectData().frames, function(frame){
-				var LIView = new PlaylistItemView({model: new Backbone.Model(frame) });
+				var additionalClass = frame.id == App.players.get('current').getFrameData().id ? 'active' : '';
+				var LIView = new PlaylistItemView({
+					model: new Backbone.Model(frame),
+					attributes : { class: additionalClass }
+				});
+				LIView.className = additionalClass;
 				this.$('.playlist-container .playlist').append( LIView.el );
 				LIView.render();
 			});
@@ -158,7 +163,17 @@ function(App, Backbone)
 	var PlaylistItemView = Backbone.LayoutView.extend({
 		tagName : 'li',
 		template : 'playlist-item',
-		serialize : function(){ return this.model.toJSON(); }
+		serialize : function(){ return this.model.toJSON(); },
+
+		events : {
+			'click play-pause' : 'onClickPlaylistItem'
+		},
+
+		onClickPlaylistItem : function()
+		{
+			console.log('clicked playlist item:', this);
+			return this;
+		}
 	});
 
 	// Required, return the module for AMD compliance
