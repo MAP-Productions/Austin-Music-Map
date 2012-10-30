@@ -864,7 +864,7 @@ body {
 .playlist-container ul.playlist li.active {
   background: #f26532;
 }
-.playlist-container ul.playlist li .play-pause {
+.playlist-container ul.playlist li .play-pause-frame {
   display: inline-block;
   width: 7px;
   height: 10px;
@@ -873,7 +873,7 @@ body {
   background-size: 7px 9px;
   vertical-align: middle;
 }
-.playlist-container ul.playlist li .play-pause.pause {
+.playlist-container ul.playlist li .play-pause-frame.pause {
   background: url(../img/icon_pause-sm.png);
   background-size: 7px 10px;
 }

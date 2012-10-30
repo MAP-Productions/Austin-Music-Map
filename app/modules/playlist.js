@@ -192,12 +192,13 @@ function(App, Backbone)
 		serialize : function(){ return this.model.toJSON(); },
 
 		events : {
-			'click play-pause' : 'onClickPlaylistItem'
+			'click .play-pause-frame' : 'onClickPlaylistItem'
 		},
 
 		onClickPlaylistItem : function()
 		{
 			console.log('clicked playlist item:', this);
+			App.players.get('current').cueFrame( this.model.id );
 			return this;
 		}
 	});
