@@ -138,12 +138,11 @@ function(App, Backbone)
 			console.log('***** on frame change', App.players.get('current').getProjectData() );
 			this.$('.playlist-container .playlist').empty();
 			_.each( App.players.get('current').getProjectData().frames, function(frame){
-				var additionalClass = frame.id == App.players.get('current').getFrameData().id ? 'active' : '';
+				var isActive = frame.id == App.players.get('current').getFrameData().id;
 				var LIView = new PlaylistItemView({
-					model: new Backbone.Model(frame),
-					attributes : { class: additionalClass }
+					model: new Backbone.Model( _.extend(frame, {is_active:isActive? '':'pause'}) ),
+					attributes : { class: isActive? 'active':'' }
 				});
-				LIView.className = additionalClass;
 				this.$('.playlist-container .playlist').append( LIView.el );
 				LIView.render();
 			});
