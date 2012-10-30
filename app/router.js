@@ -38,9 +38,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 		},
 
 		index: function() {
-			App.on('base_layout_ready', function(){
+//			App.on('base_layout_ready', function(){
 				App.page = new Map.Model();
-			});
+//			});
 			initialize('map');
 		},
 
@@ -74,13 +74,18 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 				collection_id: collectionID,
 				item_id: itemID
 			});
+			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 
 		},
 		goToRemix : function(collectionID,itemID)
 		{
 			console.log('go to remix', collectionID, itemID);
 			initialize('playlist');
-
+			App.Player = new PlayerSlider.Model({
+				collection_id: collectionID,
+				item_id: itemID
+			});
+			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 		}
 
 	});
@@ -122,6 +127,12 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 		{
 			App.modal.remove();
 			App.modal = null;
+		}
+
+		if(App.Player)
+		{
+			App.Player.exit();
+			App.Player = null;
 		}
 
 	}

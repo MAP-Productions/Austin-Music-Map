@@ -28,11 +28,29 @@ function(App, Backbone)
 		initialize : function()
 		{
 			var _this = this;
+			this.initEvents();
 			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
 			this.collectionModel.fetch().success(function(){
 				_this.updatePlaylistTitle(_this.collectionModel);
 			});
 			this.superFetch();
+		},
+
+		initEvents : function()
+		{
+			var _this = this;
+			$(window).bind('keyup.playerSlider', function(e){
+				if(e.which == 27)
+				{
+					console.log('exit:',App);
+					App.router.navigate('/',{trigger:true});
+				}
+			});
+		},
+
+		endEvents : function()
+		{
+			$(window).unbind('keyup.playerSlider');
 		},
 
 		superFetch : function()
@@ -77,8 +95,12 @@ function(App, Backbone)
 			this.layout.render();
 		},
 
-		remove : function()
+		exit : function()
 		{
+			this.endEvents();
+			App.players.get('current').pause();
+			if(App.players.get('story')) App.players.get('story').destroy();
+			if(App.players.get('remix')) App.players.get('remix').destroy();
 			this.layout.remove();
 		}
 	});
