@@ -427,7 +427,7 @@ define([
 		createKeys:function(){
 			var keys=[];
 			_.each(this.models,function(model){
-				keys.push(model.get('title').toLowerCase());
+				keys.push(model.get('attributes').tags.toLowerCase());
 			});
 			this.keys=keys;
 		},
