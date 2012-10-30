@@ -15,7 +15,7 @@ function(App, Backbone)
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
 		initialize: function()
 		{
-			App.players.on('update_title', this.updateItemTitle, this);
+			App.players.on('update_title', this.onFrameChange, this);
 		},
 		template : 'playlist',
 
@@ -68,7 +68,7 @@ function(App, Backbone)
 				// start new player events
 				this.startPlayerEvents();
 				this.render();
-				this.updateItemTitle(App.players.get('current').getFrameData() );
+				this.onFrameChange(App.players.get('current').getFrameData() );
 
 				App.players.get('current').play();
 			}
@@ -79,7 +79,7 @@ function(App, Backbone)
 		{
 			if(App.players.get('current'))
 			{
-				App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
+				App.players.get('current').on('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
 			}
 		},
@@ -88,7 +88,7 @@ function(App, Backbone)
 		{
 			if(App.players.get('current'))
 			{
-				App.players.get('current').off('frame_rendered', this.updateItemTitle, this);
+				App.players.get('current').off('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
 			}
 		},
@@ -106,10 +106,29 @@ function(App, Backbone)
 			App.players.get('current').playPause();
 		},
 
-		updateItemTitle : function( info )
+		onFrameChange : function( info )
 		{
 			if(info)
+			{
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
+				this.updateControlsState( info );
+			}
+		},
+
+		updateControlsState : function( info )
+		{
+			var next = this.$('.transport .forward');
+			var prev = this.$('.transport .back');
+			if(info.frame.next)
+			{
+				if(next.hasClass('disabled')) next.removeClass('disabled');
+			}
+			else if( !next.hasClass('disabled')) next.addClass('disabled');
+			if(info.frame.prev)
+			{
+				if(prev.hasClass('disabled')) prev.removeClass('disabled');
+			}
+			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
 			
 		},
 
