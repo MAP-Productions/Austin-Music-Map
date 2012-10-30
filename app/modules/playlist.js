@@ -19,11 +19,7 @@ function(App, Backbone)
 		},
 		template : 'playlist',
 
-		serialize : function()
-		{
-			console.log('serialize this', this.model);
-			return this.model.toJSON();
-		},
+		serialize : function(){ return this.model.toJSON(); },
 		
 		events : {
 			'click .toggle-playlist' : 'togglePlaylist',
@@ -67,7 +63,7 @@ function(App, Backbone)
 				
 				// start new player events
 				this.startPlayerEvents();
-				this.render();
+				this.clearElapsed();
 				this.onFrameChange(App.players.get('current').getFrameData() );
 
 				App.players.get('current').play();
@@ -132,6 +128,13 @@ function(App, Backbone)
 			}
 			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
 			
+			App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
+			if (App.players.get('current').get('div_id') == 'player-remix') {
+				setTimeout(function() {$('.remix-toggle').addClass('remix'); }, 0);
+			} else {
+				setTimeout(function() {$('.remix-toggle').removeClass('remix'); }, 0);
+			}
+			setTimeout(function() { this.render(); }, 500 ); // delay rendering because there is a css transform
 		},
 
 		updatePlaylistDropdown : function()
@@ -148,6 +151,11 @@ function(App, Backbone)
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
+		},
+
+		clearElapsed : function()
+		{
+			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		}
 
 	});

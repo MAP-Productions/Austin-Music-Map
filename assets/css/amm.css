@@ -134,11 +134,60 @@ body {
 .controls img {
   vertical-align: middle;
 }
-/* stories / remix slider - PLACEHOLDER for layout purposes */
+/* stories / remix slider */
 .stories-remix-slider {
   float: left;
   width: 137px;
   height: 52px;
+}
+.stories-remix-slider a.remix-toggle {
+  color: #fff;
+  display: block;
+  height: 34px;
+  margin: 10px 0 0 35px;
+  position: relative;
+  width: 90px;
+  text-decoration: none;
+}
+.stories-remix-slider a.remix-toggle .slider-track {
+  background: #77787b;
+  border-radius: 2px;
+  height: 34px;
+  position: absolute;
+  right: 10px;
+  top: 0;
+  width: 4px;
+}
+.stories-remix-slider a.remix-toggle .slider-track .slider {
+  position: absolute;
+  left: -9px;
+  top: 0;
+  background: url(../img/toggle-slider.png);
+  width: 23px;
+  height: 11px;
+  -webkit-transition: top 0.5s linear;
+}
+.stories-remix-slider a.remix-toggle .label {
+  color: #6a6c6b;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  text-align: right;
+  width: 60px;
+  margin-bottom: 14px;
+}
+.stories-remix-slider a.remix-toggle .label.stories {
+  color: #fff;
+}
+.stories-remix-slider a.remix-toggle.remix .slider {
+  top: 23px;
+}
+.stories-remix-slider a.remix-toggle.remix .label.stories {
+  color: #6a6c6b;
+}
+.stories-remix-slider a.remix-toggle.remix .label.remix {
+  color: #fff;
 }
 /* map featured item popup */
 .map-featured {
