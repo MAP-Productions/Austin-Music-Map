@@ -128,13 +128,8 @@ function(App, Backbone)
 			}
 			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
 			
-			App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
-			if (App.players.get('current').get('div_id') == 'player-remix') {
-				setTimeout(function() {$('.remix-toggle').addClass('remix'); }, 0);
-			} else {
-				setTimeout(function() {$('.remix-toggle').removeClass('remix'); }, 0);
-			}
-			setTimeout(function() { this.render(); }, 500 ); // delay rendering because there is a css transform
+			if (App.players.get('current').get('div_id') == 'player-remix') $('.remix-toggle').addClass('remix');
+			else $('.remix-toggle').removeClass('remix');
 		},
 
 		updatePlaylistDropdown : function()
@@ -163,7 +158,7 @@ function(App, Backbone)
 	var PlaylistItemView = Backbone.LayoutView.extend({
 		tagName : 'li',
 		template : 'playlist-item',
-		serialize : function(){ console.log('33333 serialize:', this.model.toJSON()); return this.model.toJSON(); }
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	// Required, return the module for AMD compliance
