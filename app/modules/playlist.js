@@ -76,10 +76,15 @@ function(App, Backbone)
 
 		onChangePlayer : function()
 		{
-			this.render();
 			console.log('########  on change player',App.players.get('current') );
 			//App.players.get('current').on('all', function(e){if(e!='media_timeupdate') console.log('$$$$$$$$$ ',e)});
 			App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
+			if (App.players.get('current').get('div_id') == 'player-remix') {
+				setTimeout(function() {$('.remix-toggle').addClass('remix'); }, 0);
+			} else {
+				setTimeout(function() {$('.remix-toggle').removeClass('remix'); }, 0);
+			}
+			setTimeout(function() { this.render(); }, 500 ); // delay rendering because there is a css transform
 			//this.updateItemTitle( this.players.get('current').currentFrame.toJSON() )
 			//if(this.players.get('current').currentFrame) this.initProjectPlaylistTitle( this.players.get('current').currentFrame );
 		},
