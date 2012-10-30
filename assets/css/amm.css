@@ -166,6 +166,10 @@ body {
   width: 23px;
   height: 11px;
   -webkit-transition: top 0.5s linear;
+  -moz-transition: top 0.5s linear;
+  -ms-transition: top 0.5s linear;
+  -o-transition: top 0.5s linear;
+  transition: top 0.5s linear;
 }
 .stories-remix-slider a.remix-toggle .label {
   color: #6a6c6b;
@@ -176,6 +180,11 @@ body {
   text-align: right;
   width: 60px;
   margin-bottom: 14px;
+  -webkit-transition: color 0.5s linear;
+  -moz-transition: color 0.5s linear;
+  -ms-transition: color 0.5s linear;
+  -o-transition: color 0.5s linear;
+  transition: color 0.5s linear;
 }
 .stories-remix-slider a.remix-toggle .label.stories {
   color: #fff;
@@ -721,7 +730,6 @@ body {
 .playlist-control {
   float: left;
   overflow: hidden;
-  min-width: 300px;
 }
 .playlist-control .toggle-playlist {
   cursor: pointer;
@@ -739,29 +747,41 @@ body {
   background-image: url(../img/icon_arrow-up.png);
 }
 .playlist-control .now-playing {
-  min-width: 155px;
+  width: 155px;
   height: 43px;
   overflow: hidden;
-  padding: 9px 16px 0 18px;
+  margin: 9px 0 0 18px;
+  position: relative;
   float: left;
 }
-.playlist-control .now-playing .playing-title {
+.playlist-control .now-playing .playing-title-wrap {
   font-size: 11px;
   text-transform: uppercase;
   margin: 0 0 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1024px;
 }
-.playlist-control .now-playing .playing-subtitle {
+.playlist-control .now-playing .playing-subtitle-wrap {
   font-size: 10px;
   margin: 0;
   letter-spacing: 0.1em;
+  position: absolute;
+  left: 0;
+  top: 15px;
+  width: 1024px;
 }
 .playlist-control .now-playing .progress-bar {
-  height: 4px;
   background: #77787b;
   border-radius: 2px;
-  margin-top: 6px;
-  position: relative;
   cursor: pointer;
+  height: 4px;
+  left: 0;
+  margin-top: 6px;
+  position: absolute;
+  position: relative;
+  top: 25px;
 }
 .playlist-control .now-playing .progress-bar .elapsed {
   border-radius: 2px;

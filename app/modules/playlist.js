@@ -109,6 +109,7 @@ function(App, Backbone)
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();
+				this.scrollTitles();
 			}
 		},
 
@@ -156,6 +157,31 @@ function(App, Backbone)
 		clearElapsed : function()
 		{
 			this.$('.progress-bar .elapsed').css( 'width', '0' );
+		},
+		scrollTitles : function() {
+			var areaWidth = this.$('.now-playing').width();
+
+			this.$('.scroll-view').each( function(i,v) {
+				var textElem = $(this),
+					textWidth = textElem.children('span').width();
+
+				if (textWidth > areaWidth) {
+					sideScroll();
+				}
+
+				function sideScroll() {
+					if (textElem.css('left') == '0px') {
+						$(textElem).animate({
+							left: areaWidth - textWidth
+						}, 7000, sideScroll);
+					} else {
+						$(textElem).animate({
+							left: 0
+						}, 7000, sideScroll);
+					}
+				}
+
+			});
 		}
 
 	});
