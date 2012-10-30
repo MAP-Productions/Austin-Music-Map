@@ -13,20 +13,13 @@ function(App, Backbone)
 	Playlist.Views = Playlist.Views || {};
 
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
-		initialize: function() {
-			_.bindAll(this, 'render', 'togglePlaylist', 'goToTime');
-
-			console.log(App.players,'tester');
-			App.players.on('remix_toggle', this.onChangePlayer, this);
-			App.players.on('update_title', this.updateItemTitle, this);
+		initialize: function()
+		{
+			App.players.on('update_title', this.onFrameChange, this);
 		},
 		template : 'playlist',
 
-		serialize : function()
-		{
-			console.log('serialize this', this.model);
-			return this.model.toJSON();
-		},
+		serialize : function(){ return this.model.toJSON(); },
 		
 		events : {
 			'click .toggle-playlist' : 'togglePlaylist',
@@ -41,26 +34,61 @@ function(App, Backbone)
 
 			$('.playlist-container').stop().slideToggle();
 		},
-		goToTime: function(e) {
+		goToTime: function(e)
+		{
+			//disabled for now
 			// for now this just updates the progress bar
+			console.log('go to time', this.template );
 			var progressBar = $(e.currentTarget);
 			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
 			this.$('.elapsed').css('width',percentClicked + '%');
+			
 		},
 		remixToggle : function()
 		{
 			console.log('toggle remix', App);
 			if( App.players.get('story') && App.players.get('remix') )
 			{
+				// close off old player
+				console.log('pause old player?',App.players, App.players.get('current') );
 				App.players.get('current').pause();
+				this.endPlayerEvents();
+	
+				// slide player into view
 				$('.player-slider').toggleClass('view-remix');
+
+				// update current player
 				if( $('.player-slider').hasClass('view-remix') ) App.players.set('current', App.players.get('remix'));
 				else App.players.set('current', App.players.get('story'));
-				App.players.trigger('remix_toggle');
+				
+				// start new player events
+				this.startPlayerEvents();
+				this.clearElapsed();
+				this.onFrameChange(App.players.get('current').getFrameData() );
+
 				App.players.get('current').play();
 			}
 			return false;
 		},
+
+		startPlayerEvents : function()
+		{
+			if(App.players.get('current'))
+			{
+				App.players.get('current').on('frame_rendered', this.onFrameChange, this);
+				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
+			}
+		},
+
+		endPlayerEvents : function()
+		{
+			if(App.players.get('current'))
+			{
+				App.players.get('current').off('frame_rendered', this.onFrameChange, this);
+				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
+			}
+		},
+
 		playerPrev : function()
 		{
 			App.players.get('current').cuePrev();
@@ -74,31 +102,63 @@ function(App, Backbone)
 			App.players.get('current').playPause();
 		},
 
-		onChangePlayer : function()
+		onFrameChange : function( info )
 		{
-			console.log('########  on change player',App.players.get('current') );
-			//App.players.get('current').on('all', function(e){if(e!='media_timeupdate') console.log('$$$$$$$$$ ',e)});
-			App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
-			if (App.players.get('current').get('div_id') == 'player-remix') {
-				setTimeout(function() {$('.remix-toggle').addClass('remix'); }, 0);
-			} else {
-				setTimeout(function() {$('.remix-toggle').removeClass('remix'); }, 0);
+			if(info)
+			{
+				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
+				this.updateControlsState( info );
+				this.updatePlaylistDropdown();
 			}
-			setTimeout(function() { this.render(); }, 500 ); // delay rendering because there is a css transform
-			//this.updateItemTitle( this.players.get('current').currentFrame.toJSON() )
-			//if(this.players.get('current').currentFrame) this.initProjectPlaylistTitle( this.players.get('current').currentFrame );
 		},
 
-		updateItemTitle : function( info )
+		updateControlsState : function( info )
 		{
-			console.log('****** update item title', info);
-			this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
+			// updates the visual status of the the prev / next buttons on the controller
+			var next = this.$('.transport .forward');
+			var prev = this.$('.transport .back');
+			if(info.next)
+			{
+				if(next.hasClass('disabled')) next.removeClass('disabled');
+			}
+			else if( !next.hasClass('disabled')) next.addClass('disabled');
+			if(info.prev)
+			{
+				if(prev.hasClass('disabled')) prev.removeClass('disabled');
+			}
+			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
+			
+			if (App.players.get('current').get('div_id') == 'player-remix') $('.remix-toggle').addClass('remix');
+			else $('.remix-toggle').removeClass('remix');
 		},
-		initProjectPlaylistTitle : function( model )
+
+		updatePlaylistDropdown : function()
 		{
-			this.$('.playing-subtitle').text( model.layers.at(0).get('attr').title + ' by ' + model.layers.at(0).get('attr').media_creator_username );
+			console.log('***** on frame change', App.players.get('current').getProjectData() );
+			this.$('.playlist-container .playlist').empty();
+			_.each( App.players.get('current').getProjectData().frames, function(frame){
+				var LIView = new PlaylistItemView({model: new Backbone.Model(frame) });
+				this.$('.playlist-container .playlist').append( LIView.el );
+				LIView.render();
+			});
+		},
+
+		onTimeUpdate : function( info )
+		{
+			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
+		},
+
+		clearElapsed : function()
+		{
+			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		}
 
+	});
+
+	var PlaylistItemView = Backbone.LayoutView.extend({
+		tagName : 'li',
+		template : 'playlist-item',
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	// Required, return the module for AMD compliance
