@@ -18,6 +18,7 @@ function(App, Backbone)
 
 			console.log(App.players,'tester');
 			App.players.on('remix_toggle', this.onChangePlayer, this);
+			App.players.on('update_title', this.updateItemTitle, this);
 		},
 		template : 'playlist',
 

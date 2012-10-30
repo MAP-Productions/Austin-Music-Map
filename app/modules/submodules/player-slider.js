@@ -149,9 +149,14 @@ function(App, Backbone)
 				//this.model.players.remix = remixView.project;
 			}
 
-			App.players.set('current', this.model.players.story ? App.players.get('story') : App.players.get('remix') );
+			App.players.set('current', App.players.get('story') || App.players.get('remix') );
 
-			//this.model.currentPlayer = this.model.players.story ? this.model.players.story : this.model.players.remix;
+			var _this = this;
+			App.players.get('current').on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: current: ',e,obj);});
+
+			App.players.get('current').on('frame_rendered', function(){
+				App.players.trigger('update_title', App.players.get('current').getFrameData() );
+			});
 			
 		},
 
@@ -178,10 +183,8 @@ function(App, Backbone)
 		{
 			var _this = this;
 			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
-			this.project.on('data_loaded', function(){ _this.project.play(); });
+			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
-			
-			console.log('project', this.project);
 		}
 	});
 
