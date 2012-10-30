@@ -13,11 +13,8 @@ function(App, Backbone)
 	Playlist.Views = Playlist.Views || {};
 
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
-		initialize: function() {
-			_.bindAll(this, 'render', 'togglePlaylist', 'goToTime');
-
-			console.log(App.players,'tester');
-			App.players.on('remix_toggle', this.onChangePlayer, this);
+		initialize: function()
+		{
 			App.players.on('update_title', this.updateItemTitle, this);
 		},
 		template : 'playlist',
@@ -41,26 +38,61 @@ function(App, Backbone)
 
 			$('.playlist-container').stop().slideToggle();
 		},
-		goToTime: function(e) {
+		goToTime: function(e)
+		{
+			//disabled for now
 			// for now this just updates the progress bar
+			console.log('go to time', this.template );
 			var progressBar = $(e.currentTarget);
 			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
 			this.$('.elapsed').css('width',percentClicked + '%');
+			
 		},
 		remixToggle : function()
 		{
 			console.log('toggle remix', App);
 			if( App.players.get('story') && App.players.get('remix') )
 			{
+				// close off old player
+				console.log('pause old player?',App.players, App.players.get('current') );
 				App.players.get('current').pause();
+				this.endPlayerEvents();
+	
+				// slide player into view
 				$('.player-slider').toggleClass('view-remix');
+
+				// update current player
 				if( $('.player-slider').hasClass('view-remix') ) App.players.set('current', App.players.get('remix'));
 				else App.players.set('current', App.players.get('story'));
-				App.players.trigger('remix_toggle');
+				
+				// start new player events
+				this.startPlayerEvents();
+				this.render();
+				this.updateItemTitle(App.players.get('current').getFrameData() );
+
 				App.players.get('current').play();
 			}
 			return false;
 		},
+
+		startPlayerEvents : function()
+		{
+			if(App.players.get('current'))
+			{
+				App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
+				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
+			}
+		},
+
+		endPlayerEvents : function()
+		{
+			if(App.players.get('current'))
+			{
+				App.players.get('current').off('frame_rendered', this.updateItemTitle, this);
+				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
+			}
+		},
+
 		playerPrev : function()
 		{
 			App.players.get('current').cuePrev();
@@ -74,24 +106,16 @@ function(App, Backbone)
 			App.players.get('current').playPause();
 		},
 
-		onChangePlayer : function()
-		{
-			this.render();
-			console.log('########  on change player',App.players.get('current') );
-			//App.players.get('current').on('all', function(e){if(e!='media_timeupdate') console.log('$$$$$$$$$ ',e)});
-			App.players.get('current').on('frame_rendered', this.updateItemTitle, this);
-			//this.updateItemTitle( this.players.get('current').currentFrame.toJSON() )
-			//if(this.players.get('current').currentFrame) this.initProjectPlaylistTitle( this.players.get('current').currentFrame );
-		},
-
 		updateItemTitle : function( info )
 		{
-			console.log('****** update item title', info);
-			this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
+			if(info)
+				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
+			
 		},
-		initProjectPlaylistTitle : function( model )
+
+		onTimeUpdate : function( info )
 		{
-			this.$('.playing-subtitle').text( model.layers.at(0).get('attr').title + ' by ' + model.layers.at(0).get('attr').media_creator_username );
+			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
 		}
 
 	});
