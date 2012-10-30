@@ -182,7 +182,7 @@ function(App, Backbone)
 		initPlayer : function()
 		{
 			var _this = this;
-			this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
+			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
 		}

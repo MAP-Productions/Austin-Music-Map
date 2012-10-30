@@ -112,19 +112,21 @@ function(App, Backbone)
 			{
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
+				this.updatePlaylistDropdown();
 			}
 		},
 
 		updateControlsState : function( info )
 		{
+			// updates the visual status of the the prev / next buttons on the controller
 			var next = this.$('.transport .forward');
 			var prev = this.$('.transport .back');
-			if(info.frame.next)
+			if(info.next)
 			{
 				if(next.hasClass('disabled')) next.removeClass('disabled');
 			}
 			else if( !next.hasClass('disabled')) next.addClass('disabled');
-			if(info.frame.prev)
+			if(info.prev)
 			{
 				if(prev.hasClass('disabled')) prev.removeClass('disabled');
 			}
@@ -132,11 +134,28 @@ function(App, Backbone)
 			
 		},
 
+		updatePlaylistDropdown : function()
+		{
+			console.log('***** on frame change', App.players.get('current').getProjectData() );
+			this.$('.playlist-container .playlist').empty();
+			_.each( App.players.get('current').getProjectData().frames, function(frame){
+				var LIView = new PlaylistItemView({model: new Backbone.Model(frame) });
+				this.$('.playlist-container .playlist').append( LIView.el );
+				LIView.render();
+			});
+		},
+
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
 		}
 
+	});
+
+	var PlaylistItemView = Backbone.LayoutView.extend({
+		tagName : 'li',
+		template : 'playlist-item',
+		serialize : function(){ console.log('33333 serialize:', this.model.toJSON()); return this.model.toJSON(); }
 	});
 
 	// Required, return the module for AMD compliance
