@@ -202,7 +202,9 @@ function(App, Backbone)
 		serialize : function(){ return this.model.toJSON(); },
 
 		events : {
-			'click .play-pause-frame' : 'onClickPlaylistItem'
+			'click .play-pause-frame' : 'onClickPlaylistItem',
+			'mouseenter' : 'scrollTitle',
+			'mouseleave' : 'stopScrollTitle'
 		},
 
 		onClickPlaylistItem : function()
@@ -210,6 +212,41 @@ function(App, Backbone)
 			console.log('clicked playlist item:', this);
 			App.players.get('current').cueFrame( this.model.id );
 			return this;
+		},
+		runScrollTitle : false,
+		scrollTitle: function(e) {
+
+			var areaWidth = this.$('.media-name-wrapper').width(),
+				textElem = this.$('.media-name'),
+				textWidth = this.$('.media-name span').width();
+
+			this.runScrollTitle = true;
+
+			if (textWidth > areaWidth) {
+				sideScroll();
+			}
+
+			function sideScroll() {
+			
+				if (textElem.css('left') == '0px') {
+					$(textElem).animate({
+						left: areaWidth - textWidth
+					}, 7000, sideScroll);
+				} else {
+					$(textElem).animate({
+						left: 0
+					}, 7000, function() {
+						if (this.runScrollTitle === true) { sideScroll(); }
+					});
+				}
+
+			}
+
+
+		},
+		stopScrollTitle: function() {
+			this.runScrollTitle = false;
+			$('.media-name').stop().animate({'left':0}, 1000);
 		}
 	});
 
