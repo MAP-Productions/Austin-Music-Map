@@ -1,10 +1,11 @@
 define([
 	"app",
 	// Libs
-	"backbone"
+	"backbone",
+	"modules/playlistmap"
 ],
 
-function(App, Backbone)
+function(App, Backbone,PlaylistMap)
 {
 
 	// Create a new module
@@ -16,11 +17,16 @@ function(App, Backbone)
 		initialize: function()
 		{
 			App.players.on('update_title', this.onFrameChange, this);
+			
 		},
 		template : 'playlist',
 
 		serialize : function(){ return this.model.toJSON(); },
 		
+		afterRender: function(){
+			this.playlistMap = new PlaylistMap.Model();
+		},
+
 		events : {
 			'click .toggle-playlist' : 'togglePlaylist',
 			'click .progress-bar' : 'goToTime',
@@ -146,6 +152,9 @@ function(App, Backbone)
 				this.$('.playlist-container .playlist').append( LIView.el );
 				LIView.render();
 			});
+
+			//Map Update
+			this.playlistMap.updateMap();
 		},
 
 		onTimeUpdate : function( info )
