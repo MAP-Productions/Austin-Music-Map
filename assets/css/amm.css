@@ -399,6 +399,12 @@ body {
   overflow: hidden;
 }
 
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .modal-overlay {
   position: absolute;
   left: 0;
@@ -696,6 +702,66 @@ body {
   width: 90px;
 }
 
+.player-loader {
+  background: rgba(0, 0, 0, 0.75);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 29;
+  top: 0;
+  left: 0;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 0.75em;
+  letter-spacing: 0.3em;
+}
+.player-loader .player-loader-wrapper {
+  margin: 0 auto;
+  width: 500px;
+  margin-top: 175px;
+}
+.player-loader .player-loader-header {
+  margin-bottom: 20px;
+  font-family: 'League Gothic', sans-serif;
+}
+.player-loader h2 {
+  font-size: 2em;
+}
+.player-loader .col-left {
+  float: left;
+  width: 75px;
+}
+.player-loader .layer-loading li {
+  margin-bottom: 10px;
+  opacity: 1;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
+}
+.player-loader .layer-loading li.unloaded {
+  opacity: 0.25;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s;
+  /* Firefox 4 */
+
+  -webkit-transition: opacity 0.5s;
+  /* Safari and Chrome */
+
+  -o-transition: opacity 0.5s;
+  /* Opera */
+
+}
+.player-loader .player-loader-footer {
+  margin-top: 80px;
+}
+
 .player-slider-wrapper {
   position: absolute;
   top: 0;
@@ -703,7 +769,7 @@ body {
   height: 100%;
   overflow: hidden;
   width: 100%;
-  z-index: 29;
+  z-index: 28;
 }
 .player-slider-wrapper .player-slider {
   height: 100%;

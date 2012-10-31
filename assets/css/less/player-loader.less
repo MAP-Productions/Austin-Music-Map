@@ -1,0 +1,65 @@
+.player-loader
+{
+	background: rgba(0,0,0,0.75);
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 29;
+	top: 0;
+	left: 0;
+	color:white;
+	font-family: Arial, sans-serif;
+	font-size: 0.75em;
+
+	.player-loader-wrapper
+	{
+		margin: 0 auto;
+		width: 500px;
+		margin-top: 175px;
+	}
+
+	.player-loader-header
+	{
+		margin-bottom:20px;
+		font-family:'League Gothic',sans-serif;
+	}
+	h2
+	{
+		font-size: 2em;
+	}
+
+	.col-left
+	{
+		float:left;
+		width:75px;
+		min-height:1px;
+	}
+
+	.layer-loading
+	{
+		li
+		{
+			margin-bottom:10px;
+			opacity: 1;
+			transition: opacity 0.5s;
+			-moz-transition: opacity 0.5s; /* Firefox 4 */
+			-webkit-transition: opacity 0.5s; /* Safari and Chrome */
+			-o-transition: opacity 0.5s; /* Opera */
+			&.unloaded
+			{
+				opacity:0.25;
+				transition: opacity 0.5s;
+				-moz-transition: opacity 0.5s; /* Firefox 4 */
+				-webkit-transition: opacity 0.5s; /* Safari and Chrome */
+				-o-transition: opacity 0.5s; /* Opera */
+			}	
+		}
+		
+	}
+
+	.player-loader-footer
+	{
+		margin-top:80px;
+		letter-spacing: 0.3em;
+	}
+}
