@@ -148,7 +148,7 @@ define([
 					function drawThumb(){
 						if(_.isNull(document.getElementById("canvas-"+feature.id))){
 							clearInterval(drawThumbAnim);
-						} 
+						}
 						else{
 							var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
 							tmpCtx.save();
@@ -217,19 +217,29 @@ define([
 							
 								var drawLargeImageAnim=setInterval(drawLargeImage,20);
 								var shrinkAnim;
-								var expandAnim; 
+								var expandAnim;
 								
 								function drawLargeImage(){
 									if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 									else
 									{
+
+
+										var f;
+										if(i<0.7){
+											f = 1-(0.7-i)*(0.7-i);
+										}
+										else{
+											f=1;
+										}
+
 										var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 										tmpCtx.globalCompositeOperation = 'destination-over';
 										
 										tmpCtx.save();
 										tmpCtx.beginPath();
 										tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
-										tmpCtx.arc(layer._point.x, layer._point.y, (radius+20) + (1-i)*(d-(radius+20)), 0, Math.PI * 2, false);
+										tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
 										tmpCtx.closePath();
 										tmpCtx.clip();
 										tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
@@ -242,7 +252,7 @@ define([
 										thumbctx.save();
 										thumbctx.beginPath();
 										thumbctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
-										thumbctx.arc(radius, radius, i*radius, 0, Math.PI * 2, false);
+										thumbctx.arc(radius, radius, f*radius, 0, Math.PI * 2, false);
 										thumbctx.closePath();
 										thumbctx.clip();
 										if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
@@ -250,13 +260,14 @@ define([
 										thumbctx.restore();
 
 										if(i>=1) {
+											$('.back-to-map').fadeIn('fast');
 											clearInterval(drawLargeImageAnim);
 											$('#wrapper-'+feature.id).remove();
 											$('#marker-container').addClass('marker').fadeIn('fast');
 											var shrinkGapAnim,expandGapAnim,
 												gapState = 'small';
 
-												
+											
 											$('.map-overlay').on('mousemove',function(e){
 												var i=0;
 												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
@@ -264,7 +275,7 @@ define([
 													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
 														clearInterval(expandGapAnim);
 													}
-													else{	
+													else{
 														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 														tmpCtx.globalCompositeOperation = 'destination-over';
 														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
@@ -272,7 +283,7 @@ define([
 														tmpCtx.save();
 														tmpCtx.beginPath();
 														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-														tmpCtx.arc(layer._point.x, layer._point.y,(radius+20) + i*30, 0, Math.PI * 2, false);
+														tmpCtx.arc(layer._point.x, layer._point.y,(radius+50) + i*8, 0, Math.PI * 2, false);
 														tmpCtx.closePath();
 														tmpCtx.clip();
 														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
@@ -282,19 +293,19 @@ define([
 															clearInterval(expandGapAnim);
 															expandGapAnim=false;
 															gapState='large';
-															$('.back-to-map').fadeIn('fast');
+															//$('.back-to-map').fadeIn('fast');
 															
 														}
 														i=parseFloat(i)+0.1	;
 													}
-												}	
+												}
 												function shrinkGap(){
 													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
 														clearInterval(expandGapAnim);
 													}
 													else
 													{
-														$('.back-to-map').hide();
+														//$('.back-to-map').hide();
 														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
 														tmpCtx.globalCompositeOperation = 'destination-over';
 														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
@@ -302,14 +313,14 @@ define([
 														tmpCtx.save();
 														tmpCtx.beginPath();
 														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-														tmpCtx.arc(layer._point.x, layer._point.y,radius+50 - i*30, 0, Math.PI * 2, false);
+														tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
 														tmpCtx.closePath();
 														tmpCtx.clip();
 														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
 														tmpCtx.restore();
 						
 														if(i>=1) {
-															clearInterval(shrinkGapAnim);	
+															clearInterval(shrinkGapAnim);
 															shrinkGapAnim=false;
 															gapState='small';
 														}
@@ -332,9 +343,9 @@ define([
 														i=0;
 													}
 												}
-
+											
 											});
-										
+											
 										
 											overlay.on('click',function(e){
 												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
@@ -344,7 +355,7 @@ define([
 												}									
 											});
 										}
-									i=parseFloat(i)+0.015;	
+										i=parseFloat(i)+0.015;
 									}
 								}
 								};
@@ -416,7 +427,7 @@ define([
 		createKeys:function(){
 			var keys=[];
 			_.each(this.models,function(model){
-				keys.push(model.get('title').toLowerCase());
+				keys.push(model.get('attributes').tags.toLowerCase());
 			});
 			this.keys=keys;
 		},
