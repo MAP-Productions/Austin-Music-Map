@@ -289,6 +289,9 @@ body {
 .powered-by-zeega a {
   color: #fff;
 }
+.leaflet-control-attribution {
+  display: none !important;
+}
 
 /* map featured item popup */
 .map-featured {
@@ -695,6 +698,11 @@ body {
   text-indent: -9999px;
   width: 90px;
 }
+#scpost-map {
+  background: green;
+  width: 331px;
+  height: 200px;
+}
 
 .player-slider-wrapper {
   position: absolute;
@@ -867,9 +875,6 @@ body {
 .playlist-container #playlist-map-wrapper {
   width: 293px;
   height: 127px;
-}
-.playlist-container .leaflet-control-attribution {
-  display: none !important;
 }
 .playlist-container ul.playlist {
   border-top: 1px solid #58595b;

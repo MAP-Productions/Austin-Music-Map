@@ -1,11 +1,7 @@
 define([
 	"app",
 	// Libs
-	"backbone",
-	
-
-	// plugins
-	"libs/leaflet"
+	"backbone"
 
 ], function(App, Backbone) {
 	

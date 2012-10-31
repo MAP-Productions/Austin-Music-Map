@@ -35,6 +35,7 @@ define([
 							sharing: "private"
 						}
 					}, function(track){
+						console.log('TRACK',track);
 						$("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
 					});
 				}
