@@ -1,0 +1,38 @@
+.player-slider-wrapper
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	overflow:hidden;
+	width: 100%;
+	z-index: 29;
+
+	.player-slider
+	{
+		height: 100%;
+		position: absolute;
+		width: 100%;
+		top: 0%;
+		transition: top 1s;
+		-moz-transition: top 1s; /* Firefox 4 */
+		-webkit-transition: top 1s; /* Safari and Chrome */
+		-o-transition: top 1s; /* Opera */
+
+		.player-window
+		{
+			position:relative;
+			height: 100%;
+			width: 100%;
+		}
+		&.view-remix
+		{
+			top:-100%;
+			transition: top 1s;
+			-moz-transition: top 1s; /* Firefox 4 */
+			-webkit-transition: top 1s; /* Safari and Chrome */
+			-o-transition: top 1s; /* Opera */
+		}
+	}
+
+}

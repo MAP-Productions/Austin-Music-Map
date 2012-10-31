@@ -1,141 +1,152 @@
 define([
-  // Application.
-  "app",
+	// Application.
+	"app",
 
-  // Modules.
-  "modules/playlist",
-  "modules/participate",
-  "modules/about",
-  "modules/contact",
-  "modules/map"
+	// Modules.
+	"modules/base",
+	"modules/playlist",
+	"modules/participate",
+	"modules/about",
+	"modules/contact",
+	"modules/map",
+
+	// submodules
+	"modules/submodules/player-slider"
 ],
 
-function(App, Playlist, Participate, About, Contact,Map) {
+function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
+	// Defining the application router, you can attach sub routers here.
+	var Router = Backbone.Router.extend({
+		routes: {
+			"": "index",
+			"participate": "participate",
+			"about": "about",
+			"contact": "contact",
 
-  // Defining the application router, you can attach sub routers here.
-  var Router = Backbone.Router.extend({
-    routes: {
-      "": "index",
-      "participate": "participate",
-      "about": "about",
-      "contact": "contact"
-    },
+			// these may need to go to a different fxn
+			"playlist/:collectionID" : "goToStory",
+			"playlist/:collectionID/" : "goToStory",
+			// routes to stories
+			"playlist/:collectionID/story" : "goToStory",
+			"playlist/:collectionID/story/" : "goToStory",
+			"playlist/:collectionID/story/:itemID" : "goToStory",
+			// routes to remixes
+			"playlist/:collectionID/remix" : "goToRemix",
+			"playlist/:collectionID/remix/" : "goToRemix",
+			"playlist/:collectionID/remix/:itemID" : "goToRemix"
 
-    index: function() {
-      App.on('base_layout_ready', function(){
-          App.page = new Map.Model();
-      });
-      initialize('map');
-    },
+		},
 
-    participate : function() {
-      initialize('modal');
-      App.modal = new Participate.Model();
-      //$('.selected').removeClass('selected'); 
-      //$('#nav-participate').addClass('selected');
-    },
+		index: function() {
+//			App.on('base_layout_ready', function(){
+				App.page = new Map.Model();
+//			});
+			initialize('map');
+		},
 
-    about : function() {
-      initialize('modal');
-      App.modal = new About.Model();
-      //$('.selected').removeClass('selected'); 
-      //$('#nav-participate').addClass('selected');
-    },
+		participate : function() {
+			initialize('modal');
+			App.modal = new Participate.Model();
+			//$('.selected').removeClass('selected'); 
+			//$('#nav-participate').addClass('selected');
+		},
 
-    contact : function() {
-      initialize('modal');
-      App.modal = new Contact.Model();
-      //$('.selected').removeClass('selected'); 
-      //$('#nav-participate').addClass('selected');
-    }
+		about : function() {
+			initialize('modal');
+			App.modal = new About.Model();
+			//$('.selected').removeClass('selected'); 
+			//$('#nav-participate').addClass('selected');
+		},
 
-  });
+		contact : function() {
+			initialize('modal');
+			App.modal = new Contact.Model();
+			//$('.selected').removeClass('selected'); 
+			//$('#nav-participate').addClass('selected');
+		},
 
-  /*******************  BEGIN PRIMARY   **********************/
+		goToStory : function(collectionID,itemID)
+		{
+			console.log('go to story', collectionID, itemID);
+			initialize('playlist');
 
-  /*
+			App.Player = new PlayerSlider.Model({
+				collection_id: collectionID,
+				item_id: itemID
+			});
+			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 
-  tasks to take care of before the application can load
-  esp inserting the layout into the dom!
+		},
+		goToRemix : function(collectionID,itemID)
+		{
+			console.log('go to remix', collectionID, itemID);
+			initialize('playlist');
+			App.Player = new PlayerSlider.Model({
+				collection_id: collectionID,
+				item_id: itemID
+			});
+			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
+		}
 
-  */
+	});
 
+	/*******************  BEGIN PRIMARY   **********************/
 
+	/*
 
-  function initialize(to) {
-    initAMM();
-    cleanup(to);
-  }
+	tasks to take care of before the application can load
+	esp inserting the layout into the dom!
 
-  var initAMM = _.once( init ); // ensure this happens only once 
+	*/
 
-  function init() {
-    console.log('initing');
-    // render the base layout into the dom
-    var baseLayout = new Backbone.Layout({ el: "#main" });
-    var baseView = Backbone.LayoutView.extend({ template: "base" });
-    baseLayout.insertView( new baseView() );
+	function initialize(to) {
+		initAMM();
+		cleanup(to);
+	}
 
-    // insert subviews
-    // playlist view - this should be moved to wherever the playlist is initialized
-    baseLayout.setView('#controlsLeft .controls-inner', new Playlist.Views.PlaylistView() );
+	// ensure this happens only once
+	var initAMM = _.once( init );
 
-    baseLayout.afterRender=function(){
-      App.trigger('base_layout_ready');
-    };
-    baseLayout.render();
-    
-  }
+	function init()
+	{
+		// draw the base layout
+		App.BaseLayout = new Base();
+		App.BaseLayout.render();
+	}
 
-  // happens on every router change
-  // we must update this with new cases for AMM as we will have the map, player and modals
-  function cleanup(to)
-  {
-    // if going to a modal, make sure the player is paused
-    // if going to a grid, exit the player
-    // if closing a modal, and a player exists, then make the player play
-    // modal, page, return, player 
+	// happens on every router change
+	// we must update this with new cases for AMM as we will have the map, player and modals
+	function cleanup(to)
+	{
+		// hide left controls if any
+		App.BaseLayout.hideLeftMenu({
+			next: to
+		});
+		// remove modal if it exists
+		if(App.modal)
+		{
+			App.modal.remove();
+			App.modal = null;
+		}
 
-    /*
-    if( App.page && App.page.player )
-    {
-      switch(to)
-      {
-        case 'modal':
-          App.page.player.pause();
-          break;
-        case 'page':
-          App.page.exit();
-          break;
-        case 'player':
-          App.page.exit();
-          break;
-        case 'resume':
-          App.page.player.play();
-          break;
-      }
-    }
-    */
+		if(App.Player)
+		{
+			App.Player.exit();
+			App.Player = null;
+		}
 
-    // remove modal if it exists
-    if(App.modal)
-    {
-      App.modal.remove();
-      App.modal = null;
-    }
+	}
 
-  }
+	// refresh map after window resize
 
-  // refresh map after window resize
-
-  function refreshMap(){
-    if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
-  }
-  var refreshMapLayout = _.debounce(refreshMap, 100);
-  $(window).resize(refreshMapLayout);
-  
+	function refreshMap(){
+		if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
+	}
+	var refreshMapLayout = _.debounce(refreshMap, 100);
+	$(window).resize(refreshMapLayout);
+	
 
 
-  return Router;
+	return Router;
 
 });

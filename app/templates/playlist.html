@@ -1,44 +1,27 @@
-<div class="stories-remix-slider"></div>
+<div class="stories-remix-slider">
+	<a href='#' class='remix-toggle'>
+		<span class="label stories">stories</span>
+		<span class="label remix">remix</span>
+		<span class="slider-track">
+			<span class="slider"></span>
+		</span>
+	</a>
+</div>
 <div class="playlist-control">
 	<span class="toggle-playlist"></span>
 	<div class="now-playing">
-		<h1 class="playing-title">Moose Lodge</h1>
-		<p class="playing-subtitle">Lorem Ipsum by Delaney Hall</p>
+		<h1 class="playing-title-wrap"><span class="playing-title"><%= playlist_title %></span></h1>
+		<p class="playing-subtitle-wrap scroll-view"><span class="playing-subtitle"></span></p>
 		<div class="progress-bar"><div class="elapsed"></div></div>
 	</div>
 	<div class="transport">
-		<span class="back"></span>
+		<span class="back disabled"></span>
 		<span class="play-pause"></span>
-		<span class="forward"></span>
+		<span class="forward disabled"></span>
 	</div>
 </div>
 <div class="playlist-container" style="display: none;">
-	<ul class="playlist">
-		<li class="active">
-			<span class="play-pause pause"></span>
-			<span class="media-type video"></span>
-			Lorem ipsum by Delaney Fall
-			<span class="media-time">2:34</span>
-		</li>
-		<li>
-			<span class="play-pause"></span>
-			<span class="media-type audio"></span>
-			Lorem ipsum by Delaney Fall
-			<span class="media-time">2:34</span>
-		</li>
-		<li>
-			<span class="play-pause"></span>
-			<span class="media-type audio"></span>
-			Lorem ipsum by Delaney Fall
-			<span class="media-time">2:34</span>
-		</li>
-		<li>
-			<span class="play-pause"></span>
-			<span class="media-type video"></span>
-			Lorem ipsum by Delaney Fall
-			<span class="media-time">2:34</span>
-		</li>
-	</ul>
+	<ul class="playlist"></ul>
 	<img src="assets/img/playlist-map-placeholder.jpg" style="display: block;">
 	<div class="related">
 		<h3>Related Playlists</h3>
@@ -48,4 +31,6 @@
 			<li><a href="#">Taxidermy</a></li>
 			<li><a href="#">Dancing</a></li>
 		</ul>
+	</div>
+
 </div>

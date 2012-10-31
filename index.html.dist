@@ -25,7 +25,8 @@
 	<link rel="stylesheet" href="assets/css/reset.css">
 	<link rel="stylesheet" href="assets/css/index.css">
 	<link rel="stylesheet" href="assets/vendor/leaflet/dist/leaflet.css">
-	
+	<link rel="stylesheet" href="assets/vendor/zeegaplayer/dist/release/zeega.css">
+
 </head>
 
 <body>

@@ -6,7 +6,6 @@ define([
 	"modules/submodules/modals"
 
 ], function(App, Backbone, Modal) {
-	
 	var About = App.module();
 
 	About.Model = Modal.Model.extend({
