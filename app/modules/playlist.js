@@ -151,6 +151,17 @@ function(App, Backbone)
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
+			this.$('.time-elapsed').text( formatTime(info.current_time) );
+			this.$('.time-remaining').text( "-" + formatTime(info.duration - info.current_time) );
+
+			function formatTime(secs) {
+				var minutes = Math.floor(secs/60);
+				var seconds = Math.floor(secs - (minutes * 60) );
+
+				if (seconds < 10) { seconds = "0"+seconds; }
+
+				return minutes + ":" + seconds;
+			}
 		},
 
 		clearElapsed : function()

@@ -791,10 +791,10 @@ body {
   border-radius: 2px;
   cursor: pointer;
   height: 4px;
-  left: 0;
+  left: 26px;
+  right: 27px;
   margin-top: 6px;
   position: absolute;
-  position: relative;
   top: 25px;
 }
 .playlist-control .now-playing .progress-bar .elapsed {
@@ -806,11 +806,25 @@ body {
   width: 0%;
   background: #f1f1f1;
 }
+.playlist-control .now-playing .playing-time {
+  font-size: 9px;
+  color: white;
+  position: absolute;
+  top: 29px;
+  letter-spacing: 0;
+}
+.playlist-control .now-playing .playing-time.time-elapsed {
+  left: 0;
+}
+.playlist-control .now-playing .playing-time.time-remaining {
+  right: 0;
+}
 .playlist-control .transport {
   float: left;
   height: 52px;
   line-height: 52px;
   vertical-align: middle;
+  margin: 0 5px 0 13px;
 }
 .playlist-control .transport .disabled {
   opacity: 0.1;
