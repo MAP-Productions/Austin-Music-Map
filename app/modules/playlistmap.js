@@ -58,6 +58,7 @@ define([
 		},
 		updateMap:function(){
 			var layer =App.players.get('current').getFrameData().layers[0];
+			console.log("UPDATE MAP WID DIS",layer);
 			if(!_.isUndefined(layer)&&!_.isUndefined(layer.attr)&&layer.attr.media_geo_latitude>0){
 				var latlng = new L.LatLng(layer.attr.media_geo_latitude,layer.attr.media_geo_longitude);
 
@@ -70,6 +71,7 @@ define([
 						fillOpacity: 0.8
 					}).addTo(this.map);
 			}
+			else if(!_.isUndefined(this.marker))this.map.removeLayer(this.marker);
 		}
 
 	});
