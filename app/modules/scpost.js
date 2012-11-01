@@ -28,9 +28,9 @@ define([
 	var SCPostView = Backbone.LayoutView.extend({
 		template: 'scpost',
 		latLng: new L.LatLng(30.266702991845,-97.745532989502),
-		
+		submitted:false,
 		events:{
-			'click .btn-submit':'postAudio'
+			'click .btn-submit':'onSubmit'
 		},
 		afterRender:function(){
 			
@@ -59,27 +59,35 @@ define([
 
 		},
 
-		postAudio:function(){
+		onSubmit:function(){
+			if(this.submitted){
+				App.router.navigate('',true);
+			}
+			else{
+				var audio = new SCAudio();
+				console.log('posting audio',this,audio);
+				var tag_array=this.$el.find('#tags').val().split(",");
+				tag_array.push('austinmusicmap');
+				tag_array.push('web_recording');
+				audio.save({
+					media_geo_lat:this.marker.getLatLng().lat,
+					media_geo_lng:this.marker.getLatLng().lng,
+					tags:tag_array,
+					title:this.$el.find('#title').val(),
+					uri:App.track.stream_url,
+					attribution_uri: App.track.permalink_url,
+					thumbnail_url:App.track.waveform_url,
+					license:App.track.license,
+					media_creator_username:App.track.user.username,
+					media_creator_realname:App.track.user.username,
+					description:this.$el.find('#contactEmail').val()
+				});
+				this.$el.find('.form-content').hide();
+				this.$el.find('.thanks').show();
+				this.$el.find('.btn-submit').html("CLose");
+				this.submitted=true;
+			}
 			
-			var audio = new SCAudio();
-			console.log('posting audio',this,audio);
-			var tag_array=this.$el.find('#tags').val().split(",");
-			tag_array.push('austinmusicmap');
-			tag_array.push('web_recording');
-			audio.save({
-				media_geo_lat:this.marker.getLatLng().lat,
-				media_geo_lng:this.marker.getLatLng().lng,
-				tags:tag_array,
-				title:this.$el.find('#title').val(),
-				uri:App.track.stream_url,
-				attribution_uri: App.track.permalink_url,
-				thumbnail_url:App.track.waveform_url,
-				license:App.track.license,
-				media_creator_username:App.track.user.username,
-				media_creator_realname:App.track.user.username,
-				description:this.$el.find('#contactEmail').val()
-			});
-			App.router.navigate('',true);
 			return false;
 		}
 	});
