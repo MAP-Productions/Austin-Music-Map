@@ -1,3 +1,14 @@
+
+@-webkit-keyframes rotate {
+from {
+-webkit-transform: rotate(0deg);
+}
+to { 
+-webkit-transform: rotate(360deg);
+}
+}
+
+
 .player-loader
 {
 	background: rgba(0,0,0,0.75);
@@ -10,6 +21,14 @@
 	color:white;
 	font-family: Arial, sans-serif;
 	font-size: 0.75em;
+
+	.loader-spinner
+	{
+		-webkit-animation-name:             rotate; 
+		-webkit-animation-duration:         1.81s; 
+		-webkit-animation-iteration-count:  infinite;
+		-webkit-animation-timing-function: linear;
+	}
 
 	.player-loader-wrapper
 	{
