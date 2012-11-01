@@ -77,7 +77,7 @@ define([
 				license:App.track.license,
 				media_creator_username:App.track.user.username,
 				media_creator_realname:App.track.user.username,
-				description:$el.find('#contactEmail').val()
+				description:this.$el.find('#contactEmail').val()
 			});
 			App.router.navigate('',true);
 			return false;
