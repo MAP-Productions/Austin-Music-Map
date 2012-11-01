@@ -15,6 +15,7 @@ function(App, Backbone)
 		className : 'player-loader',
 
 		hasPlayed : false,
+		delay : 1000,
 
 		listenToPlayer : function( player )
 		{
@@ -57,10 +58,12 @@ function(App, Backbone)
 			{
 				var _this = this;
 				_.delay(function(){
+					_this.model.ready = true;
 					_this.$el.fadeOut();
-					_this.model.renderPlaylist();
 					_this.player.play();
-				},5000)
+					_this.model.renderPlaylist();
+					App.players.trigger('update_title', App.players.get('current').getFrameData() );
+				}, this.delay );
 				
 				this.hasPlayed = true;
 			}

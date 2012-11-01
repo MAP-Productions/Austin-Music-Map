@@ -67,29 +67,25 @@ function(App, Backbone, Loader)
 			{
 				this.set( JSON.parse(sessionStorage[key] ) );
 				parseResponse(this);
-				//this.renderPlaylist();
 			}
 			else
 			{
 				this.fetch().success(function(res){
 					sessionStorage[ key ] = JSON.stringify(res);
 					parseResponse(_this);
-					//_this.renderPlaylist();
 				});
 			}
 		},
 
 		renderPlaylist : function()
 		{
+			console.log('render playlist', this)
 			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
-			this.ready = true;
 		},
 
 		updatePlaylistTitle : function()
 		{
 			this.set('playlist_title', this.collectionModel.get('title'));
-			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
-			this.ready = true;
 		},
 
 		onProjectLoaded : function()

@@ -16,6 +16,7 @@ function(App, Backbone)
 		initialize: function()
 		{
 			App.players.on('update_title', this.onFrameChange, this);
+
 		},
 		template : 'playlist',
 
@@ -46,7 +47,6 @@ function(App, Backbone)
 		},
 		remixToggle : function()
 		{
-			console.log('toggle remix', App);
 			if( App.players.get('story') && App.players.get('remix') )
 			{
 				// close off old player
@@ -104,6 +104,7 @@ function(App, Backbone)
 
 		onFrameChange : function( info )
 		{
+			console.log('on frame change', info);
 			if(info)
 			{
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
@@ -141,7 +142,7 @@ function(App, Backbone)
 				var isActive = frame.id == App.players.get('current').getFrameData().id;
 				var LIView = new PlaylistItemView({
 					model: new Backbone.Model( _.extend(frame, {is_active:isActive? '':'pause'}) ),
-					attributes : { class: isActive? 'active':'' }
+					attributes : { 'class': isActive? 'active':'' }
 				});
 				this.$('.playlist-container .playlist').append( LIView.el );
 				LIView.render();
@@ -168,6 +169,7 @@ function(App, Backbone)
 		{
 			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		},
+
 		scrollTitles : function() {
 			var areaWidth = this.$('.now-playing').width();
 

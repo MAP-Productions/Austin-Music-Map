@@ -24,7 +24,6 @@ function(App, Backbone, Playlist, Search )
 
 		afterRender : function()
 		{
-			//this.showPlaylistMenu();
 			App.trigger('base_layout_ready');
 		},
 
