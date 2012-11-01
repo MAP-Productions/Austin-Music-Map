@@ -15,10 +15,10 @@ define([
 			modalTemplate: 'modal'
 		},
 
-		initialize: function(options) {
-			_.extend(this,options);
+		initialize: function() {
+			
 			this.layout = this.getLayout();
-			this.layout.setView('.modal-content', new SCPostView(options) );
+			this.layout.setView('.modal-content', new SCPostView() );
 			this.layout.render();
 			$('body').append( this.layout.el );
 
@@ -63,14 +63,23 @@ define([
 			
 			var audio = new SCAudio();
 			console.log('posting audio',this,audio);
+			var tag_array=this.$el.find('#tags').val().split(",");
+			tag_array.push('austinmusicmap');
+			tag_array.push('web_recording');
 			audio.save({
 				media_geo_lat:this.marker.getLatLng().lat,
 				media_geo_lng:this.marker.getLatLng().lng,
-				tags:this.$el.find('#tags').val().split(","),
-				title:this.$el.find('#title').val()
-				//author attr etc
-
+				tags:tag_array,
+				title:this.$el.find('#title').val(),
+				uri:App.track.stream_url,
+				attribution_uri: App.track.permalink_url,
+				thumbnail_url:App.track.waveform_url,
+				license:App.track.license,
+				media_creator_username:App.track.user.username,
+				media_creator_realname:App.track.user.username,
+				description:$el.find('#contactEmail').val()
 			});
+			App.router.navigate('',true);
 			return false;
 		}
 	});
@@ -81,11 +90,10 @@ define([
 		defaults : {
 			media_type:'Audio',
 			layer_type:'Audio',
-			attribution_uri: 'default',
 			child_items_count:0,
 			archive:'Soundcloud',
-			//user_id:760,
-			uri:"default"
+			user_id:1311
+			
 		},
 		intialize:function(){}
 
