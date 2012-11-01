@@ -145,7 +145,7 @@ function(App, Backbone,PlaylistMap)
 			_.each( App.players.get('current').getProjectData().frames, function(frame){
 				var isActive = frame.id == App.players.get('current').getFrameData().id;
 				var LIView = new PlaylistItemView({
-					model: new Backbone.Model( _.extend(frame, {is_active:isActive? '':'pause'}) ),
+					model: new Backbone.Model( _.extend(frame, {is_active:isActive? 'pause':''}) ),
 					attributes : { 'class': isActive? 'active':'' }
 				});
 				this.$('.playlist-container .playlist').append( LIView.el );
