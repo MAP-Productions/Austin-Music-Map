@@ -2,10 +2,12 @@ define([
 	"app",
 	// Libs
 	"backbone",
-	"modules/playlistmap"
+	"modules/playlistmap",
+	// submodules
+	"modules/submodules/helpers"
 ],
 
-function(App, Backbone,PlaylistMap)
+function(App, Backbone, PlaylistMap, Helper )
 {
 
 	// Create a new module
@@ -159,17 +161,8 @@ function(App, Backbone,PlaylistMap)
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
-			this.$('.time-elapsed').text( formatTime(info.current_time) );
-			this.$('.time-remaining').text( "-" + formatTime(info.duration - info.current_time) );
-
-			function formatTime(secs) {
-				var minutes = Math.floor(secs/60);
-				var seconds = Math.floor(secs - (minutes * 60) );
-
-				if (seconds < 10) { seconds = "0"+seconds; }
-
-				return minutes + ":" + seconds;
-			}
+			this.$('.time-elapsed').text( Helper.convertTime(info.current_time) );
+			this.$('.time-duration').text( Helper.convertTime(info.duration) );
 		},
 
 		clearElapsed : function()
