@@ -31,12 +31,15 @@ define([
 					$("#sc-upload-status").html("Uploading...");
 					SC.recordUpload({
 						track: {
-							title: "Untitled Recording",
-							sharing: "private"
+							title: "Austin Music Map Story",
+							sharing: "public",
+							tag_list: "austinmusicmap,web_recording"
 						}
 					}, function(track){
+						App.track=track;
+						App.router.navigate('scpost',true);
 						console.log('TRACK',track);
-						$("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
+						//$("#sc-upload-status").html("Uploaded: <a href='" + track.permalink_url + "'>" + track.permalink_url + "</a>");
 					});
 				}
 			});
