@@ -60,7 +60,7 @@ function(App, Backbone)
 					_this.$el.fadeOut();
 					_this.model.renderPlaylist();
 					_this.player.play();
-				},5000)
+				},5000);
 				
 				this.hasPlayed = true;
 			}
