@@ -217,6 +217,12 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
+			this.project.on('frame_rendered', this.updateYoutubeSize, this);
+		},
+
+		updateYoutubeSize : function()
+		{
+			this.$('.visual-element-youtube').css('height', window.innerHeight );
 		}
 	});
 
