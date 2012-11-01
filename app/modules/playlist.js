@@ -83,6 +83,8 @@ function(App, Backbone, PlaylistMap, Helper )
 			{
 				App.players.get('current').on('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
+				//auto advance
+				App.players.get('current').on('playback_ended', this.playerNext, this);
 			}
 		},
 
@@ -92,6 +94,7 @@ function(App, Backbone, PlaylistMap, Helper )
 			{
 				App.players.get('current').off('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
+				App.players.get('current').off('playback_ended', this.playerNext, this);
 			}
 		},
 
