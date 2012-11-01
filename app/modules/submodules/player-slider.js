@@ -79,8 +79,10 @@ function(App, Backbone, Loader)
 
 		renderPlaylist : function()
 		{
-			console.log('render playlist', this)
-			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
+			if(this.ready)
+			{
+				App.BaseLayout.showPlaylistMenu( this );
+			}
 		},
 
 		updatePlaylistTitle : function()
