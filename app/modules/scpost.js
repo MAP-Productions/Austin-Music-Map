@@ -21,7 +21,7 @@ define([
 			this.layout.setView('.modal-content', new SCPostView(options) );
 			this.layout.render();
 			$('body').append( this.layout.el );
-			
+
 		}
 	});
 
@@ -35,26 +35,27 @@ define([
 		afterRender:function(){
 			$('.close-modal').hide();
 			var _this=this;
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
-			div =document.getElementById('scpost-map');
-			this.map = new L.Map(div,{
-				touchZoom:false,
-				scrollWheelZoom:false,
-				doubleClickZoom:false,
-				boxZoom:false
-			});
-			this.map.setView(this.latLng, 11).addLayer(cloudmade);
-			this.map.featureOn=false;
+			_.delay(function(){
+				
+				var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+				div =document.getElementById('scpost-map');
+				_this.map = new L.Map(div,{
+					touchZoom:false,
+					scrollWheelZoom:false,
+					doubleClickZoom:false,
+					boxZoom:false
+				});
+				_this.map.setView(_this.latLng, 11).addLayer(cloudmade);
+				_this.map.featureOn=false;
 
-			this.marker=L.marker(this.latLng,{draggable:true}).addTo(this.map);
-			this.map.on('dragend', function(e) {
-				_this.marker.setLatLng(_this.map.getCenter());
-			});
-			this.map.on('zoomend', function(e) {
-				_this.marker.setLatLng(_this.map.getCenter());
-			});
-
+				_this.marker=L.marker(_this.latLng,{draggable:true}).addTo(_this.map);
+				_this.map.on('dragend', function(e) {
+					_this.marker.setLatLng(_this.map.getCenter());
+				});
+				_this.map.on('zoomend', function(e) {
+					_this.marker.setLatLng(_this.map.getCenter());
+				});
+			},500);
 
 		},
 
