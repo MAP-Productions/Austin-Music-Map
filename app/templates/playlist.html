@@ -13,6 +13,8 @@
 		<h1 class="playing-title-wrap"><span class="playing-title"><%= playlist_title %></span></h1>
 		<p class="playing-subtitle-wrap scroll-view"><span class="playing-subtitle"></span></p>
 		<div class="progress-bar"><div class="elapsed"></div></div>
+		<span class="playing-time time-elapsed"></span>
+		<span class="playing-time time-remaining"></span>
 	</div>
 	<div class="transport">
 		<span class="back disabled"></span>
@@ -20,9 +22,10 @@
 		<span class="forward disabled"></span>
 	</div>
 </div>
-<div class="playlist-container" >
-	<ul class="playlist"></ul>
+<div class="playlist-container">
+	<ul class="playlist open"></ul>
 	<div id="playlist-map-wrapper"></div>
+	
 	<div class="related">
 		<h3>Related Playlists</h3>
 		<ul>
@@ -32,5 +35,6 @@
 			<li><a href="#">Dancing</a></li>
 		</ul>
 	</div>
+
 
 </div>

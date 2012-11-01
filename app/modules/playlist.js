@@ -147,19 +147,30 @@ function(App, Backbone,PlaylistMap)
 				var isActive = frame.id == App.players.get('current').getFrameData().id;
 				var LIView = new PlaylistItemView({
 					model: new Backbone.Model( _.extend(frame, {is_active:isActive? '':'pause'}) ),
-					attributes : { class: isActive? 'active':'' }
+					attributes : { 'class': isActive? 'active':'' }
 				});
 				this.$('.playlist-container .playlist').append( LIView.el );
 				LIView.render();
 			});
 
 			//Map Update
-			this.playlistMap.updateMap();
+			if(!_.isUndefined(this.playlistMap)) this.playlistMap.updateMap();
 		},
 
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
+			this.$('.time-elapsed').text( formatTime(info.current_time) );
+			this.$('.time-remaining').text( "-" + formatTime(info.duration - info.current_time) );
+
+			function formatTime(secs) {
+				var minutes = Math.floor(secs/60);
+				var seconds = Math.floor(secs - (minutes * 60) );
+
+				if (seconds < 10) { seconds = "0"+seconds; }
+
+				return minutes + ":" + seconds;
+			}
 		},
 
 		clearElapsed : function()
@@ -200,7 +211,9 @@ function(App, Backbone,PlaylistMap)
 		serialize : function(){ return this.model.toJSON(); },
 
 		events : {
-			'click .play-pause-frame' : 'onClickPlaylistItem'
+			'click .play-pause-frame' : 'onClickPlaylistItem',
+			'mouseenter' : 'scrollTitle',
+			'mouseleave' : 'stopScrollTitle'
 		},
 
 		onClickPlaylistItem : function()
@@ -208,6 +221,41 @@ function(App, Backbone,PlaylistMap)
 			console.log('clicked playlist item:', this);
 			App.players.get('current').cueFrame( this.model.id );
 			return this;
+		},
+		runScrollTitle : false,
+		scrollTitle: function(e) {
+
+			var areaWidth = this.$('.media-name-wrapper').width(),
+				textElem = this.$('.media-name'),
+				textWidth = this.$('.media-name span').width();
+
+			this.runScrollTitle = true;
+
+			if (textWidth > areaWidth) {
+				sideScroll();
+			}
+
+			function sideScroll() {
+			
+				if (textElem.css('left') == '0px') {
+					$(textElem).animate({
+						left: areaWidth - textWidth
+					}, 7000, sideScroll);
+				} else {
+					$(textElem).animate({
+						left: 0
+					}, 7000, function() {
+						if (this.runScrollTitle === true) { sideScroll(); }
+					});
+				}
+
+			}
+
+
+		},
+		stopScrollTitle: function() {
+			this.runScrollTitle = false;
+			$('.media-name').stop().animate({'left':0}, 1000);
 		}
 	});
 

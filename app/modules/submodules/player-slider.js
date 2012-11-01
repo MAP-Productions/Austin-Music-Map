@@ -1,10 +1,13 @@
 define([
 	"app",
 	// Libs
-	"backbone"
+	"backbone",
+	//submodules
+	"modules/submodules/player-loader"
+
 ],
 
-function(App, Backbone)
+function(App, Backbone, Loader)
 {
 	// Create a new module
 	var ProjectPlayer = App.module();
@@ -28,6 +31,12 @@ function(App, Backbone)
 		initialize : function()
 		{
 			var _this = this;
+
+			// render loader view
+			this.loaderView = new Loader.View({model:this});
+			$('body').append(this.loaderView.el);
+			this.loaderView.render();
+
 			this.initEvents();
 			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
 			this.collectionModel.fetch().success(function(){
@@ -40,11 +49,7 @@ function(App, Backbone)
 		{
 			var _this = this;
 			$(window).bind('keyup.playerSlider', function(e){
-				if(e.which == 27)
-				{
-					console.log('exit:',App);
-					App.router.navigate('/',{trigger:true});
-				}
+				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
 		},
 
@@ -57,19 +62,19 @@ function(App, Backbone)
 		{
 			var _this = this;
 			var key = this.url();
-			this.on('change:remixItems', this.renderSlider, this);
+			this.on('change:remixItems', this.onProjectLoaded, this);
 			if( sessionStorage.getItem( this.url() ))
 			{
 				this.set( JSON.parse(sessionStorage[key] ) );
 				parseResponse(this);
-				this.renderPlaylist();
+				//this.renderPlaylist();
 			}
 			else
 			{
 				this.fetch().success(function(res){
 					sessionStorage[ key ] = JSON.stringify(res);
 					parseResponse(_this);
-					_this.renderPlaylist();
+					//_this.renderPlaylist();
 				});
 			}
 		},
@@ -87,9 +92,17 @@ function(App, Backbone)
 			this.ready = true;
 		},
 
-		renderSlider : function()
+		onProjectLoaded : function()
 		{
+			var _this = this;
 			this.off('change:remixItems');
+
+			// updateLoader
+			App.players.on('change:current', function(){
+				_this.loaderView.listenToPlayer( App.players.get('current') );
+			});
+			
+			// render player layout
 			this.layout = new ProjectPlayerLayout({model:this});
 			$('body').append( this.layout.el );
 			this.layout.render();
@@ -133,7 +146,7 @@ function(App, Backbone)
 				var projectID = _.uniqueId('player-project-');
 				var projectView = new PlayerTargetView({
 					args: {
-						autoplay: true,
+						autoplay: false,
 						collection_mode: 'slideshow',
 						data: this.model.get('storyItems'),
 						//url: 'http://alpha.zeega.org/api/items/49217',
@@ -174,7 +187,6 @@ function(App, Backbone)
 			App.players.set('current', App.players.get('story') || App.players.get('remix') );
 
 			var _this = this;
-			App.players.get('current').on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: current: ',e,obj);});
 
 			App.players.get('current').on('frame_rendered', function(){
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
