@@ -63,7 +63,7 @@ define([
 			console.log('posting audio',this,audio);
 			audio.save({
 				media_geo_lat:this.marker.getLatLng().lat,
-				media_geo_lat:this.marker.getLatLng().lng,
+				media_geo_lng:this.marker.getLatLng().lng,
 				tags:this.$el.find('#tags').val().split(","),
 				title:this.$el.find('#title').val()
 				//author attr etc

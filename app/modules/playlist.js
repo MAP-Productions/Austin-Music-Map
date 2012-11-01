@@ -154,7 +154,7 @@ function(App, Backbone,PlaylistMap)
 			});
 
 			//Map Update
-			this.playlistMap.updateMap();
+			if(!_.isUndefined(this.playlistMap)) this.playlistMap.updateMap();
 		},
 
 		onTimeUpdate : function( info )
