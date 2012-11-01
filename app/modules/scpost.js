@@ -33,10 +33,10 @@ define([
 			'click .btn-submit':'postAudio'
 		},
 		afterRender:function(){
-			$('.close-modal').hide();
+			
 			var _this=this;
 			_.delay(function(){
-				
+				$('.close-modal').hide();
 				var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				div =document.getElementById('scpost-map');
 				_this.map = new L.Map(div,{
@@ -55,7 +55,7 @@ define([
 				_this.map.on('zoomend', function(e) {
 					_this.marker.setLatLng(_this.map.getCenter());
 				});
-			},500);
+			},100);
 
 		},
 
