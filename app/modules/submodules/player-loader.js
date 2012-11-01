@@ -64,6 +64,7 @@ function(App, Backbone)
 					_this.model.renderPlaylist();
 					App.players.trigger('update_title', App.players.get('current').getFrameData() );
 				}, this.delay );
+
 				
 				this.hasPlayed = true;
 			}

@@ -9,12 +9,13 @@ define([
 	"modules/about",
 	"modules/contact",
 	"modules/map",
+	"modules/scpost",
 
 	// submodules
 	"modules/submodules/player-slider"
 ],
 
-function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
+function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSlider) {
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -22,6 +23,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 			"participate": "participate",
 			"about": "about",
 			"contact": "contact",
+			"scpost": "scpost",
 
 			// these may need to go to a different fxn
 			"playlist/:collectionID" : "goToStory",
@@ -42,6 +44,11 @@ function(App, Base, Playlist, Participate, About, Contact, Map, PlayerSlider) {
 				App.page = new Map.Model();
 //			});
 			initialize('map');
+		},
+
+		scpost:function(){
+			initialize('modal');
+			App.modal = new SCPost.Model();
 		},
 
 		participate : function() {
