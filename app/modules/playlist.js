@@ -109,6 +109,7 @@ function(App, Backbone, PlaylistMap, Helper )
 		playPause : function()
 		{
 			App.players.get('current').playPause();
+			this.$('.play-pause').toggleClass('paused');
 		},
 
 		onFrameChange : function( info )
