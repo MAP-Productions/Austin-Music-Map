@@ -50,7 +50,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		togglePlaylist: function(e)
 		{
-			$(e.target).toggleClass('open');
+			this.$('ul.playlist').toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
 
@@ -144,12 +144,16 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		onPlay : function()
 		{
+			var _this = this;
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
 			// needs a delay I guess
 			_.delay(function(){
 				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').getFrameData() );
 			},1000);
+			_.delay(function(){
+				_this.togglePlaylist();
+			},5000);
 		},
 
 		onFrameChange : function( info )
