@@ -33,7 +33,7 @@ define([
 						track: {
 							title: "Austin Music Map Story",
 							sharing: "public",
-							tag_list: "austinmusicmap,web_recording"
+							tag_list: "austinmusicmap"
 						}
 					}, function(track){
 						App.track=track;
