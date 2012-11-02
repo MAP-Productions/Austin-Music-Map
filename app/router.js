@@ -54,21 +54,21 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 		participate : function() {
 			initialize('modal');
 			App.modal = new Participate.Model();
-			//$('.selected').removeClass('selected'); 
+			//$('.selected').removeClass('selected');
 			//$('#nav-participate').addClass('selected');
 		},
 
 		about : function() {
 			initialize('modal');
 			App.modal = new About.Model();
-			//$('.selected').removeClass('selected'); 
+			//$('.selected').removeClass('selected');
 			//$('#nav-participate').addClass('selected');
 		},
 
 		contact : function() {
 			initialize('modal');
 			App.modal = new Contact.Model();
-			//$('.selected').removeClass('selected'); 
+			//$('.selected').removeClass('selected');
 			//$('#nav-participate').addClass('selected');
 		},
 

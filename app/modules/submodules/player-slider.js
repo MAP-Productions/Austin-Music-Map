@@ -51,6 +51,14 @@ function(App, Backbone, Loader)
 			$(window).bind('keyup.playerSlider', function(e){
 				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
+			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
+			$(window).resize(lazyResize);
+		},
+
+		resizeWindow : function()
+		{
+			console.log('resize the player!!');
+			App.players.get('current').fitWindow();
 		},
 
 		endEvents : function()
@@ -147,6 +155,7 @@ function(App, Backbone, Loader)
 						autoplay: false,
 						collection_mode: 'slideshow',
 						data: this.model.get('storyItems'),
+						id: this.model.get('collection_id'),
 						//url: 'http://alpha.zeega.org/api/items/49217',
 						div_id: projectID,
 						keyboard: false
@@ -217,12 +226,18 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
-			this.project.on('frame_rendered', this.updateYoutubeSize, this);
+			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 		},
 
 		updateYoutubeSize : function()
 		{
-			this.$('.visual-element-youtube').css('height', window.innerHeight );
+			var width = window.innerHeight*16/9;
+			var left = (window.innerWidth-width)/2;
+			this.$('.visual-element-youtube').css({
+				'height': window.innerHeight,
+				'width' : width,
+				'left' : left
+			});
 		}
 	});
 
