@@ -30,7 +30,7 @@ define([
 		latLng: new L.LatLng(30.266702991845,-97.745532989502),
 		submitted:false,
 		events:{
-			'click .btn-submit':'onSubmit'
+			'click #modal-btn':'onSubmit'
 		},
 		afterRender:function(){
 			
@@ -84,7 +84,7 @@ define([
 				});
 				this.$el.find('.form-content').hide();
 				this.$el.find('.thanks').show();
-				this.$el.find('.btn-submit').html("CLose");
+				this.$el.find('#modal-btn').removeClass('btn-submit').addClass('btn-close');
 				this.submitted=true;
 			}
 			
