@@ -81,12 +81,12 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 				// update current player
 				if( $('.player-slider').hasClass('view-remix') )
 				{
-					this.amm_player_type = 'remix',
+					this.amm_player_type = 'remix';
 					App.players.set('current', App.players.get('remix'));
 				}
 				else
 				{
-					this.amm_player_type = 'story',
+					this.amm_player_type = 'story';
 					App.players.set('current', App.players.get('story'));
 				}
 
@@ -160,7 +160,6 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		{
 			if(info)
 			{
-				this.updateURL()
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();
