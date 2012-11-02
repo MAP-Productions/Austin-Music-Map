@@ -90,7 +90,7 @@
 				left: 0;
 			}
 
-			&.time-remaining {
+			&.time-duration {
 				right: 0;
 			}
 		}
@@ -137,10 +137,18 @@
 			display: inline-block;
 			width: 22px;
 			height: 26px;
-			background: url(../img/icon_play-sm.png);
+			background: url(../img/icon_pause-sm.png);
 			background-size: 100% 100%;
 			background-repeat: no-repeat;
 			vertical-align: middle;
+
+			&.paused
+			{
+				background: url(../img/icon_play-sm.png);
+				background-size: 100% 100%;
+				background-repeat: no-repeat;
+				vertical-align: middle;		
+			}
 		}
 	}
 

@@ -3,11 +3,19 @@ define([
 	// Libs
 	"backbone",
 	"modules/playlistmap",
+<<<<<<< HEAD
 	
 	"modules/submodules/fuzz"
 ],
 
 function(App, Backbone,PlaylistMap,Fuzz)
+=======
+	// submodules
+	"modules/submodules/helpers"
+],
+
+function(App, Backbone, PlaylistMap, Helper )
+>>>>>>> 26f1c7383a296e353389982939a5bdd44b6e4fe7
 {
 
 	// Create a new module
@@ -16,12 +24,14 @@ function(App, Backbone,PlaylistMap,Fuzz)
 	Playlist.Views = Playlist.Views || {};
 
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
+
+		template : 'playlist',
+
 		initialize: function()
 		{
+			App.players.on('play', this.onPlay, this);
 			App.players.on('update_title', this.onFrameChange, this);
-			
 		},
-		template : 'playlist',
 
 		serialize : function(){ return this.model.toJSON(); },
 		
@@ -37,29 +47,31 @@ function(App, Backbone,PlaylistMap,Fuzz)
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause'
 		},
-		togglePlaylist: function(e) {
-			$(e.target).toggleClass('open');
 
+		togglePlaylist: function(e)
+		{
+			$(e.target).toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
+
 		goToTime: function(e)
 		{
 			//disabled for now
 			// for now this just updates the progress bar
-			console.log('go to time', this.template );
 			var progressBar = $(e.currentTarget);
 			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
 			this.$('.elapsed').css('width',percentClicked + '%');
 			
 		},
+
 		remixToggle : function()
 		{
-			console.log('toggle remix', App);
+
 			Fuzz.show();
+
 			if( App.players.get('story') && App.players.get('remix') )
 			{
 				// close off old player
-				console.log('pause old player?',App.players, App.players.get('current') );
 				App.players.get('current').pause();
 				this.endPlayerEvents();
 	
@@ -86,6 +98,8 @@ function(App, Backbone,PlaylistMap,Fuzz)
 			{
 				App.players.get('current').on('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
+				//auto advance
+				App.players.get('current').on('playback_ended', this.playerNext, this);
 			}
 		},
 
@@ -95,6 +109,7 @@ function(App, Backbone,PlaylistMap,Fuzz)
 			{
 				App.players.get('current').off('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
+				App.players.get('current').off('playback_ended', this.playerNext, this);
 			}
 		},
 
@@ -109,6 +124,17 @@ function(App, Backbone,PlaylistMap,Fuzz)
 		playPause : function()
 		{
 			App.players.get('current').playPause();
+			this.$('.play-pause').toggleClass('paused');
+		},
+
+		onPlay : function()
+		{
+			App.players.off('update_title', this.onFrameChange, this);
+			this.startPlayerEvents();
+			// needs a delay I guess
+			_.delay(function(){
+				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').getFrameData() );
+			},1000);
 		},
 
 		onFrameChange : function( info )
@@ -144,12 +170,11 @@ function(App, Backbone,PlaylistMap,Fuzz)
 
 		updatePlaylistDropdown : function()
 		{
-			console.log('***** on frame change', App.players.get('current').getProjectData() );
 			this.$('.playlist-container .playlist').empty();
 			_.each( App.players.get('current').getProjectData().frames, function(frame){
 				var isActive = frame.id == App.players.get('current').getFrameData().id;
 				var LIView = new PlaylistItemView({
-					model: new Backbone.Model( _.extend(frame, {is_active:isActive? '':'pause'}) ),
+					model: new Backbone.Model( _.extend(frame, {is_active:isActive? 'pause':''}) ),
 					attributes : { 'class': isActive? 'active':'' }
 				});
 				this.$('.playlist-container .playlist').append( LIView.el );
@@ -163,23 +188,15 @@ function(App, Backbone,PlaylistMap,Fuzz)
 		onTimeUpdate : function( info )
 		{
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
-			this.$('.time-elapsed').text( formatTime(info.current_time) );
-			this.$('.time-remaining').text( "-" + formatTime(info.duration - info.current_time) );
-
-			function formatTime(secs) {
-				var minutes = Math.floor(secs/60);
-				var seconds = Math.floor(secs - (minutes * 60) );
-
-				if (seconds < 10) { seconds = "0"+seconds; }
-
-				return minutes + ":" + seconds;
-			}
+			this.$('.time-elapsed').text( Helper.convertTime(info.current_time) );
+			this.$('.time-duration').text( Helper.convertTime(info.duration) );
 		},
 
 		clearElapsed : function()
 		{
 			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		},
+
 		scrollTitles : function() {
 			var areaWidth = this.$('.now-playing').width();
 
@@ -221,7 +238,6 @@ function(App, Backbone,PlaylistMap,Fuzz)
 
 		onClickPlaylistItem : function()
 		{
-			console.log('clicked playlist item:', this);
 			App.players.get('current').cueFrame( this.model.id );
 			return this;
 		},

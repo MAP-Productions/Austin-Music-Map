@@ -24,7 +24,6 @@ function(App, Backbone, Playlist, Search )
 
 		afterRender : function()
 		{
-			//this.showPlaylistMenu();
 			App.trigger('base_layout_ready');
 		},
 
@@ -67,10 +66,10 @@ function(App, Backbone, Playlist, Search )
 
 		showPlaylistMenu : function( model )
 		{
-			var playlistView = new Playlist.Views.PlaylistView({model:model});
-			this.setView('#controlsLeft .controls-inner', playlistView );
+			this.playlistView = new Playlist.Views.PlaylistView({model:model});
+			this.setView('#controlsLeft .controls-inner', this.playlistView );
 			this.$('#controlsLeft').hide('slide',{direction:'right'},1000);
-			playlistView.render();
+			this.playlistView.render();
 			this.expandLeftMenu();
 		},
 

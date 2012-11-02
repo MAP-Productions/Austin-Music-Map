@@ -67,29 +67,27 @@ function(App, Backbone, Loader)
 			{
 				this.set( JSON.parse(sessionStorage[key] ) );
 				parseResponse(this);
-				//this.renderPlaylist();
 			}
 			else
 			{
 				this.fetch().success(function(res){
 					sessionStorage[ key ] = JSON.stringify(res);
 					parseResponse(_this);
-					//_this.renderPlaylist();
 				});
 			}
 		},
 
 		renderPlaylist : function()
 		{
-			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
-			this.ready = true;
+			if(this.ready)
+			{
+				App.BaseLayout.showPlaylistMenu( this );
+			}
 		},
 
 		updatePlaylistTitle : function()
 		{
 			this.set('playlist_title', this.collectionModel.get('title'));
-			if(this.ready) App.BaseLayout.showPlaylistMenu( this );
-			this.ready = true;
 		},
 
 		onProjectLoaded : function()
@@ -219,6 +217,12 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
+			this.project.on('frame_rendered', this.updateYoutubeSize, this);
+		},
+
+		updateYoutubeSize : function()
+		{
+			this.$('.visual-element-youtube').css('height', window.innerHeight );
 		}
 	});
 
