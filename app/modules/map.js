@@ -1,12 +1,13 @@
 define([
 	"app",
 	// Libs
-	"backbone"
+	"backbone",
 	
+	"modules/submodules/fuzz"
 
 	
 
-], function(App, Backbone) {
+], function(App, Backbone, Fuzz) {
 	
 	var Map = App.module();
 
@@ -17,6 +18,7 @@ define([
 		},
 
 		initialize: function() {
+			window.fuzz=Fuzz;
 			console.log('init map');
 			var mapCollection = new MapCollection();
 			var _this=this;
@@ -80,7 +82,7 @@ define([
 			
 
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 15, attribution: ''});
+				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
 			this.map = new L.Map(this.el,{
 				// dragging:false,
@@ -444,7 +446,7 @@ define([
 			var uniq=Math.floor(Math.random()*1000);
 			console.log(layer);
 			layer.on("mouseover",function(e){
-				layer.setStyle({fillOpacity:0.2});
+				layer.setStyle({fillOpacity:0.5});
 			/*
 				
 				var latlng = this.getCenter();
@@ -477,7 +479,7 @@ define([
 			});
 			layer.on("mouseout",function(e){
 				
-					layer.setStyle({fillOpacity:0.8});
+					layer.setStyle({fillOpacity:0.2});
 					//$('#popup-'+uniq).remove();
 				
 			});
@@ -491,11 +493,11 @@ define([
 			var layer = L.geoJson(Neighborhoods.geojson,{
 				style: function(feature){
 					return {
-						//color:feature.properties.color,
-						color: 'black',
+						color:feature.properties.color,
+						//color: 'black',
 						weight: 1,
 						opacity: 0,
-						fillOpacity: 0.8
+						fillOpacity: 0.2
 					};
 				},
 				onEachFeature:onEachFeature
@@ -519,7 +521,7 @@ define([
 		
 		},
 		
-		url:'http://alpha.zeega.org/api/items/50229/items',
+		url:'http://staging.zeega.org/api/items/50229/items',
 		parse: function(response){
 			console.log('returned collection');
 			return response.items;

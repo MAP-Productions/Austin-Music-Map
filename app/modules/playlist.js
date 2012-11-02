@@ -2,10 +2,12 @@ define([
 	"app",
 	// Libs
 	"backbone",
-	"modules/playlistmap"
+	"modules/playlistmap",
+	
+	"modules/submodules/fuzz"
 ],
 
-function(App, Backbone,PlaylistMap)
+function(App, Backbone,PlaylistMap,Fuzz)
 {
 
 	// Create a new module
@@ -53,6 +55,7 @@ function(App, Backbone,PlaylistMap)
 		remixToggle : function()
 		{
 			console.log('toggle remix', App);
+			Fuzz.show();
 			if( App.players.get('story') && App.players.get('remix') )
 			{
 				// close off old player
