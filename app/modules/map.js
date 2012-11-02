@@ -188,7 +188,7 @@ define([
 								});
 
 
-								console.log(feature.properties);
+							
 								var featuredView = new Map.Views.Featured({model:new Backbone.Model(feature.properties)});
 								featuredView.render();
 								$('#popup-'+feature.id).append(featuredView.el);
@@ -215,10 +215,12 @@ define([
 
 								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
 								else{
-									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_lat+",%20"+feature.properties.media_geo_lng+"&fov=90&heading=235&pitch=10&sensor=false";
+									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_latitude+",%20"+feature.properties.media_geo_longitude+"&fov=90&heading=235&pitch=10&sensor=false";
 								}
-
+							
 								
+
+
 								largeImg.onload = function() {
 										
 									var i=0;
@@ -451,7 +453,7 @@ define([
 
 		var onEachFeature=function(feature,layer){
 			var uniq=Math.floor(Math.random()*1000);
-			console.log(layer);
+			
 			layer.on("mouseover",function(e){
 				layer.setStyle({fillOpacity:0.5});
 			/*
@@ -530,7 +532,7 @@ define([
 		
 		url:'http://alpha.zeega.org/api/items/50229/items',
 		parse: function(response){
-			console.log('returned collection');
+			
 			return response.items;
 		}
 
