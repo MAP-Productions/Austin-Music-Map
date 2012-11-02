@@ -13,7 +13,8 @@ function(App, Backbone)
 
 	Fuzz.show = function(loadingText) {
 		var overlay = $("<div></div>").addClass('fuzz');
-		document.getElementById('amm-static').play();
+		var soundId=Math.floor(1+5*Math.random());
+		document.getElementById('amm-static-'+soundId).play();
 		overlay.appendTo($('body')).fadeIn('slow',function(){$(this).fadeOut('slow');});
 	};
 
