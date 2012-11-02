@@ -80,19 +80,20 @@ define([
 			
 
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
+				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 15, attribution: ''});
 				
 			this.map = new L.Map(this.el,{
-				dragging:false,
+				// dragging:false,
 				touchZoom:false,
 				scrollWheelZoom:false,
 				doubleClickZoom:false,
 				boxZoom:false,
 				zoomControl:false
 			});
-			this.map.setView(this.latLng, 15).addLayer(cloudmade).addLayer(homemade);
+			this.map.setView(this.latLng, 12).addLayer(cloudmade).addLayer(homemade);
 			this.map.featureOn=false;
-			this.loadItems();
+			
+			this.loadNeighborhoods();
 			
 		},
 		clearItems:function(){
@@ -202,7 +203,13 @@ define([
 								overlay.appendTo($('body'));
 								var largeImg = document.createElement('img');
 		
-								largeImg.src = feature.properties.uri;
+
+								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
+								else{
+									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_lat+",%20"+feature.properties.media_geo_lng+"&fov=90&heading=235&pitch=10&sensor=false";
+								}
+
+								
 								largeImg.onload = function() {
 										
 									var i=0;
@@ -351,7 +358,7 @@ define([
 												if(d>radius&&d<radius+50){
 													$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 													map.featureOn=false;
-												}									
+												}								
 											});
 										}
 										i=parseFloat(i)+0.015;
@@ -390,7 +397,116 @@ define([
 				}
 			}).addTo(map);
 		
-		}
+		},
+
+		loadNeighborhoods:function(){
+	
+		var map=this.map;
+
+		L.geoJson.prototype.getCenter=function(){
+			var feature =this.feature;
+			var lat=0,lng=0,counter=0;
+			_.each(feature.geometry.coordinates[0],function(coord){
+				
+				//if(lat!=0) lat=Math.min(coord[1],lat);
+				//else lat=coord[1];
+				lat+=coord[1];
+				lng+=coord[0];
+				counter++;
+			});
+			return new L.LatLng(lat/counter,lng/counter);
+		};
+
+		L.geoJson.prototype.getBounds=function(){
+			var feature=this.feature;
+			var nelat=0,nelng=0,swlat=0,swlng=0,counter=0;
+			_.each(feature.geometry.coordinates[0],function(coord){
+
+				if(swlng!==0) swlng=Math.min(coord[0],swlng);
+				else swlng=coord[0];
+
+				if(nelng!==0) nelng=Math.max(coord[0],nelng);
+				else nelng=coord[0];
+
+				if(swlat!==0) swlat=Math.min(coord[1],swlat);
+				else swlat=coord[1];
+
+				if(nelat!==0) nelat=Math.max(coord[1],nelat);
+				else nelat=coord[1];
+
+			});
+			var southWest = new L.LatLng(swlat, swlng),
+			northEast = new L.LatLng(nelat, nelng);
+			return new L.LatLngBounds(southWest, northEast);
+		};
+
+		var onEachFeature=function(feature,layer){
+			var uniq=Math.floor(Math.random()*1000);
+			console.log(layer);
+			layer.on("mouseover",function(e){
+				layer.setStyle({fillOpacity:0.2});
+			/*
+				
+				var latlng = this.getCenter();
+				var layerPoint=map.latLngToContainerPoint(latlng);
+				var popup = $("<div></div>", {
+					id: "popup-" + uniq,
+					css: {
+						position: "absolute",
+						top: (layerPoint.y-50)+"px",
+						left: (layerPoint.x-50)+"px",
+						zIndex: -1,
+						cursor: "pointer"
+	
+					}
+				});
+				// Insert a headline into that popup
+				var hed = $("<div></div>", {
+				text: feature.properties.title,
+				css: {fontSize: "25px", marginBottom: "3px",color:feature.properties.color}
+				}).appendTo(popup);
+				
+				// Add the popup to the map
+				popup.appendTo(".leaflet-overlay-pane");
+				*/
+
+			});
+			layer.on("click",function(){
+				map.fitBounds(layer.getBounds());
+
+			});
+			layer.on("mouseout",function(e){
+				
+					layer.setStyle({fillOpacity:0.8});
+					//$('#popup-'+uniq).remove();
+				
+			});
+
+
+		};
+		//_.each(AustinNeighborhoods.geojson,function(poly){
+			//console.log(poly.properties.color);
+
+
+			var layer = L.geoJson(Neighborhoods.geojson,{
+				style: function(feature){
+					return {
+						//color:feature.properties.color,
+						color: 'black',
+						weight: 1,
+						opacity: 0,
+						fillOpacity: 0.8
+					};
+				},
+				onEachFeature:onEachFeature
+			}).addTo(map);
+			this.loadItems();
+		//});
+
+
+
+	}
+
 	});
 
 
