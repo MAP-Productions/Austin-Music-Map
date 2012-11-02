@@ -3,19 +3,16 @@ define([
 	// Libs
 	"backbone",
 	"modules/playlistmap",
-<<<<<<< HEAD
+	// submodules
+	"modules/submodules/helpers",
 	
 	"modules/submodules/fuzz"
+
+	
 ],
 
-function(App, Backbone,PlaylistMap,Fuzz)
-=======
-	// submodules
-	"modules/submodules/helpers"
-],
+function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
-function(App, Backbone, PlaylistMap, Helper )
->>>>>>> 26f1c7383a296e353389982939a5bdd44b6e4fe7
 {
 
 	// Create a new module

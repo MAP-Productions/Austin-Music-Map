@@ -521,7 +521,7 @@ define([
 		
 		},
 		
-		url:'http://staging.zeega.org/api/items/50229/items',
+		url:'http://alpha.zeega.org/api/items/50229/items',
 		parse: function(response){
 			console.log('returned collection');
 			return response.items;
