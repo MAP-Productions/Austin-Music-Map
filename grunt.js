@@ -224,11 +224,13 @@ module.exports = function(grunt) {
                 copy: {
                         dist: {
                                 files: {
-                                        "dist/release/img/": "assets/img/**"
-                                }
-                                , options: { "basePath" : "/", "flatten" : true }
+                                        "dist/release/img/": "assets/img/**",
+                                        "dist/release/audio/": "assets/audio/**"
+
+                                },
+                                options: { "basePath" : "/", "flatten" : true }
                         }
-                },
+                }
 	});
 
 	// The debug task will remove all contents inside the dist/ folder, lint
