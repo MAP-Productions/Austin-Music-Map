@@ -1,0 +1,26 @@
+[class^="zicon-"]
+{
+	display: inline-block;
+	width: 12px;
+	height: 10px;
+	vertical-align: text-top;
+	background-image: url(../img/sprite_media-icons.png);
+	background-position: 0px 0px;
+	background-repeat: no-repeat;
+	background-size: auto 100%;
+}
+
+.zicon-mixin(@xpos,@ypos)
+{
+	background-position: (@xpos*-20px)	(@ypos*-20px);
+}
+
+.zicon-video
+{
+	background-position: 0 0;
+}
+.zicon-audio
+{
+	background-position: -12px 0;
+}
+
