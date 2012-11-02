@@ -92,10 +92,11 @@ define([
 				boxZoom:false,
 				zoomControl:false
 			});
-			this.map.setView(this.latLng, 12).addLayer(cloudmade).addLayer(homemade);
+			this.map.setView(this.latLng, 13).addLayer(cloudmade).addLayer(homemade);
 			this.map.featureOn=false;
-			
-			this.loadNeighborhoods();
+			this.loadItems();
+			//This loads neighborhood polygons
+			//this.loadNeighborhoods();
 			
 		},
 		clearItems:function(){
