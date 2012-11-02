@@ -51,6 +51,14 @@ function(App, Backbone, Loader)
 			$(window).bind('keyup.playerSlider', function(e){
 				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
+			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
+			$(window).resize(lazyResize);
+		},
+
+		resizeWindow : function()
+		{
+			console.log('resize the player!!');
+			App.players.get('current').fitWindow();
 		},
 
 		endEvents : function()
@@ -218,7 +226,7 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
-			this.project.on('frame_rendered', this.updateYoutubeSize, this);
+			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 		},
 
 		updateYoutubeSize : function()
