@@ -180,6 +180,12 @@ define([
 						.on('click',function(e){
 							if(!map.featureOn){
 
+								$(window).bind('keyup.playerSlider', function(e){
+									if(e.which == 27){
+										$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
+										map.featureOn=false;
+									}
+								});
 
 
 								console.log(feature.properties);
@@ -361,7 +367,7 @@ define([
 												if(d>radius&&d<radius+50){
 													$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 													map.featureOn=false;
-												}								
+												}
 											});
 										}
 										i=parseFloat(i)+0.015;
@@ -372,7 +378,7 @@ define([
 							}else{
 							
 								var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-								
+								$(window).unbind('keyup.mapOverlay');
 								if(d>100&&d<150){
 									$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 									map.featureOn=false;
