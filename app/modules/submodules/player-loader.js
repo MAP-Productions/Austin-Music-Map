@@ -44,7 +44,8 @@ function(App, Backbone)
 
 		addLoadingItem : function( layerdata )
 		{
-			this.$('.layer-loading').append('<li class="unloaded" data-id="'+ layerdata.id +'"><div class="col-left"></div>'+ layerdata.attr.title + ' by '+ htmlDecode(layerdata.attr.media_creator_username) +'</li>');
+			console.log(layerdata)
+			this.$('.layer-loading').append('<li class="unloaded" data-id="'+ layerdata.id +'"><div class="col-left"><i class="zicon-'+ layerdata.attr.media_type.toLowerCase() +' loader-media-icon"></i></div>'+ layerdata.attr.title + ' by '+ htmlDecode(layerdata.attr.media_creator_username) +'</li>');
 		},
 
 		onLayerLoaded : function( layerdata )
@@ -59,7 +60,7 @@ function(App, Backbone)
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
-					_this.$el.fadeOut();
+					_this.$el.fadeOut(function(){ _this.remove(); });
 					_this.player.play();
 					_this.model.renderPlaylist();
 					App.players.trigger('play');

@@ -22,6 +22,8 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
 
+		amm_player_type : 'story',
+
 		template : 'playlist',
 
 		initialize: function()
@@ -48,7 +50,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		togglePlaylist: function(e)
 		{
-			$(e.target).toggleClass('open');
+			this.$('ul.playlist').toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
 
@@ -77,17 +79,32 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 				$('.player-slider').toggleClass('view-remix');
 
 				// update current player
-				if( $('.player-slider').hasClass('view-remix') ) App.players.set('current', App.players.get('remix'));
-				else App.players.set('current', App.players.get('story'));
-				
+				if( $('.player-slider').hasClass('view-remix') )
+				{
+					this.amm_player_type = 'remix',
+					App.players.set('current', App.players.get('remix'));
+				}
+				else
+				{
+					this.amm_player_type = 'story',
+					App.players.set('current', App.players.get('story'));
+				}
+
 				// start new player events
 				this.startPlayerEvents();
 				this.clearElapsed();
 				this.onFrameChange(App.players.get('current').getFrameData() );
 
 				App.players.get('current').play();
+
+				this.updateURL();
 			}
 			return false;
+		},
+
+		updateURL : function()
+		{
+			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
 		},
 
 		startPlayerEvents : function()
@@ -127,18 +144,23 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		onPlay : function()
 		{
+			var _this = this;
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
 			// needs a delay I guess
 			_.delay(function(){
 				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').getFrameData() );
 			},1000);
+			_.delay(function(){
+				_this.togglePlaylist();
+			},5000);
 		},
 
 		onFrameChange : function( info )
 		{
 			if(info)
 			{
+				this.updateURL()
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();
@@ -229,7 +251,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		serialize : function(){ return this.model.toJSON(); },
 
 		events : {
-			'click .play-pause-frame' : 'onClickPlaylistItem',
+			'click' : 'onClickPlaylistItem',
 			'mouseenter' : 'scrollTitle',
 			'mouseleave' : 'stopScrollTitle'
 		},
@@ -237,7 +259,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		onClickPlaylistItem : function()
 		{
 			App.players.get('current').cueFrame( this.model.id );
-			return this;
+			return false;
 		},
 		runScrollTitle : false,
 		scrollTitle: function(e) {
