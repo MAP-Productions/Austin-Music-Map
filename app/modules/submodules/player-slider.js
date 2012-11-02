@@ -223,7 +223,13 @@ function(App, Backbone, Loader)
 
 		updateYoutubeSize : function()
 		{
-			this.$('.visual-element-youtube').css('height', window.innerHeight );
+			var width = window.innerHeight*16/9;
+			var left = (window.innerWidth-width)/2;
+			this.$('.visual-element-youtube').css({
+				'height': window.innerHeight,
+				'width' : width,
+				'left' : left
+			});
 		}
 	});
 
