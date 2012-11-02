@@ -60,7 +60,7 @@ define([
 		},
 
 		onSubmit:function(){
-			if(this.submitted){
+			if(this.submitted||_.isUndefined(App.track)){
 				App.router.navigate('',true);
 			}
 			else{
