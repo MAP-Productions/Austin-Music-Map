@@ -50,7 +50,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		togglePlaylist: function(e)
 		{
-			$(e.target).toggleClass('open');
+			this.$('ul.playlist').toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
 
@@ -81,12 +81,12 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 				// update current player
 				if( $('.player-slider').hasClass('view-remix') )
 				{
-					this.amm_player_type = 'remix',
+					this.amm_player_type = 'remix';
 					App.players.set('current', App.players.get('remix'));
 				}
 				else
 				{
-					this.amm_player_type = 'story',
+					this.amm_player_type = 'story';
 					App.players.set('current', App.players.get('story'));
 				}
 
@@ -144,19 +144,22 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		onPlay : function()
 		{
+			var _this = this;
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
 			// needs a delay I guess
 			_.delay(function(){
 				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').getFrameData() );
 			},1000);
+			_.delay(function(){
+				_this.togglePlaylist();
+			},5000);
 		},
 
 		onFrameChange : function( info )
 		{
 			if(info)
 			{
-				this.updateURL()
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();
