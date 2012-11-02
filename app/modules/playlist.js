@@ -22,6 +22,8 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 	Playlist.Views.PlaylistView = Backbone.LayoutView.extend({
 
+		amm_player_type : 'story',
+
 		template : 'playlist',
 
 		initialize: function()
@@ -77,17 +79,32 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 				$('.player-slider').toggleClass('view-remix');
 
 				// update current player
-				if( $('.player-slider').hasClass('view-remix') ) App.players.set('current', App.players.get('remix'));
-				else App.players.set('current', App.players.get('story'));
-				
+				if( $('.player-slider').hasClass('view-remix') )
+				{
+					this.amm_player_type = 'remix',
+					App.players.set('current', App.players.get('remix'));
+				}
+				else
+				{
+					this.amm_player_type = 'story',
+					App.players.set('current', App.players.get('story'));
+				}
+
 				// start new player events
 				this.startPlayerEvents();
 				this.clearElapsed();
 				this.onFrameChange(App.players.get('current').getFrameData() );
 
 				App.players.get('current').play();
+
+				this.updateURL();
 			}
 			return false;
+		},
+
+		updateURL : function()
+		{
+			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
 		},
 
 		startPlayerEvents : function()
@@ -139,6 +156,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		{
 			if(info)
 			{
+				this.updateURL()
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();

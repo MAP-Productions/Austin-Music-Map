@@ -147,6 +147,7 @@ function(App, Backbone, Loader)
 						autoplay: false,
 						collection_mode: 'slideshow',
 						data: this.model.get('storyItems'),
+						id: this.model.get('collection_id'),
 						//url: 'http://alpha.zeega.org/api/items/49217',
 						div_id: projectID,
 						keyboard: false
