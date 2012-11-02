@@ -229,7 +229,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		serialize : function(){ return this.model.toJSON(); },
 
 		events : {
-			'click .play-pause-frame' : 'onClickPlaylistItem',
+			'click' : 'onClickPlaylistItem',
 			'mouseenter' : 'scrollTitle',
 			'mouseleave' : 'stopScrollTitle'
 		},
@@ -237,7 +237,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		onClickPlaylistItem : function()
 		{
 			App.players.get('current').cueFrame( this.model.id );
-			return this;
+			return false;
 		},
 		runScrollTitle : false,
 		scrollTitle: function(e) {
