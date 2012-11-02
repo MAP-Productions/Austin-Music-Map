@@ -33,7 +33,8 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		serialize : function(){ return this.model.toJSON(); },
 		
 		afterRender: function(){
-			this.playlistMap = new PlaylistMap.Model();
+			var _this=this;
+			_.delay(function(){_this.playlistMap = new PlaylistMap.Model();},500);
 		},
 
 		events : {
