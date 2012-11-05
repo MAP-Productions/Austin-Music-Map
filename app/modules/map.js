@@ -565,10 +565,10 @@ define([
 		getMatches:function(candidates){
 			var matches = [];
 			var models = this.models;
-			
 			_.each(_.intersection(this.keys,candidates),function(key){
-				matches.push(_.find(models, function(model){ return key == model.get('title').toLowerCase(); }));
+				matches.push(_.find(models, function(model){ return key == model.get('attributes').tags.toLowerCase(); }));
 			});
+
 			return matches;
 		},
 		
