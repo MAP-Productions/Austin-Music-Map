@@ -121,7 +121,7 @@ define([
 
 			function onEachFeature(feature, layer) {
 				layer.on("mouseover", function (e) {
-					layer.projectLatlngs();
+					//layer.projectLatlngs();
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
 					var x=layer._point.x-radius;
@@ -361,7 +361,7 @@ define([
 												if(d>radius&&d<radius+50){
 													$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 													map.featureOn=false;
-												}								
+												}
 											});
 										}
 										i=parseFloat(i)+0.015;
@@ -389,6 +389,15 @@ define([
 				
 
 				pointToLayer: function (feature, latlng) {
+					var ico = L.divIcon({
+						className : 'custom-icon',
+						html: '<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>',
+						iconAnchor: new L.Point(10,10)
+					});
+
+					return L.marker(latlng,{icon:ico});
+
+					/*
 					return L.circleMarker(latlng, {
 						radius: 8,
 						fillColor: "blue",
@@ -397,6 +406,7 @@ define([
 						opacity: 1,
 						fillOpacity: 0.8
 					});
+*/
 				}
 			}).addTo(map);
 		
