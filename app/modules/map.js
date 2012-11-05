@@ -13,6 +13,7 @@ define([
 
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
+		collectionId: 53567,
 		defaults: {
 			title: 'Map'
 		},
@@ -20,7 +21,7 @@ define([
 		initialize: function() {
 			window.fuzz=Fuzz;
 			console.log('init map');
-			var mapCollection = new MapCollection();
+			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
 			App.playlistCollection = new PlaylistCollection();
 			App.playlistCollection.fetch({success:function(collection,response){
@@ -525,12 +526,15 @@ define([
 	var MapCollection = Backbone.Collection.extend({
 
 	
-		initialize:function(){
-			
+		initialize:function(options){
+			this.id=options.id;
 		
 		},
 		
-		url:'http://alpha.zeega.org/api/items/50229/items',
+		url: function(){
+			return 'http://alpha.zeega.org/api/items/'+this.id+'/items';
+		},
+
 		parse: function(response){
 			
 			return response.items;
