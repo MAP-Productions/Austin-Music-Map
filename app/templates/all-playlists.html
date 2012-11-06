@@ -3,7 +3,6 @@
 	<ul class="playlists">
 
 		<% _.each(playlists,function(playlist){ %>
-
 			<li><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,15) %><% if(playlist.title.length > 15){ %>…<% } %></a></li>
 		<% }) %>
 
