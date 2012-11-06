@@ -4,12 +4,14 @@ define([
 	"backbone",
 	"modules/playlist",
 	"modules/submodules/search-menu",
+	"modules/submodules/all-playlists",
+
 	//plugins
 	"plugins/jquery-ui"
 
 ],
 
-function(App, Backbone, Playlist, Search )
+function(App, Backbone, Playlist, Search, AllPlaylists )
 {
 
 	var BaseLayout = Backbone.Layout.extend({
@@ -47,7 +49,8 @@ function(App, Backbone, Playlist, Search )
 			switch(next)
 			{
 				case 'map':
-					this.showSearchMenu();
+					//this.showSearchMenu();
+					this.showAllPlaylists();
 					break;
 				case 'playlist':
 					//this.showPlaylistMenu();
@@ -61,6 +64,15 @@ function(App, Backbone, Playlist, Search )
 			this.setView('#controlsLeft .controls-inner', searchView );
 			this.$('#controlsLeft').hide('slide',{direction:'right'});
 			searchView.render();
+			this.expandLeftMenu();
+		},
+
+		showAllPlaylists: function()
+		{
+			var allPlaylistsView = new AllPlaylists.View();
+			this.setView('#controlsLeft .controls-inner', allPlaylistsView );
+			this.$('#controlsLeft').hide('slide',{direction:'right'});
+			allPlaylistsView.render();
 			this.expandLeftMenu();
 		},
 
