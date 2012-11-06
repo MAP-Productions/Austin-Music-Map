@@ -1,9 +1,11 @@
 <a class="text-link toggle-playlists" href="#">playlists</a>
 <div class="all-playlists-container" style="display: none;">
 	<ul class="playlists">
-		<li>Drums</li>
-		<li>Hole in the Wall</li>
-		<li>Train</li>
-		<li>Some thing</li>
+
+		<% _.each(playlists,function(playlist){ %>
+
+			<li><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,15) %><% if(playlist.title.length > 15){ %>…<% } %></a></li>
+		<% }) %>
+
 	</ul>
 </div>

@@ -3,22 +3,43 @@
 	border-right: 1px solid rgba(147, 149, 152, 0.9);
 	border-bottom: 1px solid rgba(147, 149, 152, 0.9);
 	border-radius: 0 6px 6px 6px;
+	max-height:300px;
+	overflow-y:auto;
+	overflow-x:hidden;
 	position: absolute;
 	left: 0;
 	top: 52px;
 	width: 180px;
 	background: rgba(147, 149, 152, 0.9);
-	overflow: hidden;
 
 	ul.playlists {
 		margin: 15px;
 
-		li {
-			cursor: pointer;
-			font-size: 0.8em;
+		li
+		{
+			font-size: 0.7em;
 			margin: 10px 0;
-			line-height: 1.2em;
+			line-height: 1em;
+			text-shadow: 0 -1px #BBB;
 			width: 1024px;
+		}
+
+		a:link
+		{
+			text-decoration: none;
+			color:#222;
+			transition: color 0.5s;
+			-moz-transition: color 0.5s; /* Firefox 4 */
+			-webkit-transition: color 0.5s; /* Safari and Chrome */
+			-o-transition: color 0.5s; /* Opera */
+		}
+		a:hover
+		{
+			color:#f26532;
+			transition: color 0.5s;
+			-moz-transition: color 0.5s; /* Firefox 4 */
+			-webkit-transition: color 0.5s; /* Safari and Chrome */
+			-o-transition: color 0.5s; /* Opera */
 		}
 	}
 }
