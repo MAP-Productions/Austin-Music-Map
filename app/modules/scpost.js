@@ -100,7 +100,7 @@ define([
 			media_type:'Audio',
 			layer_type:'Audio',
 			child_items_count:0,
-			archive:'Soundcloud',
+			archive:'SoundCloud',
 			enabled: 1,
 			published:1,
 			user_id:1311
