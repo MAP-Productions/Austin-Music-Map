@@ -49,7 +49,7 @@ define([
 				boxZoom:false,
 				zoomControl:false
 			});
-			this.map.setView(this.latLng, 11).addLayer(cloudmade).addLayer(homemade);
+			this.map.setView(this.latLng, 10).addLayer(cloudmade).addLayer(homemade);
 			this.map.featureOn=false;
 		},
 		updateMap:function(){
@@ -57,8 +57,11 @@ define([
 			console.log("UPDATE MAP WID DIS",layer);
 			if(!_.isUndefined(this.marker))this.map.removeLayer(this.marker);
 			if(!_.isUndefined(layer)&&!_.isUndefined(layer.attr)&&layer.attr.media_geo_latitude>0){
-				var latlng = new L.LatLng(layer.attr.media_geo_latitude,layer.attr.media_geo_longitude);
 
+				var latlng = new L.LatLng(layer.attr.media_geo_latitude,layer.attr.media_geo_longitude);
+			
+				
+				this.map.setView(latlng,14,true);
 				this.marker = L.circleMarker(latlng, {
 						radius: 8,
 						fillColor: "blue",
@@ -67,6 +70,7 @@ define([
 						opacity: 1,
 						fillOpacity: 0.8
 					}).addTo(this.map);
+				console.log(this.marker);
 			}
 			
 		}

@@ -41,12 +41,12 @@
 
 		<!-- Sound Effects. -->
 
-	<audio id='amm-static-1' src="assets/audio/static/static1.mp3" ></audio>
-	<audio id='amm-static-2' src="assets/audio/static/static2.mp3" ></audio>
-	<audio id='amm-static-3' src="assets/audio/static/static3.mp3" ></audio>
-	<audio id='amm-static-4' src="assets/audio/static/static4.mp3" ></audio>
-	<audio id='amm-static-5' src="assets/audio/static/static5.mp3" ></audio>
+	<audio id='amm-static-1' src="assets/audio/static1.mp3" ></audio>
+	<audio id='amm-static-2' src="assets/audio/static2.mp3" ></audio>
+	<audio id='amm-static-3' src="assets/audio/static3.mp3" ></audio>
+	<audio id='amm-static-4' src="assets/audio/static4.mp3" ></audio>
+	<audio id='amm-static-5' src="assets/audio/static5.mp3" ></audio>
 
-	
+
 </body>
 </html>

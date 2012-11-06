@@ -13,6 +13,7 @@ define([
 
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
+		collectionId: 53567,
 		defaults: {
 			title: 'Map'
 		},
@@ -20,7 +21,7 @@ define([
 		initialize: function() {
 			window.fuzz=Fuzz;
 			console.log('init map');
-			var mapCollection = new MapCollection();
+			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
 			App.playlistCollection = new PlaylistCollection();
 			App.playlistCollection.fetch({success:function(collection,response){
@@ -191,9 +192,15 @@ define([
 						.on('click',function(e){
 							if(!map.featureOn){
 
+								$(window).bind('keyup.playerSlider', function(e){
+									if(e.which == 27){
+										$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
+										map.featureOn=false;
+									}
+								});
 
 
-								console.log(feature.properties);
+							
 								var featuredView = new Map.Views.Featured({model:new Backbone.Model(feature.properties)});
 								featuredView.render();
 								$('#popup-'+feature.id).append(featuredView.el);
@@ -220,10 +227,12 @@ define([
 
 								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
 								else{
-									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_lat+",%20"+feature.properties.media_geo_lng+"&fov=90&heading=235&pitch=10&sensor=false";
+									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_latitude+",%20"+feature.properties.media_geo_longitude+"&fov=90&heading=235&pitch=-10&sensor=false";
 								}
-
+							
 								
+
+
 								largeImg.onload = function() {
 										
 									var i=0;
@@ -383,7 +392,7 @@ define([
 							}else{
 							
 								var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-								
+								$(window).unbind('keyup.mapOverlay');
 								if(d>100&&d<150){
 									$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
 									map.featureOn=false;
@@ -466,7 +475,7 @@ define([
 
 		var onEachFeature=function(feature,layer){
 			var uniq=Math.floor(Math.random()*1000);
-			console.log(layer);
+			
 			layer.on("mouseover",function(e){
 				layer.setStyle({fillOpacity:0.5});
 			/*
@@ -538,14 +547,17 @@ define([
 	var MapCollection = Backbone.Collection.extend({
 
 	
-		initialize:function(){
-			
+		initialize:function(options){
+			this.id=options.id;
 		
 		},
 		
-		url:'http://alpha.zeega.org/api/items/50229/items',
+		url: function(){
+			return 'http://alpha.zeega.org/api/items/'+this.id+'/items';
+		},
+
 		parse: function(response){
-			console.log('returned collection');
+			
 			return response.items;
 		}
 
@@ -574,10 +586,10 @@ define([
 		getMatches:function(candidates){
 			var matches = [];
 			var models = this.models;
-			
 			_.each(_.intersection(this.keys,candidates),function(key){
-				matches.push(_.find(models, function(model){ return key == model.get('title').toLowerCase(); }));
+				matches.push(_.find(models, function(model){ return key == model.get('attributes').tags.toLowerCase(); }));
 			});
+
 			return matches;
 		},
 		
