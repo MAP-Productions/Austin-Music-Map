@@ -50,7 +50,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		togglePlaylist: function(e)
 		{
-			this.$('ul.playlist').toggleClass('open');
+			this.$('.toggle-playlist').toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
 
