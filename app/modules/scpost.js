@@ -101,6 +101,8 @@ define([
 			layer_type:'Audio',
 			child_items_count:0,
 			archive:'Soundcloud',
+			enabled: 1,
+			published:1,
 			user_id:1311
 			
 		},
