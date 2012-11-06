@@ -4,11 +4,9 @@
 	<div id="marker-container"></div>
 	<div class="content">
 		<div class="top">
-			<h3><%= title %></h3>
-			<span class="attrib">by <%= media_creator_username %>, 5 mins ago</span>
+			<h2>Play this track in playlist:</h2>
 		</div>
 		<div class="bottom">
-			<h4>Play this track in:</h4>
 			<ul class="in-playlists">
 
 				<% if( playlists[0] ){ %><li><a href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[0].attributes.title %></a></li><% } %>

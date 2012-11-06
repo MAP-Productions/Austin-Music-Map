@@ -150,21 +150,29 @@ function(App, Backbone, Loader)
 			if( this.model.get('storyItems').items[0].child_items.length )
 			{
 				var projectID = _.uniqueId('player-project-');
+				var args = {
+					autoplay: false,
+					collection_mode: 'slideshow',
+					data: this.model.get('storyItems'),
+					id: this.model.get('collection_id'),
+					//url: 'http://alpha.zeega.org/api/items/49217',
+					div_id: projectID,
+					keyboard: false
+				};
+				if(this.model.get('start_frame')) args.start_frame = parseInt(this.model.get('start_frame'),10);
+
+			console.log('======init pplayout', this, this.model.get('start_frame'), args);
+
+
 				var projectView = new PlayerTargetView({
-					args: {
-						autoplay: false,
-						collection_mode: 'slideshow',
-						data: this.model.get('storyItems'),
-						id: this.model.get('collection_id'),
-						//url: 'http://alpha.zeega.org/api/items/49217',
-						div_id: projectID,
-						keyboard: false
-					},
+					args: args,
 					attributes:{
 						'class': 'player-window player-project',
 						id: projectID
 					}
 				});
+
+				console.log('----project view', projectView);
 				this.insertView('.player-slider', projectView );
 
 				App.players.set('story', projectView.project );
@@ -173,14 +181,17 @@ function(App, Backbone, Loader)
 			if( this.model.get('remixItems').items[0].child_items.length )
 			{
 				var remixID = 'player-remix';
+				var remixArgs = {
+					autoplay: false,
+					collection_mode: 'slideshow', // standard, slideshow,
+					data: this.model.get('remixItems'),
+					div_id: remixID,
+					keyboard: false
+				};
+				if(this.model.get('start_frame')) remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
+
 				var remixView = new PlayerTargetView({
-					args: {
-						autoplay: false,
-						collection_mode: 'slideshow', // standard, slideshow,
-						data: this.model.get('remixItems'),
-						div_id: remixID,
-						keyboard: false
-					},
+					args: remixArgs,
 					attributes:{
 						'class': 'player-window player-remix',
 						id: remixID
@@ -226,6 +237,7 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
+			console.log('++++++project', this.project, this.options.args);
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 		},
 

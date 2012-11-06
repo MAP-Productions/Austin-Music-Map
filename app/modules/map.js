@@ -117,12 +117,12 @@ define([
 				diameter=2*radius,
 				points = this.createPoints(),
 				itemLayer=this.itemLayer;
-			
+			var _this = this;
 			
 
 			function onEachFeature(feature, layer) {
 				layer.on("mouseover", function (e) {
-					layer.projectLatlngs();
+					//layer.projectLatlngs();
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
 					var x=layer._point.x-radius;
@@ -141,8 +141,19 @@ define([
 		
 						}
 					}).addClass('map-overlay');
-					
-					var hed = $("<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'><canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas></div>").appendTo(popup);
+
+					console.log('----map popup', this, _this, _this.collection.get(feature.id), feature);
+
+					var popupTemplate =
+						"<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'>"+
+							""+
+							"<div class='rollover-title-wrapper'><div class='marker-container'></div><div class='rollover-title'><h2>"+
+								feature.properties.title.substring(0,20) +
+							"</h2></div></div>"+
+							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
+						"</div>";
+
+					var hed = $(popupTemplate).appendTo(popup);
 					// Add the popup to the map
 					popup.appendTo($('body'));
 					
@@ -398,6 +409,15 @@ define([
 				
 
 				pointToLayer: function (feature, latlng) {
+					var ico = L.divIcon({
+						className : 'custom-icon',
+						html: '<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>',
+						iconAnchor: new L.Point(10,10)
+					});
+
+					return L.marker(latlng,{icon:ico});
+
+					/*
 					return L.circleMarker(latlng, {
 						radius: 8,
 						fillColor: "blue",
@@ -406,6 +426,7 @@ define([
 						opacity: 1,
 						fillOpacity: 0.8
 					});
+*/
 				}
 			}).addTo(map);
 		
