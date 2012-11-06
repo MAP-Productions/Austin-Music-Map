@@ -30,7 +30,7 @@ define([
 		latLng: new L.LatLng(30.266702991845,-97.745532989502),
 		submitted:false,
 		events:{
-			'click .btn-submit':'onSubmit'
+			'click #modal-btn':'onSubmit'
 		},
 		afterRender:function(){
 			
@@ -66,12 +66,13 @@ define([
 			else{
 				var audio = new SCAudio();
 				console.log('posting audio',this,audio);
-				var tag_array=this.$el.find('#tags').val().split(",");
+				var tag_array=[];
+				if(this.$el.find('#tags').val().length>0) tag_array=this.$el.find('#tags').val().split(",");
 				tag_array.push('austinmusicmap');
 				tag_array.push('web_recording');
 				audio.save({
-					media_geo_lat:this.marker.getLatLng().lat,
-					media_geo_lng:this.marker.getLatLng().lng,
+					media_geo_latitude:this.marker.getLatLng().lat,
+					media_geo_longitude:this.marker.getLatLng().lng,
 					tags:tag_array,
 					title:this.$el.find('#title').val(),
 					uri:App.track.stream_url,
@@ -79,12 +80,12 @@ define([
 					thumbnail_url:App.track.waveform_url,
 					license:App.track.license,
 					media_creator_username:App.track.user.username,
-					media_creator_realname:App.track.user.username,
-					description:this.$el.find('#contactEmail').val()
+					media_creator_realname:App.track.user.username
 				});
+				$('.modal-content').find('h1').remove();
 				this.$el.find('.form-content').hide();
 				this.$el.find('.thanks').show();
-				this.$el.find('.btn-submit').html("CLose");
+				this.$el.find('#modal-btn').removeClass('btn-submit').addClass('btn-close');
 				this.submitted=true;
 			}
 			
@@ -94,12 +95,14 @@ define([
 
 	var SCAudio = Backbone.Model.extend({
 		type:'Audio',
-		url:'scpost.php',
+		url:'soundcloud.php',
 		defaults : {
 			media_type:'Audio',
 			layer_type:'Audio',
 			child_items_count:0,
-			archive:'Soundcloud',
+			archive:'SoundCloud',
+			enabled: 1,
+			published:1,
 			user_id:1311
 			
 		},

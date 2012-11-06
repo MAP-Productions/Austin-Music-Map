@@ -12,10 +12,11 @@ function(App, Backbone)
 	var Fuzz = Zeega.module();
 
 	Fuzz.show = function(loadingText) {
+		var duration = 1000;
 		var overlay = $("<div></div>").addClass('fuzz');
 		var soundId=Math.floor(1+5*Math.random());
 		document.getElementById('amm-static-'+soundId).play();
-		overlay.appendTo($('body')).fadeIn('slow',function(){$(this).fadeOut('slow');});
+		overlay.appendTo($('body')).fadeIn(duration,function(){$(this).fadeOut(duration);});
 	};
 
 	// Required, return the module for AMD compliance
