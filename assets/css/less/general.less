@@ -50,16 +50,33 @@ body {
 	overflow: hidden;
 }
 
-#logo {
+#logo
+{
 	left: 50%;
 	margin-left: -132px;
 	position: absolute;
 	top: 20px;
 	z-index: 30;
-}
 
-#logo img {
-	width: 264px;
+	img
+	{
+		width: 264px;
+		-webkit-filter: drop-shadow(0 0 50px white);
+		-moz-filter: drop-shadow(0 0 50px white);
+		-ms-filter: drop-shadow(0 0 50px white);
+		-o-filter: drop-shadow(0 0 50px white);
+		filter: drop-shadow(0 0 50px white);
+	}
+
+	img:hover
+	{
+		-webkit-filter: drop-shadow(0 0 50px orange);
+		-moz-filter: drop-shadow(0 0 50px orange);
+		-ms-filter: drop-shadow(0 0 50px orange);
+		-o-filter: drop-shadow(0 0 50px orange);
+		filter: drop-shadow(0 0 50px orange);
+	}
+
 }
 
 /* controls areas to left and right of window */
