@@ -66,12 +66,13 @@ define([
 			else{
 				var audio = new SCAudio();
 				console.log('posting audio',this,audio);
-				var tag_array=this.$el.find('#tags').val().split(",");
+				var tag_array=[];
+				if(this.$el.find('#tags').val().length>0) tag_array=this.$el.find('#tags').val().split(",");
 				tag_array.push('austinmusicmap');
 				tag_array.push('web_recording');
 				audio.save({
-					media_geo_lat:this.marker.getLatLng().lat,
-					media_geo_lng:this.marker.getLatLng().lng,
+					media_geo_latitude:this.marker.getLatLng().lat,
+					media_geo_longitude:this.marker.getLatLng().lng,
 					tags:tag_array,
 					title:this.$el.find('#title').val(),
 					uri:App.track.stream_url,
@@ -79,9 +80,9 @@ define([
 					thumbnail_url:App.track.waveform_url,
 					license:App.track.license,
 					media_creator_username:App.track.user.username,
-					media_creator_realname:App.track.user.username,
-					description:this.$el.find('#contactEmail').val()
+					media_creator_realname:App.track.user.username
 				});
+				$('.modal-content').find('h1').remove();
 				this.$el.find('.form-content').hide();
 				this.$el.find('.thanks').show();
 				this.$el.find('#modal-btn').removeClass('btn-submit').addClass('btn-close');
