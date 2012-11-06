@@ -157,8 +157,7 @@ body {
 	background-position: -91px 0;
 }
 
-.controls .controls-inner > a,
-.controls .secondary-controls > a {
+.controls .controls-inner a.text-link {
 	line-height: 52px;
 	color: #fff;
 	letter-spacing: 0.3em;
@@ -169,25 +168,28 @@ body {
 	vertical-align: middle;
 }
 
-.controls .controls-inner > a {
+.controls .controls-inner a.text-link {
 	padding-right: 0;
-}
 
-.controls .controls-inner > a:before {
-	content: "|";
-	padding-right: 10px;
-}
+	&:before {
+		content: "|";
+		padding-right: 10px;
+	}
 
-.controls .controls-inner > a:first-child {
-	padding-left: 12px;
-}
+	&:first-child {
+		padding-left: 12px;
 
-.controls .controls-inner > a:first-child:before {
-	content: none;
-}
+		&:before {
+			content: none;
+		}
+		
+	}
 
-.controls .controls-inner > a:last-child {
-	padding-right: 55px;
+	
+
+	&:last-child {
+		padding-right: 12px;
+	}
 }
 
 .controls img {
