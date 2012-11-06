@@ -160,6 +160,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		{
 			if(info)
 			{
+				this.updateURL();
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
 				this.updatePlaylistDropdown();

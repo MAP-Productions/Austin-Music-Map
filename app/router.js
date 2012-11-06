@@ -79,7 +79,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
-				item_id: itemID
+				item_id: itemID,
+				start_frame: itemID
 			});
 			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 
@@ -90,7 +91,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 			initialize('playlist');
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
-				item_id: itemID
+				item_id: itemID,
+				start_frame: itemID
 			});
 			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 		}
