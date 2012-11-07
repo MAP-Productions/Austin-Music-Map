@@ -5,8 +5,6 @@ define([
 	
 	"modules/submodules/fuzz"
 
-	
-
 ], function(App, Backbone, Fuzz) {
 	
 	var Map = App.module();
@@ -142,20 +140,32 @@ define([
 						}
 					}).addClass('map-overlay');
 
-					console.log('----map popup', this, _this, _this.collection.get(feature.id), feature);
+					//console.log('----map popup', this, _this, _this.collection.get(feature.id), feature);
 
 					var popupTemplate =
 						"<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'>"+
 							""+
-							"<div class='rollover-title-wrapper'><div class='marker-container'></div><div class='rollover-title'><h2>"+
-								feature.properties.title.substring(0,20) +
-							"</h2></div></div>"+
+							"<div class='rollover-title-wrapper'>"+
+								"<div class='marker-container'></div>"+
+								"<div class='rollover-title'>"+
+									"<h2>"+
+										feature.properties.title +
+									"</h2>"+
+								"</div>"+
+								"<div class='rollover-meta'>"+
+									"<h3>"+
+										'by '+ feature.properties.media_creator_username +
+									"</h3>"+
+								"</div>"+
+							"</div>"+
 							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
 						"</div>";
 
 					var hed = $(popupTemplate).appendTo(popup);
 					// Add the popup to the map
 					popup.appendTo($('body'));
+
+					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },1000);
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
