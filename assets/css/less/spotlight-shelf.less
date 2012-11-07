@@ -1,0 +1,62 @@
+.spotlight-shelf {
+	height: 0;
+	width: 804px;
+	position: absolute;
+	left: 50%;
+	margin-left: -402px;
+	bottom: 0;
+	background: red;
+
+	.shelf-tab {
+		background: rgba(60,61,63,0.9);
+		border-radius: 6px 6px 0 0;
+		color: #fff;
+		cursor: pointer;
+		font-family: Arial, sans-serif;
+		font-size: 11px;
+		height: 44px;
+		left: 272px;
+		letter-spacing: 0.3em;
+		line-height: 44px;
+		padding: 0 4px;
+		position: absolute;
+		text-align: center;
+		text-transform: uppercase;
+		top: -44px;
+		width: 260px;
+		z-index: 20;
+
+		&.active {
+			background: red;
+		}
+	}
+
+	.shelf-content {
+		height: 300px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 804px;
+		z-index: 10;
+
+		.region {
+
+			position: absolute;
+			top: 0;
+
+			&.spotlight-one {
+				left: 20px;
+			}
+			
+			&.spotlight-two {
+				left: 288px;
+			}
+
+			&.spotlight-three {
+				left: 556px;
+			}
+
+		}
+
+	}
+}
