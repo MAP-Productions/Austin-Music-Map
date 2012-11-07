@@ -409,12 +409,24 @@ define([
 				
 
 				pointToLayer: function (feature, latlng) {
-					var ico = L.divIcon({
-						className : 'custom-icon',
-						html: '<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>',
-						iconAnchor: new L.Point(10,10)
-					});
-
+					
+				
+					var ico;
+					if(_.indexOf(feature.properties.tags,'story')>-1){
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +' dot-red"></i>'
+						});
+						
+					}
+					else {
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>'
+						});
+					}
 					return L.marker(latlng,{icon:ico});
 
 					/*
