@@ -59,17 +59,26 @@ define([
 			if(!_.isUndefined(layer)&&!_.isUndefined(layer.attr)&&layer.attr.media_geo_latitude>0){
 
 				var latlng = new L.LatLng(layer.attr.media_geo_latitude,layer.attr.media_geo_longitude);
-			
+				
+				var ico;
+					if(_.indexOf(layer.attr.tags,'feature')>-1){
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +' dot-red"></i>'
+						});
+						
+					}
+					else {
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>'
+						});
+					}
 				
 				this.map.setView(latlng,14,true);
-				this.marker = L.circleMarker(latlng, {
-						radius: 8,
-						fillColor: "blue",
-						color: "#000",
-						weight: 1,
-						opacity: 1,
-						fillOpacity: 0.8
-					}).addTo(this.map);
+				this.marker = L.marker(latlng, {icon:ico}).addTo(this.map);
 				console.log(this.marker);
 			}
 			
