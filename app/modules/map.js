@@ -111,7 +111,7 @@ define([
 		loadItems:function(){
 			this.itemsLayer='';
 			var map=this.map,
-				radius=114,
+				radius=108,
 				diameter=2*radius,
 				points = this.createPoints(),
 				itemLayer=this.itemLayer;
@@ -201,6 +201,7 @@ define([
 						})
 						.on('click',function(e){
 							if(!map.featureOn){
+								$('#wrapper-'+feature.id).remove();
 
 								$(window).bind('keyup.playerSlider', function(e){
 									if(e.which == 27){
@@ -284,6 +285,7 @@ define([
 										tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
 										tmpCtx.restore();
 										
+										/*
 										var thumbctx=document.getElementById("canvas-"+feature.id).getContext("2d");
 										thumbctx.globalCompositeOperation = 'destination-over';
 										thumbctx.clearRect(0,0,diameter,diameter);
@@ -297,11 +299,10 @@ define([
 										if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
 									
 										thumbctx.restore();
-
+*/
 										if(i>=1) {
 											$('.back-to-map').fadeIn('fast');
 											clearInterval(drawLargeImageAnim);
-											$('#wrapper-'+feature.id).remove();
 											$('#marker-container').addClass('marker').fadeIn('fast');
 											var shrinkGapAnim,expandGapAnim,
 												gapState = 'small';
