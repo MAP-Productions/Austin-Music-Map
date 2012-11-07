@@ -245,7 +245,7 @@ define([
 
 								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
 								else{
-									largeImg.src ="http://maps.googleapis.com/maps/api/streetview?size=600x600&location="+feature.properties.media_geo_latitude+",%20"+feature.properties.media_geo_longitude+"&fov=90&heading=235&pitch=-10&sensor=false";
+									largeImg.src =feature.properties.thumbnail_url;
 								}
 							
 								
