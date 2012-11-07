@@ -39,22 +39,6 @@
 	<script data-main="app/config" src="assets/js/libs/require.js"></script>
 	<script src="//connect.soundcloud.com/sdk.js"></script>
 
-		<!-- Sound Effects. -->
-
-	<audio id='amm-static-1' src="assets/audio/static1.mp3" ></audio>
-	<audio id='amm-static-2' src="assets/audio/static2.mp3" ></audio>
-	<audio id='amm-static-3' src="assets/audio/static3.mp3" ></audio>
-	<audio id='amm-static-4' src="assets/audio/static4.mp3" ></audio>
-	<audio id='amm-static-5' src="assets/audio/static5.mp3" ></audio>
-
-	<audio id='amm-ding-1' src="assets/audio/ding1.mp3" ></audio>
-	<audio id='amm-ding-2' src="assets/audio/ding2.mp3" ></audio>
-	<audio id='amm-ding-3' src="assets/audio/ding3.mp3" ></audio>
-	<audio id='amm-ding-4' src="assets/audio/ding4.mp3" ></audio>
-	<audio id='amm-ding-5' src="assets/audio/ding1.mp3" ></audio>
-	<audio id='amm-ding-6' src="assets/audio/ding2.mp3" ></audio>
-	<audio id='amm-ding-7' src="assets/audio/ding3.mp3" ></audio>
-	<audio id='amm-ding-8' src="assets/audio/ding4.mp3" ></audio>
 
 
 </body>
