@@ -12,10 +12,13 @@ define([
 	"modules/scpost",
 
 	// submodules
-	"modules/submodules/player-slider"
+	"modules/submodules/player-slider",
+	"modules/submodules/fuzz",
+	"modules/submodules/soundscape"
+
 ],
 
-function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSlider) {
+function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSlider,Fuzz,Soundscape) {
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -87,6 +90,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 		},
 		goToRemix : function(collectionID,itemID)
 		{
+
 			console.log('go to remix', collectionID, itemID);
 			initialize('playlist');
 			App.Player = new PlayerSlider.Model({
@@ -111,6 +115,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 	function initialize(to) {
 		initAMM();
 		cleanup(to);
+		if(to=="map")App.soundscape.play();
+		else App.soundscape.pause();
 	}
 
 	// ensure this happens only once
@@ -121,6 +127,10 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 		// draw the base layout
 		App.BaseLayout = new Base();
 		App.BaseLayout.render();
+
+		App.fuzz=Fuzz;
+		App.soundscape=Soundscape;
+		App.soundscape.initialize();
 	}
 
 	// happens on every router change
