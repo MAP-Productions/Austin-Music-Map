@@ -98,9 +98,7 @@ define([
 			this.map.featureOn=false;
 			this.loadItems();
 
-			//L.control.attribution({prefix:'pre'}).addAttribution('tester').addTo(this.map);
-
-			//This loads neighborhood polygons
+	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			
 		},
@@ -174,7 +172,7 @@ define([
 					// Add the popup to the map
 					popup.appendTo($('body'));
 
-					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },1000);
+					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },500);
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
