@@ -45,6 +45,21 @@ define([
 		serialize : function(){ return this.model.toJSON(); }
 	});
 
+	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
+		template: 'spotlight-shelf',
+		events : {
+			'click .shelf-tab' : 'slideShelf'
+		},
+		slideShelf : function(e) {
+			$(e.target).toggleClass('active');
+			if ( $(e.target).hasClass('active') ) {
+				this.$('.shelf-content').stop().animate({ top: -330 }, 1000);
+			} else {
+				this.$('.shelf-content').stop().animate({ top: 0 }, 1000);
+			}
+		}
+	});
+
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
@@ -98,6 +113,8 @@ define([
 			this.loadItems();
 			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
+
+			this.loadSpotlightShelf();
 			
 		},
 		clearItems:function(){
@@ -445,112 +462,162 @@ define([
 		},
 
 		loadNeighborhoods:function(){
-	
-		var map=this.map;
+		
+			var map=this.map;
 
-		L.geoJson.prototype.getCenter=function(){
-			var feature =this.feature;
-			var lat=0,lng=0,counter=0;
-			_.each(feature.geometry.coordinates[0],function(coord){
-				
-				//if(lat!=0) lat=Math.min(coord[1],lat);
-				//else lat=coord[1];
-				lat+=coord[1];
-				lng+=coord[0];
-				counter++;
-			});
-			return new L.LatLng(lat/counter,lng/counter);
-		};
-
-		L.geoJson.prototype.getBounds=function(){
-			var feature=this.feature;
-			var nelat=0,nelng=0,swlat=0,swlng=0,counter=0;
-			_.each(feature.geometry.coordinates[0],function(coord){
-
-				if(swlng!==0) swlng=Math.min(coord[0],swlng);
-				else swlng=coord[0];
-
-				if(nelng!==0) nelng=Math.max(coord[0],nelng);
-				else nelng=coord[0];
-
-				if(swlat!==0) swlat=Math.min(coord[1],swlat);
-				else swlat=coord[1];
-
-				if(nelat!==0) nelat=Math.max(coord[1],nelat);
-				else nelat=coord[1];
-
-			});
-			var southWest = new L.LatLng(swlat, swlng),
-			northEast = new L.LatLng(nelat, nelng);
-			return new L.LatLngBounds(southWest, northEast);
-		};
-
-		var onEachFeature=function(feature,layer){
-			var uniq=Math.floor(Math.random()*1000);
-			
-			layer.on("mouseover",function(e){
-				layer.setStyle({fillOpacity:0.5});
-			/*
-				
-				var latlng = this.getCenter();
-				var layerPoint=map.latLngToContainerPoint(latlng);
-				var popup = $("<div></div>", {
-					id: "popup-" + uniq,
-					css: {
-						position: "absolute",
-						top: (layerPoint.y-50)+"px",
-						left: (layerPoint.x-50)+"px",
-						zIndex: -1,
-						cursor: "pointer"
-	
-					}
+			L.geoJson.prototype.getCenter=function(){
+				var feature =this.feature;
+				var lat=0,lng=0,counter=0;
+				_.each(feature.geometry.coordinates[0],function(coord){
+					
+					//if(lat!=0) lat=Math.min(coord[1],lat);
+					//else lat=coord[1];
+					lat+=coord[1];
+					lng+=coord[0];
+					counter++;
 				});
-				// Insert a headline into that popup
-				var hed = $("<div></div>", {
-				text: feature.properties.title,
-				css: {fontSize: "25px", marginBottom: "3px",color:feature.properties.color}
-				}).appendTo(popup);
-				
-				// Add the popup to the map
-				popup.appendTo(".leaflet-overlay-pane");
-				*/
+				return new L.LatLng(lat/counter,lng/counter);
+			};
 
-			});
-			layer.on("click",function(){
-				map.fitBounds(layer.getBounds());
+			L.geoJson.prototype.getBounds=function(){
+				var feature=this.feature;
+				var nelat=0,nelng=0,swlat=0,swlng=0,counter=0;
+				_.each(feature.geometry.coordinates[0],function(coord){
 
-			});
-			layer.on("mouseout",function(e){
-				
-					layer.setStyle({fillOpacity:0.2});
-					//$('#popup-'+uniq).remove();
-				
-			});
+					if(swlng!==0) swlng=Math.min(coord[0],swlng);
+					else swlng=coord[0];
+
+					if(nelng!==0) nelng=Math.max(coord[0],nelng);
+					else nelng=coord[0];
+
+					if(swlat!==0) swlat=Math.min(coord[1],swlat);
+					else swlat=coord[1];
+
+					if(nelat!==0) nelat=Math.max(coord[1],nelat);
+					else nelat=coord[1];
+
+				});
+				var southWest = new L.LatLng(swlat, swlng),
+				northEast = new L.LatLng(nelat, nelng);
+				return new L.LatLngBounds(southWest, northEast);
+			};
+
+				var onEachFeature=function(feature,layer){
+					var uniq=Math.floor(Math.random()*1000);
+					
+					layer.on("mouseover",function(e){
+						layer.setStyle({fillOpacity:0.5});
+					/*
+						
+						var latlng = this.getCenter();
+						var layerPoint=map.latLngToContainerPoint(latlng);
+						var popup = $("<div></div>", {
+							id: "popup-" + uniq,
+							css: {
+								position: "absolute",
+								top: (layerPoint.y-50)+"px",
+								left: (layerPoint.x-50)+"px",
+								zIndex: -1,
+								cursor: "pointer"
+			
+							}
+						});
+						// Insert a headline into that popup
+						var hed = $("<div></div>", {
+						text: feature.properties.title,
+						css: {fontSize: "25px", marginBottom: "3px",color:feature.properties.color}
+						}).appendTo(popup);
+						
+						// Add the popup to the map
+						popup.appendTo(".leaflet-overlay-pane");
+						*/
+
+				});
+				layer.on("click",function(){
+					map.fitBounds(layer.getBounds());
+
+				});
+				layer.on("mouseout",function(e){
+					
+						layer.setStyle({fillOpacity:0.2});
+						//$('#popup-'+uniq).remove();
+					
+				});
 
 
-		};
-		//_.each(AustinNeighborhoods.geojson,function(poly){
+			};
+			//_.each(AustinNeighborhoods.geojson,function(poly){
 			//console.log(poly.properties.color);
 
 
-			var layer = L.geoJson(Neighborhoods.geojson,{
-				style: function(feature){
-					return {
-						color:feature.properties.color,
-						//color: 'black',
-						weight: 1,
-						opacity: 0,
-						fillOpacity: 0.2
-					};
-				},
-				onEachFeature:onEachFeature
-			}).addTo(map);
-			this.loadItems();
-		//});
+				var layer = L.geoJson(Neighborhoods.geojson,{
+					style: function(feature){
+						return {
+							color:feature.properties.color,
+							//color: 'black',
+							weight: 1,
+							opacity: 0,
+							fillOpacity: 0.2
+						};
+					},
+					onEachFeature:onEachFeature
+				}).addTo(map);
+				this.loadItems();
+			//});
 
 
 
-	}
+		},
+		loadSpotlightShelf : function() {
+			var spotlightItems = new Backbone.Model(
+				{
+					archive: "Youtube",
+					attributes: [],
+					attribution_uri: "http://www.youtube.com/watch?v=_ezJkTBkzD4&amp;amp;amp;feature=youtube_gdata_player",
+					child_items: [],
+					child_items_count: 0,
+					date_created: "2012-10-31 21:29:57",
+					description: "The Annie Street Arts Collective (anniestreetartscollective.com/) puts on secret shows around Austin—in backyards, under bridges, in abandoned buildings. The goal is to create an atmosphere for careful listening and to encourage people to experience the city in new ways, through music.",
+					display_name: "Austin Music Map",
+					editable: false,
+					enabled: true,
+					id: "53565",
+					layer_type: "Youtube",
+					media_creator_realname: "Unknown",
+					media_creator_username: "AustinMusicMap",
+					media_date_created: "2012-09-07 12:00:00",
+					media_date_created_end: null,
+					media_geo_latitude: 30.248274,
+					media_geo_longitude: -97.75975,
+					media_type: "Video",
+					playlists: [],
+					published: false,
+					site_id: "",
+					tags: [],
+					text: "",
+					thumbnail_url: "http://static.zeega.org/community/items/f7/15/f715d956ce5c25eea8ac95ed1f082d32.jpg",
+					title: "Introducing the Annie Street Arts Collective",
+					uri: "_ezJkTBkzD4",
+					user_id: 1311,
+					username: "austinmusicmap@gmail.com"
+				}
+			);
+
+			var spotlights = new Map.Views.SpotlightShelf();
+			spotlights.render();
+			$('#appBase').append( spotlights.el );
+			//console.log(spotlightItems[0]);
+
+			var featuredViewOne = new Map.Views.Featured( {model : spotlightItems} );
+			var featuredViewTwo = new Map.Views.Featured( {model : spotlightItems} );
+			var featuredViewThree = new Map.Views.Featured( {model : spotlightItems} );
+			spotlights.setView(".spotlight-one", featuredViewOne);
+			spotlights.setView(".spotlight-two", featuredViewTwo);
+			spotlights.setView(".spotlight-three", featuredViewThree);
+			featuredViewOne.render();
+			featuredViewTwo.render();
+			featuredViewThree.render();
+		}
 
 	});
 
