@@ -119,9 +119,7 @@ define([
 			function onEachFeature(feature, layer) {
 				layer.on("mouseover", function (e) {
 					
-					var ding=document.getElementById('amm-ding-'+Math.floor(1+Math.random()*8));
-					ding.currentTime=0;
-					ding.play();
+					App.soundscape.ding();
 
 					//layer.projectLatlngs();
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
