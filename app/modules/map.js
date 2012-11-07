@@ -1,11 +1,10 @@
 define([
 	"app",
 	// Libs
-	"backbone",
+	"backbone"
 	
-	"modules/submodules/fuzz"
 
-], function(App, Backbone, Fuzz) {
+], function(App, Backbone) {
 	
 	var Map = App.module();
 
@@ -17,7 +16,6 @@ define([
 		},
 
 		initialize: function() {
-			window.fuzz=Fuzz;
 			console.log('init map');
 			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
@@ -128,6 +126,9 @@ define([
 
 			function onEachFeature(feature, layer) {
 				layer.on("mouseover", function (e) {
+					
+					App.soundscape.ding();
+
 					//layer.projectLatlngs();
 					var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
@@ -431,7 +432,7 @@ define([
 					
 				
 					var ico;
-					if(_.indexOf(feature.properties.tags,'story')>-1){
+					if(_.indexOf(feature.properties.tags,'feature')>-1){
 						ico = L.divIcon({
 							className : 'custom-icon',
 							iconAnchor: new L.Point(10,10),
