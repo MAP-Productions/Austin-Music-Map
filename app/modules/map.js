@@ -83,7 +83,7 @@ define([
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {
 					maxZoom: 18,
-					attribution: '<a href="#">tester</a>'
+					attribution: '& <a href="http://Mapbox.com/">mapbox</a>'
 				});
 
 			this.map = new L.Map(this.el,{
@@ -93,13 +93,14 @@ define([
 				doubleClickZoom:false,
 				boxZoom:false,
 				zoomControl:false,
+				attribution:'',
 				layers: [cloudmade,homemade]
 			});
 			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
 			this.loadItems();
 
-			L.control.attribution({prefix:'pre'}).addAttribution('tester').addTo(this.map);
+			//L.control.attribution({prefix:'pre'}).addAttribution('tester').addTo(this.map);
 
 			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
