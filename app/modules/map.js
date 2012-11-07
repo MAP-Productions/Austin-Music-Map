@@ -1,7 +1,7 @@
 define([
 	"app",
 	// Libs
-	"backbone",
+	"backbone"
 	
 
 ], function(App, Backbone) {
