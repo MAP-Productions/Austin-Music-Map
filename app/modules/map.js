@@ -93,7 +93,7 @@ define([
 			this.map.featureOn=false;
 			this.loadItems();
 			//This loads neighborhood polygons
-			//this.loadNeighborhoods();
+			this.loadNeighborhoods();
 			
 		},
 		clearItems:function(){
@@ -500,7 +500,7 @@ define([
 			var uniq=Math.floor(Math.random()*1000);
 			
 			layer.on("mouseover",function(e){
-				layer.setStyle({fillOpacity:0.5});
+				layer.setStyle({fillOpacity:0.3});
 			/*
 				
 				var latlng = this.getCenter();
@@ -533,7 +533,7 @@ define([
 			});
 			layer.on("mouseout",function(e){
 				
-					layer.setStyle({fillOpacity:0.2});
+					layer.setStyle({fillOpacity:0});
 					//$('#popup-'+uniq).remove();
 				
 			});
@@ -547,11 +547,11 @@ define([
 			var layer = L.geoJson(Neighborhoods.geojson,{
 				style: function(feature){
 					return {
-						color:feature.properties.color,
-						//color: 'black',
+						//color:feature.properties.color,
+						color: 'blue',
 						weight: 1,
 						opacity: 0,
-						fillOpacity: 0.2
+						fillOpacity: 0,
 					};
 				},
 				onEachFeature:onEachFeature
