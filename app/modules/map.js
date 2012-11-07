@@ -551,7 +551,7 @@ define([
 						color: 'blue',
 						weight: 1,
 						opacity: 0,
-						fillOpacity: 0,
+						fillOpacity: 0
 					};
 				},
 				onEachFeature:onEachFeature
