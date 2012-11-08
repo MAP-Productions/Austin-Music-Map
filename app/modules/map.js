@@ -44,16 +44,29 @@ define([
 	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
 		template: 'spotlight-shelf',
 		events : {
-			'click .shelf-tab' : 'slideShelf'
+			'click .shelf-tab' : 'slideShelf',
+			'mouseenter .region' : 'showPlaylists',
+			'mouseleave .region' : 'hidePlaylists'
 		},
 		slideShelf : function(e) {
 			$(e.target).toggleClass('active');
 			if ( $(e.target).hasClass('active') ) {
-				this.$('.shelf-content').stop().animate({ top: -330 }, 1000);
+				this.$('.shelf-content').stop().animate({ top: -330, opacity: 1 }, 1000);
 			} else {
-				this.$('.shelf-content').stop().animate({ top: 0 }, 1000);
+				this.$('.shelf-content').stop().animate({ top: 0, opacity: 0 }, 1000);
 			}
+		},
+		showPlaylists : function(e) {
+			$(e.currentTarget).find('.map-featured').fadeIn(300);
+		},
+		hidePlaylists : function(e) {
+			$(e.currentTarget).find('.map-featured').fadeOut(300);
 		}
+	});
+
+	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
+		template: 'spotlight-item',
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	Map.Views.Main  = Backbone.LayoutView.extend({
@@ -109,7 +122,6 @@ define([
 			this.loadItems();
 			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
-
 			this.loadSpotlightShelf();
 			
 		},
@@ -580,58 +592,23 @@ define([
 
 		},
 		loadSpotlightShelf : function() {
-			var spotlightItems = new Backbone.Model(
-				{
-					archive: "Youtube",
-					attributes: [],
-					attribution_uri: "http://www.youtube.com/watch?v=_ezJkTBkzD4&amp;amp;amp;feature=youtube_gdata_player",
-					child_items: [],
-					child_items_count: 0,
-					date_created: "2012-10-31 21:29:57",
-					description: "The Annie Street Arts Collective (anniestreetartscollective.com/) puts on secret shows around Austin—in backyards, under bridges, in abandoned buildings. The goal is to create an atmosphere for careful listening and to encourage people to experience the city in new ways, through music.",
-					display_name: "Austin Music Map",
-					editable: false,
-					enabled: true,
-					id: "53565",
-					layer_type: "Youtube",
-					media_creator_realname: "Unknown",
-					media_creator_username: "AustinMusicMap",
-					media_date_created: "2012-09-07 12:00:00",
-					media_date_created_end: null,
-					media_geo_latitude: 30.248274,
-					media_geo_longitude: -97.75975,
-					media_type: "Video",
-					playlists: [],
-					published: false,
-					site_id: "",
-					tags: [],
-					text: "",
-					thumbnail_url: "http://static.zeega.org/community/items/f7/15/f715d956ce5c25eea8ac95ed1f082d32.jpg",
-					title: "Introducing the Annie Street Arts Collective",
-					uri: "_ezJkTBkzD4",
-					user_id: 1311,
-					username: "austinmusicmap@gmail.com"
-				}
-			);
+			var shelf = new Map.Views.SpotlightShelf();
+			shelf.render();
+			$('#appBase').append( shelf.el );
 
-			var spotlights = new Map.Views.SpotlightShelf();
-			spotlights.render();
-			$('#appBase').append( spotlights.el );
-			//console.log(spotlightItems[0]);
+			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
+			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
+			var itemThree = new Map.Views.SpotlightItem( {model : this.collection.at(2) } );
+			shelf.setView(".spotlight-one", itemOne);
+			shelf.setView(".spotlight-two", itemTwo);
+			shelf.setView(".spotlight-three", itemThree);
 
-			var featuredViewOne = new Map.Views.Featured( {model : spotlightItems} );
-			var featuredViewTwo = new Map.Views.Featured( {model : spotlightItems} );
-			var featuredViewThree = new Map.Views.Featured( {model : spotlightItems} );
-			spotlights.setView(".spotlight-one", featuredViewOne);
-			spotlights.setView(".spotlight-two", featuredViewTwo);
-			spotlights.setView(".spotlight-three", featuredViewThree);
-			featuredViewOne.render();
-			featuredViewTwo.render();
-			featuredViewThree.render();
+			itemOne.render();
+			itemTwo.render();
+			itemThree.render();
 		}
 
 	});
-
 
 
 	var MapCollection = Backbone.Collection.extend({
@@ -687,7 +664,6 @@ define([
 			
 			return response.items;
 		}
-
 	});
 
 	// Required, return the module for AMD compliance

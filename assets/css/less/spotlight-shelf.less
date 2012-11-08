@@ -37,11 +37,14 @@
 		left: 0;
 		width: 804px;
 		z-index: 10;
+		opacity: 0;
 
 		.region {
 
 			position: absolute;
 			top: 0;
+			height: 228px;
+			width: 228px;
 
 			&.spotlight-one {
 				left: 20px;
@@ -53,6 +56,15 @@
 
 			&.spotlight-three {
 				left: 556px;
+			}
+
+			.rollover-title-wrapper {
+				display: block;
+			}
+
+			.map-featured {
+				display: none;
+				top: 0;
 			}
 
 		}
