@@ -41,6 +41,38 @@ define([
 		serialize : function(){ return this.model.toJSON(); }
 	});
 
+	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
+		template: 'spotlight-shelf',
+		events : {
+			'click .shelf-tab' : 'slideShelf',
+			'mouseenter .region' : 'showPlaylists',
+			'mouseleave .region' : 'hidePlaylists'
+		},
+		slideShelf : function(e) {
+			$(e.target).toggleClass('active');
+			if ( $(e.target).hasClass('active') ) {
+				this.$('.shelf-content').stop().animate({ top: -330, opacity: 1 }, 1000);
+			} else {
+				this.$('.shelf-content').stop().animate({ top: 0, opacity: 0 }, 1000);
+			}
+		},
+		showPlaylists : function(e) {
+			$(e.currentTarget)
+				.find('.map-featured').fadeIn(300)
+				.siblings().find('h2, h3').fadeOut(300);
+		},
+		hidePlaylists : function(e) {
+			$(e.currentTarget)
+				.find('.map-featured').fadeOut(300)
+				.siblings().find('h2, h3').fadeIn(300);
+		}
+	});
+
+	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
+		template: 'spotlight-item',
+		serialize : function(){ return this.model.toJSON(); }
+	});
+
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
@@ -100,6 +132,7 @@ define([
 
 	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
+			this.loadSpotlightShelf();
 			
 		},
 		clearItems:function(){
@@ -238,7 +271,7 @@ define([
 									}
 								}).addClass('map-overlay');
 								
-								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"'></canvas></div>").appendTo(overlay);
+								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
 								var largeImg = document.createElement('img');
 		
@@ -463,115 +496,130 @@ define([
 		},
 
 		loadNeighborhoods:function(){
-	
-		var map=this.map;
+		
+			var map=this.map;
 
-		L.geoJson.prototype.getCenter=function(){
-			var feature =this.feature;
-			var lat=0,lng=0,counter=0;
-			_.each(feature.geometry.coordinates[0],function(coord){
-				
-				//if(lat!=0) lat=Math.min(coord[1],lat);
-				//else lat=coord[1];
-				lat+=coord[1];
-				lng+=coord[0];
-				counter++;
-			});
-			return new L.LatLng(lat/counter,lng/counter);
-		};
-
-		L.geoJson.prototype.getBounds=function(){
-			var feature=this.feature;
-			var nelat=0,nelng=0,swlat=0,swlng=0,counter=0;
-			_.each(feature.geometry.coordinates[0],function(coord){
-
-				if(swlng!==0) swlng=Math.min(coord[0],swlng);
-				else swlng=coord[0];
-
-				if(nelng!==0) nelng=Math.max(coord[0],nelng);
-				else nelng=coord[0];
-
-				if(swlat!==0) swlat=Math.min(coord[1],swlat);
-				else swlat=coord[1];
-
-				if(nelat!==0) nelat=Math.max(coord[1],nelat);
-				else nelat=coord[1];
-
-			});
-			var southWest = new L.LatLng(swlat, swlng),
-			northEast = new L.LatLng(nelat, nelng);
-			return new L.LatLngBounds(southWest, northEast);
-		};
-
-		var onEachFeature=function(feature,layer){
-			var uniq=Math.floor(Math.random()*1000);
-			
-			layer.on("mouseover",function(e){
-				layer.setStyle({fillOpacity:0.5});
-			/*
-				
-				var latlng = this.getCenter();
-				var layerPoint=map.latLngToContainerPoint(latlng);
-				var popup = $("<div></div>", {
-					id: "popup-" + uniq,
-					css: {
-						position: "absolute",
-						top: (layerPoint.y-50)+"px",
-						left: (layerPoint.x-50)+"px",
-						zIndex: -1,
-						cursor: "pointer"
-	
-					}
+			L.geoJson.prototype.getCenter=function(){
+				var feature =this.feature;
+				var lat=0,lng=0,counter=0;
+				_.each(feature.geometry.coordinates[0],function(coord){
+					
+					//if(lat!=0) lat=Math.min(coord[1],lat);
+					//else lat=coord[1];
+					lat+=coord[1];
+					lng+=coord[0];
+					counter++;
 				});
-				// Insert a headline into that popup
-				var hed = $("<div></div>", {
-				text: feature.properties.title,
-				css: {fontSize: "25px", marginBottom: "3px",color:feature.properties.color}
-				}).appendTo(popup);
-				
-				// Add the popup to the map
-				popup.appendTo(".leaflet-overlay-pane");
-				*/
+				return new L.LatLng(lat/counter,lng/counter);
+			};
 
-			});
-			layer.on("click",function(){
-				map.fitBounds(layer.getBounds());
+			L.geoJson.prototype.getBounds=function(){
+				var feature=this.feature;
+				var nelat=0,nelng=0,swlat=0,swlng=0,counter=0;
+				_.each(feature.geometry.coordinates[0],function(coord){
 
-			});
-			layer.on("mouseout",function(e){
-				
-					layer.setStyle({fillOpacity:0.2});
-					//$('#popup-'+uniq).remove();
-				
-			});
+					if(swlng!==0) swlng=Math.min(coord[0],swlng);
+					else swlng=coord[0];
+
+					if(nelng!==0) nelng=Math.max(coord[0],nelng);
+					else nelng=coord[0];
+
+					if(swlat!==0) swlat=Math.min(coord[1],swlat);
+					else swlat=coord[1];
+
+					if(nelat!==0) nelat=Math.max(coord[1],nelat);
+					else nelat=coord[1];
+
+				});
+				var southWest = new L.LatLng(swlat, swlng),
+				northEast = new L.LatLng(nelat, nelng);
+				return new L.LatLngBounds(southWest, northEast);
+			};
+
+				var onEachFeature=function(feature,layer){
+					var uniq=Math.floor(Math.random()*1000);
+					
+					layer.on("mouseover",function(e){
+						layer.setStyle({fillOpacity:0.5});
+					/*
+						
+						var latlng = this.getCenter();
+						var layerPoint=map.latLngToContainerPoint(latlng);
+						var popup = $("<div></div>", {
+							id: "popup-" + uniq,
+							css: {
+								position: "absolute",
+								top: (layerPoint.y-50)+"px",
+								left: (layerPoint.x-50)+"px",
+								zIndex: -1,
+								cursor: "pointer"
+			
+							}
+						});
+						// Insert a headline into that popup
+						var hed = $("<div></div>", {
+						text: feature.properties.title,
+						css: {fontSize: "25px", marginBottom: "3px",color:feature.properties.color}
+						}).appendTo(popup);
+						
+						// Add the popup to the map
+						popup.appendTo(".leaflet-overlay-pane");
+						*/
+
+				});
+				layer.on("click",function(){
+					map.fitBounds(layer.getBounds());
+
+				});
+				layer.on("mouseout",function(e){
+					
+						layer.setStyle({fillOpacity:0.2});
+						//$('#popup-'+uniq).remove();
+					
+				});
 
 
-		};
-		//_.each(AustinNeighborhoods.geojson,function(poly){
+			};
+			//_.each(AustinNeighborhoods.geojson,function(poly){
 			//console.log(poly.properties.color);
 
 
-			var layer = L.geoJson(Neighborhoods.geojson,{
-				style: function(feature){
-					return {
-						color:feature.properties.color,
-						//color: 'black',
-						weight: 1,
-						opacity: 0,
-						fillOpacity: 0.2
-					};
-				},
-				onEachFeature:onEachFeature
-			}).addTo(map);
-			this.loadItems();
-		//});
+				var layer = L.geoJson(Neighborhoods.geojson,{
+					style: function(feature){
+						return {
+							color:feature.properties.color,
+							//color: 'black',
+							weight: 1,
+							opacity: 0,
+							fillOpacity: 0.2
+						};
+					},
+					onEachFeature:onEachFeature
+				}).addTo(map);
+				this.loadItems();
+			//});
 
 
 
-	}
+		},
+		loadSpotlightShelf : function() {
+			var shelf = new Map.Views.SpotlightShelf();
+			shelf.render();
+			$('#appBase').append( shelf.el );
+
+			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
+			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
+			var itemThree = new Map.Views.SpotlightItem( {model : this.collection.at(2) } );
+			shelf.setView(".spotlight-one", itemOne);
+			shelf.setView(".spotlight-two", itemTwo);
+			shelf.setView(".spotlight-three", itemThree);
+
+			itemOne.render();
+			itemTwo.render();
+			itemThree.render();
+		}
 
 	});
-
 
 
 	var MapCollection = Backbone.Collection.extend({
@@ -627,7 +675,6 @@ define([
 			
 			return response.items;
 		}
-
 	});
 
 	// Required, return the module for AMD compliance

@@ -1,0 +1,88 @@
+.spotlight-shelf {
+	height: 0;
+	width: 804px;
+	position: absolute;
+	left: 50%;
+	margin-left: -402px;
+	bottom: 0;
+	background: red;
+
+	.shelf-tab {
+		background: rgba(60,61,63,0.9) url(../img/carat-small-white-up.png) no-repeat center 10px;
+		border-radius: 6px 6px 0 0;
+		color: #fff;
+		cursor: pointer;
+		font-family: Arial, sans-serif;
+		font-size: 11px;
+		height: 230px;
+		left: 272px;
+		letter-spacing: 0.3em;
+		padding-top: 24px;
+		position: absolute;
+		text-align: center;
+		text-transform: uppercase;
+		top: -44px;
+		width: 260px;
+		z-index: 20;
+
+		&.active {
+			background-image: url(../img/carat-small-white-down.png);
+		}
+	}
+
+	.shelf-content {
+		height: 300px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 804px;
+		z-index: 10;
+		opacity: 0;
+
+		.region {
+
+			position: absolute;
+			top: 0;
+			height: 228px;
+			width: 228px;
+
+			&.spotlight-one {
+				left: 20px;
+			}
+			
+			&.spotlight-two {
+				left: 288px;
+			}
+
+			&.spotlight-three {
+				left: 556px;
+			}
+
+			.marker-container {
+				background-image: url(../img/marker-circle-orange.png);
+			}
+
+			.rollover-thumb {
+				width: 100%;
+				position: absolute;
+				z-index: -1;
+				left: 0;
+				top: 0;
+				border-radius: 109px;
+			}
+
+			.rollover-title-wrapper {
+				background: rgba(255,255,255,0.6);
+				display: block;
+				overflow: hidden;
+			}
+
+			.map-featured {
+				display: none;
+				top: 0;
+			}
+
+		}
+
+	}
+}
