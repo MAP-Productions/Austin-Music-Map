@@ -64,7 +64,7 @@ define([
 		hidePlaylists : function(e) {
 			$(e.currentTarget)
 				.find('.map-featured').fadeOut(300)
-				.siblings().find('h2, h3').fadeIn(300);;
+				.siblings().find('h2, h3').fadeIn(300);
 		}
 	});
 
