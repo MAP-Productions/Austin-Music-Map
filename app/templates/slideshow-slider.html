@@ -1,0 +1,10 @@
+<ul>
+	<% _.each(attr.slides, function(slide, i){ %>
+		<li>
+			<a href='#' data-slidenum="<%= i %>">
+				<div class='slideshow-thumbnail' style="background:url(<%= slide.attr.uri %>); background-repeat:no-repeat;background-size:100%;background-position:center"></div>
+				<div class='thumb-title'><%= slide.attr.title %></div>
+			</a>
+		</li>
+	<% });%>
+</ul>
