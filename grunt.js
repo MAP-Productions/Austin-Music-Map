@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
 		// The clean task ensures all files are removed from the dist/ directory so
 		// that no files linger from previous builds.
-		clean: ["dist/"],
+		clean: ["dist/", "assets/img/zeegaplayer"],
 
 		// The lint task will run the build configuration and the application
 		// JavaScript through JSHint and report any errors.  You can change the
@@ -95,38 +95,6 @@ module.exports = function(grunt) {
 				additional: []
 			}
 		},
-		// The stylus task is used to compile Stylus stylesheets into a single
-		// CSS file for debug and release deployments.  
-		// stylus: {
-		// 	// Put all your CSS files here, order matters!
-		// 	files: [
-		// 		"assets/vendor/h5bp/css/style.css"
-		// 	],
-
-		// 	// Default task which runs in debug mode, this will build out to the
-		// 	// `dist/debug` directory.
-		// 	compile: {
-		// 		// Used for @imports.
-		// 		options: { paths: ["assets/css"] },
-				
-		// 		files: {
-		// 			"dist/debug/index.css": "<config:stylus.files>"
-		// 		}
-		// 	},
-
-		// 	// This dev task only runs with `watch:stylus` this will *completely*
-		// 	// overwrite the `assets/css/index.css` file referenced in `index.html`.
-		// 	// Use this only when you cannot use the `bbb server` runtime
-		// 	// compilation.
-		// 	dev: {
-		// 		// Used for @imports.
-		// 		options: { paths: ["assets/css"] },
-				
-		// 		files: {
-		// 			"assets/css/index.css": "<config:stylus.files>"
-		// 		}
-		// 	}
-		// },
 
 		// Takes the built require.js file and minifies it for filesize benefits.
 		min: {
@@ -221,16 +189,19 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-                copy: {
-                        dist: {
-                                files: {
-                                        "dist/release/img/": "assets/img/**",
-                                        "dist/release/audio/": "assets/audio/**"
+		
+		copy: {
+			dist: {
+				files: {
+					"dist/release/img/": "assets/img/**",
+					"dist/release/audio/": "assets/audio/**",
+					"assets/img/layers": "assets/vendor/zeegaplayer/dist/release/img/layers/*",
+					"assets/img/zeegaplayer": "assets/vendor/zeegaplayer/dist/release/img/*"
+				},
+				options: { "basePath" : "/", "flatten" : false }
+			}
+		}
 
-                                },
-                                options: { "basePath" : "/", "flatten" : true }
-                        }
-                }
 	});
 
 	// The debug task will remove all contents inside the dist/ folder, lint

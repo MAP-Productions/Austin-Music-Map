@@ -111,20 +111,26 @@ define([
 			
 
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
-				
+				homemade = new L.TileLayer('assets/img/map02.png#{z}/{x}/{y}', {
+					maxZoom: 18,
+					attribution: '& <a href="http://Mapbox.com/">mapbox</a>'
+				});
+
 			this.map = new L.Map(this.el,{
 				// dragging:false,
 				touchZoom:false,
 				scrollWheelZoom:false,
 				doubleClickZoom:false,
 				boxZoom:false,
-				zoomControl:false
+				zoomControl:false,
+				attribution:'',
+				layers: [cloudmade,homemade]
 			});
-			this.map.setView(this.latLng, 13).addLayer(cloudmade).addLayer(homemade);
+			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
 			this.loadItems();
-			//This loads neighborhood polygons
+
+	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
 			
@@ -142,7 +148,7 @@ define([
 		loadItems:function(){
 			this.itemsLayer='';
 			var map=this.map,
-				radius=114,
+				radius=108,
 				diameter=2*radius,
 				points = this.createPoints(),
 				itemLayer=this.itemLayer;
@@ -199,7 +205,7 @@ define([
 					// Add the popup to the map
 					popup.appendTo($('body'));
 
-					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },1000);
+					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },500);
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
@@ -235,6 +241,7 @@ define([
 						})
 						.on('click',function(e){
 							if(!map.featureOn){
+								$('#wrapper-'+feature.id).remove();
 
 								$(window).bind('keyup.playerSlider', function(e){
 									if(e.which == 27){
@@ -318,6 +325,7 @@ define([
 										tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
 										tmpCtx.restore();
 										
+										/*
 										var thumbctx=document.getElementById("canvas-"+feature.id).getContext("2d");
 										thumbctx.globalCompositeOperation = 'destination-over';
 										thumbctx.clearRect(0,0,diameter,diameter);
@@ -331,11 +339,10 @@ define([
 										if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
 									
 										thumbctx.restore();
-
+*/
 										if(i>=1) {
 											$('.back-to-map').fadeIn('fast');
 											clearInterval(drawLargeImageAnim);
-											$('#wrapper-'+feature.id).remove();
 											$('#marker-container').addClass('marker').fadeIn('fast');
 											var shrinkGapAnim,expandGapAnim,
 												gapState = 'small';
