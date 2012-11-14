@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<title>Austin Music Map - Please Upgrade Your Browser</title>
+
+	<link rel="stylesheet" href="assets/css/reset.css">
+	<link rel="stylesheet" href="assets/css/index.css">
+
+	<style>
+		#oldBrowserOverlay { position: absolute; left: 0; width: 100%; height: 100%; z-index: 50; background: url(assets/img/old-browser/overlay-fill.png); }
+		#oldBrowserOverlay .content {
+			position: absolute;
+			top: 33%;
+			left: 50%;
+			margin: -90px 0 0 -250px;
+			width: 500px;
+			height: 180px;
+			text-align: center;
+		}
+		#oldBrowserOverlay .content h1 {
+			color: #fff;
+			font-family: "League Gothic";
+			text-transform: uppercase;
+			font-size: 25px;
+			letter-spacing: 0.1em;
+			margin-bottom: 3px;
+		}
+		#oldBrowserOverlay .content p {
+			font-family: Arial, sans-serif;
+			font-size: 14px;
+			color: #fff;
+			line-height: 1.4em;
+			margin-bottom: 18px;
+		}
+		#oldBrowserOverlay .content .browser-links a {
+			display: inline-block;
+			width: 75px;
+			height: 77px;
+			background: url(assets/img/old-browser/browser-logos.png) no-repeat;
+			margin: 0 5px;
+		}
+		#oldBrowserOverlay .content .browser-links a.chrome {
+			background-position: 3px 0;
+		}
+		#oldBrowserOverlay .content .browser-links a.firefox {
+			background-position: -83px 0;
+		}
+		#oldBrowserOverlay .content .browser-links a.safari {
+			background-position: -175px 0;
+		}
+		#oldBrowserOverlay .content .browser-links a.ie {
+			background-position: -251px 0;
+			margin-left: -5px;	
+		}
+		#fakeMap { position: absolute; left: 0; width: 100%; height: 100%; z-index: 1; background: url(assets/img/old-browser/map.jpg) center center; }
+	</style>
+
+</head>
+
+<body>
+	<div id="oldBrowserOverlay">
+		<div class="content">
+			<h1>Please update your browser!</h1>
+			<p>Your browser is out of date and your experience is important to us.<br/>
+				Select one of the icons below to download the latest version:</p>
+			<div class="browser-links">
+				<a href="http://www.google.com/chrome" class="chrome" target="_blank"></a>
+				<a href="http://www.mozilla.org/firefox" class="firefox" target="_blank"></a>
+				<a href="http://www.apple.com/safari/" class="safari" target="_blank"></a>
+				<a href="http://www.microsoft.com/windows/internet-explorer/" class="ie" target="_blank"></a>
+			</div>
+		</div>
+	</div>
+	<div id="appBase">
+		<a id="logo" href="/">
+			<img src="assets/img/amm_logo.png">
+		</a>
+		<div class="controls" id="controlsLeft">
+			<div class="controls-inner">
+				<div><a class="text-link toggle-playlists" href="#">playlists</a></div>
+			</div>
+			<span class="edge"></span>
+		</div>
+		<div class="controls" id="controlsRight">
+			<div class="controls-inner">
+				<a class="text-link" href="/participate">Participate</a>
+				<a class="text-link " href="/about">About</a>
+			</div>
+			<div class="secondary-controls">
+				<a href="#"><img src="assets/img/kut_logo.png" width="63" style="margin-top:7px"></a>
+				<span class="edge"></span>
+			</div>
+			<span class="edge"></span>
+		</div>
+		<div class="spotlight-shelf">
+			<h3 class="shelf-tab">Recently mentioned on KUT</h3>
+		</div>
+		<div id="fakeMap"></div>
+	</div>
+</body>
+</html>
