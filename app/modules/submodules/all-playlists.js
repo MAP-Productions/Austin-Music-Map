@@ -20,13 +20,11 @@ function(App, Backbone )
 
 		onSync : function()
 		{
-			console.log('all playlists // sync', App.playlistCollection, App.playlistCollection.length, App.playlistCollection.toJSON() );
 			this.render();
 		},
 
 		serialize : function()
 		{
-			console.log('serialize ', App.playlistCollection.toJSON());
 			return {playlists:App.playlistCollection.toJSON()};
 		},
 
