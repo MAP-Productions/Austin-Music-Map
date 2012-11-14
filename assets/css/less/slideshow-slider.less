@@ -1,0 +1,46 @@
+.slideshow-slider
+{
+	position: absolute;
+	bottom: 0;
+	font-size:11px;
+	z-index: 30;
+	background: rgba(0,0,0,0.5);
+	padding:10px;
+	color:white;
+	font-family:'Helvetica', sans-serif;
+	font-weight:lighter;
+
+	ul {
+
+		list-style: none;
+		white-space:nowrap;
+		li {
+			float:left;
+			margin-left:10px;
+
+			&.active .slideshow-thumbnail
+			{
+				box-shadow: 0 0 19px orange;
+			}
+			.slideshow-thumbnail
+			{
+				height:100px;
+				width:166px;
+				background-size: auto 110%;
+				background-position: center;
+
+				
+			}
+			.thumb-title
+			{
+				margin-top:10px;
+			}
+
+			a:link,a:visited,a:hover,a:active
+			{
+				color:white;
+				text-decoration: none;
+			}
+		}
+	}
+}
