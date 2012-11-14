@@ -213,6 +213,7 @@ function(App, Backbone, Loader )
 			App.players.get('current').on('frame_rendered', function(frameData){
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
 			});
+
 			
 		},
 
