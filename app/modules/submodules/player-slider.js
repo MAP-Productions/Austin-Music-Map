@@ -4,10 +4,9 @@ define([
 	"backbone",
 	//submodules
 	"modules/submodules/player-loader"
-
 ],
 
-function(App, Backbone, Loader)
+function(App, Backbone, Loader )
 {
 	// Create a new module
 	var ProjectPlayer = App.module();
@@ -53,6 +52,9 @@ function(App, Backbone, Loader)
 			});
 			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
 			$(window).resize(lazyResize);
+
+			App.players.on('frame_updated', this.frameUpdated, this);
+
 		},
 
 		resizeWindow : function()
@@ -121,7 +123,13 @@ function(App, Backbone, Loader)
 			if(App.players.get('story')) App.players.get('story').destroy();
 			if(App.players.get('remix')) App.players.get('remix').destroy();
 			this.layout.remove();
+		},
+
+		frameUpdated : function(info)
+		{
+			
 		}
+		
 	});
 
 	// I need this model for the title only really
@@ -161,9 +169,6 @@ function(App, Backbone, Loader)
 				};
 				if(this.model.get('start_frame')) args.start_frame = parseInt(this.model.get('start_frame'),10);
 
-			console.log('======init pplayout', this, this.model.get('start_frame'), args);
-
-
 				var projectView = new PlayerTargetView({
 					args: args,
 					attributes:{
@@ -172,7 +177,6 @@ function(App, Backbone, Loader)
 					}
 				});
 
-				console.log('----project view', projectView);
 				this.insertView('.player-slider', projectView );
 
 				App.players.set('story', projectView.project );
@@ -206,7 +210,7 @@ function(App, Backbone, Loader)
 
 			var _this = this;
 
-			App.players.get('current').on('frame_rendered', function(){
+			App.players.get('current').on('frame_rendered', function(frameData){
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
 			});
 			
@@ -237,7 +241,6 @@ function(App, Backbone, Loader)
 			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
-			console.log('++++++project', this.project, this.options.args);
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 		},
 
