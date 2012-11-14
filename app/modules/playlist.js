@@ -37,6 +37,21 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		afterRender: function(){
 			var _this=this;
 			_.delay(function(){_this.playlistMap = new PlaylistMap.Model();},500);
+			this.updatePlaylistToggle();
+
+		},
+
+		updatePlaylistToggle : function()
+		{
+
+			if( _.isUndefined(App.players.get('remix')) )
+			{
+				this.$('.remix-toggle .remix').hide();
+			}
+			if( _.isUndefined(App.players.get('story')) )
+			{
+				this.$('.remix-toggle .stories').hide();
+			}
 		},
 
 		events : {
