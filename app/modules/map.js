@@ -180,8 +180,6 @@ define([
 						}
 					}).addClass('map-overlay');
 
-					//console.log('----map popup', this, _this, _this.collection.get(feature.id), feature);
-
 					var popupTemplate =
 						"<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'>"+
 							""+
@@ -277,14 +275,13 @@ define([
 		
 
 								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
-								else{
+								else
+								{
 									largeImg.src =feature.properties.thumbnail_url;
 								}
 							
-								
-
-
-								largeImg.onload = function() {
+								largeImg.onload = function()
+								{
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -299,7 +296,8 @@ define([
 								var shrinkAnim;
 								var expandAnim;
 								
-								function drawLargeImage(){
+								function drawLargeImage()
+								{
 									if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 									else
 									{
