@@ -236,7 +236,9 @@ body {
 			top: 0;
 			width: 4px;
 
-			.slider {
+			.slider
+			{
+				box-shadow: 0 0 5px #3CF;
 				position: absolute;
 				left: -9px;
 				top: 0;
@@ -252,7 +254,12 @@ body {
 		}
 
 		.label {
-			color: #6a6c6b;
+			color: #fff;
+			-webkit-transition: color 0.5s linear;
+			-moz-transition: color 0.5s linear;
+			-ms-transition: color 0.5s linear;
+			-o-transition: color 0.5s linear;
+			transition: color 0.5s linear;
 			font-size: 11px;
 			letter-spacing: 0.1em;
 			text-transform: uppercase;
@@ -266,29 +273,61 @@ body {
 			transition: color 0.5s linear;
 		}
 
-		.label.stories {
-			color: #fff;
+		.stories,.remix
+		{
+			&.disabled
+			{
+				color: #6a6c6b !important;
+				text-shadow:0 0 5px transparent !important;
+			}
 		}
-		.label.remix
+
+		.stories
+		{
+			color: #3CF;
+			-webkit-transition: color 0.5s linear;
+			-moz-transition: color 0.5s linear;
+			-ms-transition: color 0.5s linear;
+			-o-transition: color 0.5s linear;
+			transition: color 0.5s linear;
+			text-shadow:0 0 5px #3CF;
+
+		}
+		.remix
 		{
 			position:absolute;
 			bottom:0;
+			color:#fff;
+			-webkit-transition: color 0.5s linear;
+			-moz-transition: color 0.5s linear;
+			-ms-transition: color 0.5s linear;
+			-o-transition: color 0.5s linear;
+			transition: color 0.5s linear;
 		}
 
-		&.remix {
-
-			.slider {
-				top: 23px;
+		&.remix
+		{
+			.stories
+			{
+				color:#fff;
+				-webkit-transition: color 0.5s linear;
+				-moz-transition: color 0.5s linear;
+				-ms-transition: color 0.5s linear;
+				-o-transition: color 0.5s linear;
+				transition: color 0.5s linear;
+			}
+			.remix
+			{
+				color: #3CF;
+				-webkit-transition: color 0.5s linear;
+				-moz-transition: color 0.5s linear;
+				-ms-transition: color 0.5s linear;
+				-o-transition: color 0.5s linear;
+				transition: color 0.5s linear;
+				text-shadow:0 0 5px #3CF;
 			}
 
-			.label.stories {
-				color: #6a6c6b;
-			}
-
-			.label.remix {
-				color: #fff;
-			}
-
+			.slider { top: 23px; }
 		}
 
 	}	
