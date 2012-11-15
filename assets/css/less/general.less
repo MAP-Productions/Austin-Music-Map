@@ -66,15 +66,25 @@ body {
 		-ms-filter: drop-shadow(0 0 50px white);
 		-o-filter: drop-shadow(0 0 50px white);
 		filter: drop-shadow(0 0 50px white);
-	}
 
-	img:hover
-	{
-		-webkit-filter: drop-shadow(0 0 50px orange);
-		-moz-filter: drop-shadow(0 0 50px orange);
-		-ms-filter: drop-shadow(0 0 50px orange);
-		-o-filter: drop-shadow(0 0 50px orange);
-		filter: drop-shadow(0 0 50px orange);
+		&:hover
+		{
+			-webkit-filter: drop-shadow(0 0 50px orange);
+			-moz-filter: drop-shadow(0 0 50px orange);
+			-ms-filter: drop-shadow(0 0 50px orange);
+			-o-filter: drop-shadow(0 0 50px orange);
+			filter: drop-shadow(0 0 50px orange);
+		}
+
+		&.map:hover
+		{
+			-webkit-filter: drop-shadow(0 0 50px white);
+			-moz-filter: drop-shadow(0 0 50px white);
+			-ms-filter: drop-shadow(0 0 50px white);
+			-o-filter: drop-shadow(0 0 50px white);
+			filter: drop-shadow(0 0 50px white);
+		}
+
 	}
 
 }
