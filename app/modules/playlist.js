@@ -43,15 +43,32 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		updatePlaylistToggle : function()
 		{
-
+			var flag = false;
 			if( _.isUndefined(App.players.get('remix')) )
 			{
-				this.$('.remix-toggle .remix').hide();
+				this.$('.remix-toggle .remix').addClass('disabled');
+				flag = true;
 			}
 			if( _.isUndefined(App.players.get('story')) )
 			{
-				this.$('.remix-toggle .stories').hide();
+				this.$('.remix-toggle .stories').addClass('disabled');
+				flag = true;
 			}
+
+			if(flag)
+			{
+				this.$('.slider-track').css('background','#444');
+				this.undelegateEvents();
+				this.delegateEvents(this.ev2);
+			}
+		},
+
+		ev2 : {
+			'click .progress-bar' : 'goToTime',
+			'click .remix-toggle' : 'doNothing',
+			'click .back' : 'playerPrev',
+			'click .forward' : 'playerNext',
+			'click .play-pause' : 'playPause'
 		},
 
 		events : {
@@ -61,6 +78,11 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 			'click .back' : 'playerPrev',
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause'
+		},
+
+		doNothing : function()
+		{
+			return false;
 		},
 
 		togglePlaylist: function(e)
