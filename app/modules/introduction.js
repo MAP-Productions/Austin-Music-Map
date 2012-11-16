@@ -18,7 +18,7 @@ function(App, Backbone) {
 			_.bindAll(this, 'afterRender');
 		},
 		afterRender : function() {
-			var animLength = 10000,
+			var animLength = 7000,
 				_this = this;
 
 			this.els = {
@@ -32,7 +32,7 @@ function(App, Backbone) {
 
 			setTimeout(function() {
 				_this.exitIntroduction();
-			}, animLength + 3000);
+			}, animLength + 6000);
 		},
 
 		exitIntroduction : function()
