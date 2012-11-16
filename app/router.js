@@ -115,8 +115,16 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 	function initialize(to) {
 		initAMM();
 		cleanup(to);
-		if(to=="map")App.soundscape.play();
-		else App.soundscape.pause();
+		if(to=="map")
+		{
+			App.soundscape.play();
+			$('#logo img').addClass('map');
+		}
+		else
+		{
+			App.soundscape.pause();
+			$('#logo img').removeClass('map');
+		}
 	}
 
 	// ensure this happens only once

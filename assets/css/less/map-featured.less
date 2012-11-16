@@ -72,8 +72,8 @@
 
 .map-featured
 {
-	top:30px;
-	left:0px;
+	top:27px;
+	left:-5px;
 	width: 228px;
 	height: 228px;
 	position: absolute;
@@ -171,10 +171,26 @@
 		font-weight:bold;
 		line-height: 1.5em;
 		color: #222;
+		-webkit-transition: color 0.5s linear;
+		-moz-transition: color 0.5s linear;
+		-ms-transition: color 0.5s linear;
+		-o-transition: color 0.5s linear;
+		transition: color 0.5s linear;
 		text-transform: uppercase;
 		margin: 6px auto;
 		letter-spacing: 0.3em;
 		text-decoration: none;
+
+		&:hover
+		{
+			color:orangered;
+			text-shadow:0 0 5px orange;
+			-webkit-transition: color 0.2s linear;
+			-moz-transition: color 0.2s linear;
+			-ms-transition: color 0.2s linear;
+			-o-transition: color 0.2s linear;
+			transition: color 0.2s linear;
+		}
 	}
 
 	a:hover { color: #111; }
