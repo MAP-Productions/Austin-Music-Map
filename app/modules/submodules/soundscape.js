@@ -56,7 +56,6 @@ function(App, Backbone)
 		var ding=document.getElementById('amm-ding-'+dingNo);
 		ding.currentTime=0;
 		ding.play();
-		console.log(dingNo);
 		*/
 	};
 
