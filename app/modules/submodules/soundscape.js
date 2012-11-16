@@ -12,7 +12,7 @@ function(App, Backbone)
 	var Soundscape = Zeega.module();
 
 	Soundscape.initialize=function(){
-	/*
+	
 		var _this=this;
 		this.loaded=false;
 		var audio = $('<audio>').attr({'id':'amm-soundscape'});
@@ -36,7 +36,7 @@ function(App, Backbone)
 
 
 		}
-*/
+
 
 	};
 
