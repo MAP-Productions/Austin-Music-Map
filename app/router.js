@@ -142,7 +142,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		App.soundscape=Soundscape;
 		App.soundscape.initialize();
 
-		if ( Helpers.firstVisit() || true ) {
+		if ( Helpers.firstVisit ) {
 			var introScreen = new Introduction.View();
 			$('#main').append( introScreen.el );
 			introScreen.render();

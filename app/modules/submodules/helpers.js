@@ -73,14 +73,15 @@ function(_,jQuery)
 		return "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16);
 	};
 
-	Helpers.firstVisit = function() {
+	// firstVisit is equal to true for the duration of your first visit to the site
+	Helpers.firstVisit = (function() {
 		if ( $.cookie('previous_visit') === 'yes' ) {
 			return false;
 		} else {
 			$.cookie('previous_visit', 'yes', { expires: 30 } );
 			return true;
 		}
-	};
+	}());
 
 	// make capital case
 	String.prototype.toCapitalCase = function()
