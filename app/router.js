@@ -10,15 +10,17 @@ define([
 	"modules/contact",
 	"modules/map",
 	"modules/scpost",
+	"modules/introduction",
 
 	// submodules
 	"modules/submodules/player-slider",
 	"modules/submodules/fuzz",
-	"modules/submodules/soundscape"
+	"modules/submodules/soundscape",
+	"modules/submodules/helpers"
 
 ],
 
-function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSlider,Fuzz,Soundscape) {
+function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduction, PlayerSlider,Fuzz,Soundscape,Helpers) {
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -139,6 +141,13 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, PlayerSl
 		App.fuzz=Fuzz;
 		App.soundscape=Soundscape;
 		App.soundscape.initialize();
+
+		if ( Helpers.firstVisit() || true ) {
+			var introScreen = new Introduction.View();
+			$('#main').append( introScreen.el );
+			introScreen.render();
+		}
+
 	}
 
 	// happens on every router change
