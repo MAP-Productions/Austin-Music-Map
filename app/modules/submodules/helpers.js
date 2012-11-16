@@ -1,6 +1,11 @@
-define([ "lodash" ],
+define([
+	"lodash",
 
-function(_)
+	"jquery",
+	"plugins/jquery.cookie"
+],
+
+function(_,jQuery)
 {
 
 	var Helpers = {};
@@ -66,6 +71,15 @@ function(_)
 		if (isNaN(n)) return "00";
 		n = Math.max(0,Math.min(n,255));
 		return "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16);
+	};
+
+	Helpers.firstVisit = function() {
+		if ( $.cookie('previous_visit') === 'yes' ) {
+			return false;
+		} else {
+			$.cookie('previous_visit', 'yes', { expires: 30 } );
+			return true;
+		}
 	};
 
 	// make capital case

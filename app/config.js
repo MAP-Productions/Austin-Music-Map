@@ -31,7 +31,8 @@ require.config({
 
     // Backbone.LayoutManager depends on Backbone.
     "plugins/backbone.layoutmanager": ["backbone"],
-    "plugins/jquery-ui" : ["jquery"]
+    "plugins/jquery-ui" : ["jquery"],
+    "plugins/jquery.cookie": ["jquery"]
   }
 
 });
