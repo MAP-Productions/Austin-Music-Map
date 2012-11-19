@@ -629,7 +629,7 @@ define([
 		},
 		
 		url: function(){
-			return 'http://alpha.zeega.org/api/items/'+this.id+'/items';
+			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
 		parse: function(response){
@@ -648,7 +648,7 @@ define([
 		},
 		
 		url:function(){
-			return 'http://alpha.zeega.org/api/items/50264/items';
+			return localStorage.api+'/items/50264/items';
 		},
 
 		createKeys:function(){

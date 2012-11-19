@@ -10,6 +10,15 @@
 	<!-- Application root. -->
 	<base href="/">
 
+	<script>
+		localStorage.api = 'http://alpha.zeega.org/api';
+		if (!window.console) console = {log: function() {}};
+	</script>
+
+
+
+
+
 	<!-- Soundcloud -->
 
 	<script src="//connect.soundcloud.com/sdk.js"></script>
@@ -19,6 +28,11 @@
 				redirect_uri: "http://austinmusicmap.org"
 			});
 	</script>
+
+
+
+
+
 
 	<!-- Application styles. -->
 	<link rel="stylesheet" href="vendor/leaflet/dist/leaflet.css">
@@ -32,7 +46,7 @@
 	<div role="main" id="main"></div>
 
 	<!-- Application source. -->
-	<script src="assets/data/austin_neighborhoods.js"></script>
+	<!--<script src="assets/data/austin_neighborhoods.js"></script>-->
 	<script src="assets/vendor/leaflet/dist/leaflet.js"></script>
 	<script data-main="app/config" src="assets/js/libs/require.js"></script>
 	<script src="//connect.soundcloud.com/sdk.js"></script>
