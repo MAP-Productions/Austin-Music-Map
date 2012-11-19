@@ -158,6 +158,8 @@ define([
 			function onEachFeature(feature, layer) {
 				layer.on("mouseover", function (e) {
 					
+					var isFeature = _.contains(feature.properties.tags,'feature');
+
 					App.soundscape.ding();
 
 					//layer.projectLatlngs();
@@ -179,6 +181,8 @@ define([
 		
 						}
 					}).addClass('map-overlay');
+
+					if(isFeature) popup.addClass('featured-popup');
 
 					var popupTemplate =
 						"<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'>"+
