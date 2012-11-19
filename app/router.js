@@ -134,6 +134,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 	function init()
 	{
+
+		if(!Modernizr.canvas) window.location="old-browser.html";
 		// draw the base layout
 		App.BaseLayout = new Base();
 		App.BaseLayout.render();
