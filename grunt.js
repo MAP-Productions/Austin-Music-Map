@@ -193,8 +193,8 @@ module.exports = function(grunt) {
 		copy: {
 			dist: {
 				files: {
-					"dist/release/img/": "assets/img/**",
-					"dist/release/audio/": "assets/audio/**",
+					"dist/release/": "assets/img/**",
+					"dist/release/": "assets/audio/**",
 					"assets/img/layers": "assets/vendor/zeegaplayer/dist/release/img/layers/*",
 					"assets/img/zeegaplayer": "assets/vendor/zeegaplayer/dist/release/img/*"
 				},
