@@ -120,6 +120,9 @@ function(App, Backbone, Loader )
 
 		exit : function()
 		{
+
+			if(this.loaderView) this.loaderView.exit();
+
 			$(window).unbind('resize.amm_players');
 
 			this.endEvents();
