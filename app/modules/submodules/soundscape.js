@@ -29,10 +29,15 @@ function(App, Backbone)
 
 		for(var i=1;i<=4;i++){
 
-			var j=4+i;
-			$('body').append($('<audio>').attr({'src':'assets/audio/static'+i+'.mp3','id':'amm-static-'+i}));
-			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.mp3','id':'amm-ding-'+i}));
-			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.mp3','id':'amm-ding-'+j}));
+			var j=4+i,
+				codec;
+			if(Modernizr.audio.mp3 === '') codec ='ogg';
+			else codec ='mp3';
+			
+			$('body').append($('<audio>').attr({'src':'assets/audio/static'+i+'.'+codec,'id':'amm-static-'+i}));
+			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+i}));
+			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+j}));
+			
 
 
 		}
