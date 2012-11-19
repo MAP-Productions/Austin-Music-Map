@@ -23,16 +23,17 @@ function(App, Backbone)
 			}
 			_this.loaded=true;
 		});
-		audio.attr({'src':'assets/audio/soundscape.mp3'}).appendTo('body');
+		
+		var codec;
+		if(Modernizr.audio.mp3 === '') codec ='ogg';
+		else codec ='mp3';
 
-
+		audio.attr({'src':'assets/audio/soundscape.'+codec}).appendTo('body');
 
 		for(var i=1;i<=4;i++){
 
-			var j=4+i,
-				codec;
-			if(Modernizr.audio.mp3 === '') codec ='ogg';
-			else codec ='mp3';
+			var j=4+i;
+			
 			
 			$('body').append($('<audio>').attr({'src':'assets/audio/static'+i+'.'+codec,'id':'amm-static-'+i}));
 			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+i}));
