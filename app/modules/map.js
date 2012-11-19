@@ -111,7 +111,7 @@ define([
 			
 
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map02.png#{z}/{x}/{y}', {
+				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
 					maxZoom: 18,
 					attribution: ''
 				});
