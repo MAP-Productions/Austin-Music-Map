@@ -2,7 +2,10 @@ AddType audio/mpeg        mp3
 # Enable the RewriteEngine
 RewriteEngine on
 
-RewriteBase /amm/
+RewriteCond %{REQUEST_URI} "/old-browser.html"
+RewriteRule (.*) $1 [L]
+
+RewriteBase /
 # Check if this is the noredirect query string
 #RewriteCond %{QUERY_STRING} (^|&)m=0(&|$)
 # Set a cookie, and skip the next rule
@@ -45,7 +48,7 @@ RewriteRule ^app/(.*)$ dist/release/$1 [NC,L]
 RewriteRule ^assets/js/libs/(.*)$ dist/release/$1 [NC,L]
 RewriteRule ^assets/audio/(.*)$ dist/release/audio/$1 [NC,L]
 RewriteRule ^assets/css/(.*)$ dist/release/$1 [NC,L]
-RewriteRule ^zeegaapi/(.*)$ http://50.57.99.175/api/$1 [P]
+RewriteRule ^zeegaapi/(.*)$ http://alpha.zeega.org/api/$1 [P]
 
 # These conditions ensure that the file does not exist and that the current
 # request URI is not the index.
