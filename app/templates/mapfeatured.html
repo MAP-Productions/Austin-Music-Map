@@ -1,6 +1,6 @@
 
 <div class="back-to-map"></div>
-<div class="map-featured" >
+<div class="map-featured <% if( _.contains(tags,'feature') ){ %>featured-popup-dot<% } %>" >
 	<div id="marker-container" class="marker"></div>
 	<div class="content">
 		<div class="top">

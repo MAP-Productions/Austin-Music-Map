@@ -38,7 +38,7 @@ define([
 
 	Map.Views.Featured = Backbone.LayoutView.extend({
 		template : 'mapfeatured',
-		serialize : function(){ return this.model.toJSON(); }
+		serialize : function(){ console.log(this.model.toJSON());return this.model.toJSON(); }
 	});
 
 	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
