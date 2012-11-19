@@ -58,6 +58,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 			if(flag)
 			{
 				this.$('.slider-track').css('background','#444');
+				this.$('.slider').css('opacity',0.25);
 				this.undelegateEvents();
 				this.delegateEvents(this.ev2);
 			}
