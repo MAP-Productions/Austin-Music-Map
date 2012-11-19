@@ -35,8 +35,9 @@
 
 
 	<!-- Application styles. -->
+		<link rel="stylesheet" href="assets/css/reset.css">
 	<link rel="stylesheet" href="vendor/leaflet/dist/leaflet.css">
-	<link rel="stylesheet" href="vendor/zeegaplayer/dist/debug/zeega.css">
+	<link rel="stylesheet" href="vendor/zeegaplayer/dist/release/css/zeega.css">
 	<link rel="stylesheet" href="assets/css/index.css">
 
 </head>
