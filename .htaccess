@@ -2,7 +2,7 @@ AddType audio/mpeg        mp3
 # Enable the RewriteEngine
 RewriteEngine on
 
-RewriteBase /amm/
+RewriteBase /
 # Check if this is the noredirect query string
 #RewriteCond %{QUERY_STRING} (^|&)m=0(&|$)
 # Set a cookie, and skip the next rule
