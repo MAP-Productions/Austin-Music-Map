@@ -59,7 +59,7 @@ function(App, Backbone)
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
-					_this.$el.fadeOut(function(){ _this.remove(); });
+					_this.exit();
 					_this.player.play();
 					_this.model.renderPlaylist();
 					App.players.trigger('play');
@@ -68,6 +68,12 @@ function(App, Backbone)
 				
 				this.hasPlayed = true;
 			}
+		},
+
+		exit : function()
+		{
+			var _this = this;
+			_this.$el.fadeOut(function(){ _this.remove(); });
 		}
 	});
 
