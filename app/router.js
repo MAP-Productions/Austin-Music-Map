@@ -162,6 +162,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		App.BaseLayout.hideLeftMenu({
 			next: to
 		});
+
 		// remove modal if it exists
 		if(App.modal)
 		{
