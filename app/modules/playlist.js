@@ -88,7 +88,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		onMouseoverSlider : function(e)
 		{
 			var POPUP_DELAY = 2000;
-			var popuptext = '<span class="popup">This is the remix slider</span>';
+			var popuptext = '<span class="popup">click to switch between KUT produced stories and remixed community audio and visuals</span>';
 			var self = $(e.target);
 			var css = {
 				'left' : '10px',
