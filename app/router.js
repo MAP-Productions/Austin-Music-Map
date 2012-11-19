@@ -46,7 +46,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 		index: function() {
 //			App.on('base_layout_ready', function(){
-				App.page = new Map.Model();
+			if(!App.page || (App.page && App.page.type != 'Map') ) App.page = new Map.Model();
+
 //			});
 			initialize('map');
 		},
@@ -120,6 +121,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		if(to=="map")
 		{
 			App.soundscape.play();
+			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
 		}
 		else
@@ -177,11 +179,14 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 	// refresh map after window resize
 
-	function refreshMap(){
+	function refreshMap()
+	{
+		console.log('refresh map');
 		if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
 	}
 	var refreshMapLayout = _.debounce(refreshMap, 100);
-	$(window).resize(refreshMapLayout);
+
+	//$(window).resize(refreshMapLayout);
 	
 
 
