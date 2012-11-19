@@ -6,6 +6,9 @@ define([
 
 function(App, Backbone) {
 
+
+	var WAIT_DURATION = 30000; // the length of time to wait after the animation is complete and before the intro fades out
+
 	// Create a new module
 	var Introduction = Zeega.module();
 
@@ -32,7 +35,7 @@ function(App, Backbone) {
 
 			setTimeout(function() {
 				_this.exitIntroduction();
-			}, animLength + 6000);
+			}, animLength + WAIT_DURATION);
 		},
 
 		exitIntroduction : function()
