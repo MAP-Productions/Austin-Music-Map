@@ -16,7 +16,7 @@ define([
 		},
 
 		initialize: function() {
-			console.log('init map');
+			console.log('init map', $('#appBase').height(), $('#appBase').width());
 			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
 			App.playlistCollection = new PlaylistCollection();

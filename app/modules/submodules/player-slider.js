@@ -51,7 +51,9 @@ function(App, Backbone, Loader )
 				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
 			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
-			$(window).resize(lazyResize);
+			$(window).bind('resize.amm_players',lazyResize);
+
+			//$(window).resize(lazyResize);
 
 			App.players.on('frame_updated', this.frameUpdated, this);
 
@@ -59,7 +61,7 @@ function(App, Backbone, Loader )
 
 		resizeWindow : function()
 		{
-			console.log('resize the player!!');
+			console.log('resize the player!! updated');
 			App.players.get('current').fitWindow();
 		},
 
@@ -118,6 +120,8 @@ function(App, Backbone, Loader )
 
 		exit : function()
 		{
+			$(window).unbind('resize.amm_players');
+
 			this.endEvents();
 			App.players.get('current').pause();
 			if(App.players.get('story')) App.players.get('story').destroy();
