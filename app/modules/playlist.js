@@ -69,7 +69,9 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 			'click .remix-toggle' : 'doNothing',
 			'click .back' : 'playerPrev',
 			'click .forward' : 'playerNext',
-			'click .play-pause' : 'playPause'
+			'click .play-pause' : 'playPause',
+			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
 		},
 
 		events : {
@@ -78,7 +80,30 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 			'click .remix-toggle' : 'remixToggle',
 			'click .back' : 'playerPrev',
 			'click .forward' : 'playerNext',
-			'click .play-pause' : 'playPause'
+			'click .play-pause' : 'playPause',
+			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
+		},
+
+		onMouseoverSlider : function(e)
+		{
+			var POPUP_DELAY = 2000;
+			var popuptext = '<span class="popup">This is the remix slider</span>';
+			var self = $(e.target);
+			var css = {
+				'left' : '10px',
+				'top' : (self.offset().top + self.height() +10) +'px'
+			};
+			var pu = $(popuptext).css(css);
+			this.timeout = setTimeout(function() {
+				$('body').append(pu);
+			}, POPUP_DELAY);
+		},
+
+		onMouseoutSlider : function()
+		{
+			if($('.popup')) $('.popup').remove();
+			clearTimeout(this.timeout);
 		},
 
 		doNothing : function()
