@@ -65,6 +65,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 		},
 
 		ev2 : {
+			'click .toggle-playlist' : 'togglePlaylist',
 			'click .progress-bar' : 'goToTime',
 			'click .remix-toggle' : 'doNothing',
 			'click .back' : 'playerPrev',

@@ -1,3 +1,6 @@
+@orange : rgba(229,190,180,0.7);
+
+
 .back-to-map
 {
 	background:url(../img/back-to-map.png);
@@ -131,6 +134,18 @@
 	height: 228px;
 	position: absolute;
 	
+	&.featured-popup-dot
+	{
+		.marker {
+			background: url(../img/marker-circle-orange.png);
+		}
+		.content
+		{
+			background: @orange;
+		}
+	}
+
+
 	.marker
 	{
 		position: absolute;
