@@ -24,7 +24,7 @@ function(App, Backbone, Loader )
 
 		url : function()
 		{
-			return "http://alpha.zeega.org/api/items/"+ this.get('collection_id') +"/items";
+			return localStorage.api+"/items/"+ this.get('collection_id') +"/items";
 		},
 
 		initialize : function()
@@ -140,7 +140,7 @@ function(App, Backbone, Loader )
 	var FeaturedCollectionModel = Backbone.Model.extend({
 		url : function()
 		{
-			return "http://alpha.zeega.org/api/items/"+ this.get('collection_id');
+			return localStorage.api+"/items/"+ this.get('collection_id');
 		},
 		parse : function(res)
 		{

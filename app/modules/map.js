@@ -111,9 +111,9 @@ define([
 			
 
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('assets/img/map02.png#{z}/{x}/{y}', {
+				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
 					maxZoom: 18,
-					attribution: '& <a href="http://Mapbox.com/">mapbox</a>'
+					attribution: ''
 				});
 
 			this.map = new L.Map(this.el,{
@@ -242,7 +242,14 @@ define([
 							}
 						})
 						.on('click',function(e){
+							
+							console.log('clickity click click');
 							if(!map.featureOn){
+
+
+								
+
+
 								$('#wrapper-'+feature.id).remove();
 
 								$(window).bind('keyup.playerSlider', function(e){
@@ -283,164 +290,152 @@ define([
 								{
 									largeImg.src =feature.properties.thumbnail_url;
 								}
-							
+								
 								largeImg.onload = function()
 								{
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
 						
-								//Want animation radius to be large enough such that begins at farthest corner of the screen
+									//Want animation radius to be large enough such that begins at farthest corner of the screen
 									var d =2*Math.max( Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth)-Math.sqrt(layer._point.x*layer._point.x+layer._point.y*layer._point.y),
 												Math.sqrt(layer._point.x*layer._point.x+layer._point.y*layer._point.y));
 						
 								
 							
-								var drawLargeImageAnim=setInterval(drawLargeImage,20);
-								var shrinkAnim;
-								var expandAnim;
-								
-								function drawLargeImage()
-								{
-									if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
-									else
-									{
-
-
-										var f;
-										if(i<0.7){
-											f = 1-(0.7-i)*(0.7-i);
-										}
-										else{
-											f=1;
-										}
-
-										var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-										tmpCtx.globalCompositeOperation = 'destination-over';
-										
-										tmpCtx.save();
-										tmpCtx.beginPath();
-										tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
-										tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
-										tmpCtx.closePath();
-										tmpCtx.clip();
-										tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-										tmpCtx.restore();
-										
-										/*
-										var thumbctx=document.getElementById("canvas-"+feature.id).getContext("2d");
-										thumbctx.globalCompositeOperation = 'destination-over';
-										thumbctx.clearRect(0,0,diameter,diameter);
-
-										thumbctx.save();
-										thumbctx.beginPath();
-										thumbctx.arc(radius, radius, radius, 0, Math.PI * 2, true);
-										thumbctx.arc(radius, radius, f*radius, 0, Math.PI * 2, false);
-										thumbctx.closePath();
-										thumbctx.clip();
-										if(i<1) thumbctx.drawImage(thumbImg, 0, 0, diameter, diameter);
+									var drawLargeImageAnim=setInterval(drawLargeImage,20);
+									var shrinkAnim;
+									var expandAnim;
 									
-										thumbctx.restore();
-*/
-										if(i>=1) {
-											$('.back-to-map').fadeIn('fast');
-											clearInterval(drawLargeImageAnim);
-											$('#marker-container').addClass('marker').fadeIn('fast');
-											var shrinkGapAnim,expandGapAnim,
-												gapState = 'small';
+									function drawLargeImage()
+									{
+										if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
+										else
+										{
 
+
+											var f;
+											if(i<0.7){
+												f = 1-(0.7-i)*(0.7-i);
+											}
+											else{
+												f=1;
+											}
+
+											var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+											tmpCtx.globalCompositeOperation = 'destination-over';
 											
-											$('.map-overlay').on('mousemove',function(e){
-												var i=0;
-												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-												function expandGap(){
-													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
-														clearInterval(expandGapAnim);
-													}
-													else{
-														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-														tmpCtx.globalCompositeOperation = 'destination-over';
-														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-													
-														tmpCtx.save();
-														tmpCtx.beginPath();
-														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-														tmpCtx.arc(layer._point.x, layer._point.y,(radius+50) + i*8, 0, Math.PI * 2, false);
-														tmpCtx.closePath();
-														tmpCtx.clip();
-														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-														tmpCtx.restore();
-													
-														if(i>=1) {
+											tmpCtx.save();
+											tmpCtx.beginPath();
+											tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
+											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
+											tmpCtx.closePath();
+											tmpCtx.clip();
+											tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+											tmpCtx.restore();
+											
+											if(i>=1) {
+											
+												clearInterval(drawLargeImageAnim);
+												$('.back-to-map').fadeIn('fast');
+												var shrinkGapAnim,expandGapAnim,
+													gapState = 'small';
+
+												
+												$('.map-overlay').on('mousemove',function(e){
+													var i=0;
+													var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
+													function expandGap(){
+														if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
 															clearInterval(expandGapAnim);
-															expandGapAnim=false;
-															gapState='large';
-															//$('.back-to-map').fadeIn('fast');
-															
 														}
-														i=parseFloat(i)+0.1	;
+														else{
+															var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+															tmpCtx.globalCompositeOperation = 'destination-over';
+															tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+														
+															tmpCtx.save();
+															tmpCtx.beginPath();
+															tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+															tmpCtx.arc(layer._point.x, layer._point.y,(radius+50) + i*8, 0, Math.PI * 2, false);
+															tmpCtx.closePath();
+															tmpCtx.clip();
+															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+															tmpCtx.restore();
+														
+															if(i>=1) {
+																clearInterval(expandGapAnim);
+																expandGapAnim=false;
+																gapState='large';
+																//$('.back-to-map').fadeIn('fast');
+																
+															}
+															i=parseFloat(i)+0.1	;
+														}
 													}
-												}
-												function shrinkGap(){
-													if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
+													function shrinkGap(){
+														if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
+															clearInterval(expandGapAnim);
+														}
+														else
+														{
+															//$('.back-to-map').hide();
+															var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+															tmpCtx.globalCompositeOperation = 'destination-over';
+															tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+														
+															tmpCtx.save();
+															tmpCtx.beginPath();
+															tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+															tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
+															tmpCtx.closePath();
+															tmpCtx.clip();
+															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+															tmpCtx.restore();
+							
+															if(i>=1) {
+																clearInterval(shrinkGapAnim);
+																shrinkGapAnim=false;
+																gapState='small';
+															}
+															i=parseFloat(i)+0.1;
+														}
+													}
+
+													if(d>radius&&d<radius+20&&gapState=='small'){
+														clearInterval(shrinkGapAnim);
+														if(!expandGapAnim){
+															i=0;
+															expandGapAnim=setInterval(expandGap,30);
+														}
+													}
+
+													else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
 														clearInterval(expandGapAnim);
-													}
-													else
-													{
-														//$('.back-to-map').hide();
-														var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-														tmpCtx.globalCompositeOperation = 'destination-over';
-														tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
-													
-														tmpCtx.save();
-														tmpCtx.beginPath();
-														tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
-														tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
-														tmpCtx.closePath();
-														tmpCtx.clip();
-														tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
-														tmpCtx.restore();
-						
-														if(i>=1) {
-															clearInterval(shrinkGapAnim);
-															shrinkGapAnim=false;
-															gapState='small';
+														if(!shrinkGapAnim){
+															shrinkGapAnim=setInterval(shrinkGap,30);
+															i=0;
 														}
-														i=parseFloat(i)+0.1;
 													}
-												}
-
-												if(d>radius&&d<radius+20&&gapState=='small'){
-													clearInterval(shrinkGapAnim);
-													if(!expandGapAnim){
-														i=0;
-														expandGapAnim=setInterval(expandGap,30);
-													}
-												}
-
-												else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
-													clearInterval(expandGapAnim);
-													if(!shrinkGapAnim){
-														shrinkGapAnim=setInterval(shrinkGap,30);
-														i=0;
-													}
-												}
+												
+												});
+												
 											
-											});
-											
-										
-											overlay.on('click',function(e){
-												var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-												if(d>radius&&d<radius+50){
-													$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
-													map.featureOn=false;
-												}
-											});
+												overlay.on('click',function(e){
+													var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
+													if(d>radius&&d<radius+50){
+														$('.map-overlay').fadeOut('slow',function(){$(this).remove();});
+														map.featureOn=false;
+													}
+												});
+											}
+											i=parseFloat(i)+0.015;
 										}
-										i=parseFloat(i)+0.015;
 									}
-								}
 								};
+								
+
+					
 							
 							}else{
 							
@@ -633,7 +628,7 @@ define([
 		},
 		
 		url: function(){
-			return 'http://alpha.zeega.org/api/items/'+this.id+'/items';
+			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
 		parse: function(response){
@@ -652,7 +647,7 @@ define([
 		},
 		
 		url:function(){
-			return 'http://alpha.zeega.org/api/items/50264/items';
+			return localStorage.api+'/items/50264/items';
 		},
 
 		createKeys:function(){

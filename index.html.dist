@@ -4,11 +4,20 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-
+	<link rel="shortcut icon" href="assets/img/amm.ico" />
 	<title>Austin Music Map</title>
 
 	<!-- Application root. -->
 	<base href="/">
+
+	<script>
+		localStorage.api = 'http://alpha.zeega.org/api';
+		if (!window.console) console = {log: function() {}};
+	</script>
+
+
+
+
 
 	<!-- Soundcloud -->
 
@@ -20,9 +29,15 @@
 			});
 	</script>
 
+
+
+
+
+
 	<!-- Application styles. -->
+		<link rel="stylesheet" href="assets/css/reset.css">
 	<link rel="stylesheet" href="vendor/leaflet/dist/leaflet.css">
-	<link rel="stylesheet" href="vendor/zeegaplayer/dist/debug/css/zeega.css">
+	<link rel="stylesheet" href="vendor/zeegaplayer/dist/release/css/zeega.css">
 	<link rel="stylesheet" href="assets/css/index.css">
 
 </head>
@@ -32,7 +47,7 @@
 	<div role="main" id="main"></div>
 
 	<!-- Application source. -->
-	<script src="assets/data/austin_neighborhoods.js"></script>
+	<!--<script src="assets/data/austin_neighborhoods.js"></script>-->
 	<script src="assets/vendor/leaflet/dist/leaflet.js"></script>
 	<script data-main="app/config" src="assets/js/libs/require.js"></script>
 	<script src="//connect.soundcloud.com/sdk.js"></script>
