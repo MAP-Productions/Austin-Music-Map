@@ -16,17 +16,33 @@ function(App, Backbone)
 		var _this=this;
 		this.loaded=false;
 		var audio = $('<audio>').attr({'id':'amm-soundscape'});
-		audio.on('canplay',function(){console.log('soundscape can play');});
-		audio.on('canplaythrough',function(){
-			if(App.page&&App.page.type=='Map') {
-				this.play();
-			}
-			_this.loaded=true;
-		});
-		
 		var codec;
 		if(Modernizr.audio.mp3 === '') codec ='ogg';
 		else codec ='mp3';
+
+
+		if(codec=='mp3'){
+			audio.on('canplay',function(){console.log('soundscape can play');});
+			audio.on('canplaythrough',function(){
+				if(App.page&&App.page.type=='Map') {
+					this.play();
+				}
+				_this.loaded=true;
+			});
+		}
+		else{
+			audio.on('canplay',function(){
+				console.log('canplay');
+
+				if(App.page&&App.page.type=='Map'&&_this.loaded) {
+					console.log('canplaythrough');
+					this.play();
+				}
+				_this.loaded=true;
+			});
+
+		}
+		
 
 		audio.attr({'src':'assets/audio/soundscape.'+codec}).appendTo('body');
 
