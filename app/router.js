@@ -119,8 +119,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 	function initialize(to) {
 		initAMM(to);
 		cleanup(to);
-		if(to=="map"||to=="playlist")
-		{
+		if(to=="map") {
 			App.soundscape.play();
 			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
@@ -134,12 +133,13 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				miniIntro.render();
 			}
 			App.mapVisited = true;
-		}
-		else
-		{
+		} else {
 			App.soundscape.pause();
 			$('#logo img').removeClass('map');
 			$('.map-extras').hide();
+			if(to == "playlist") {
+				$('.bottom-credit').show();
+			}
 		}
 	}
 
