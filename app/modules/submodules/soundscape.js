@@ -46,9 +46,9 @@ function(App, Backbone)
 
 		audio.attr({'src':'assets/audio/soundscape.'+codec}).appendTo('body');
 
-		for(var i=1;i<=4;i++){
+		for(var i=1;i<=5;i++){
 
-			var j=4+i;
+			var j=5+i;
 			
 			
 			$('body').append($('<audio>').attr({'src':'assets/audio/static'+i+'.'+codec,'id':'amm-static-'+i}));
@@ -58,7 +58,6 @@ function(App, Backbone)
 
 
 		}
-
 
 	};
 
@@ -73,12 +72,14 @@ function(App, Backbone)
 	};
 
 	Soundscape.ding = function(){
-		/*
-		var dingNo=Math.floor(1+Math.random()*8);
+		
+		var dingNo=Math.floor(1+Math.random()*10);
 		var ding=document.getElementById('amm-ding-'+dingNo);
-		ding.currentTime=0;
-		ding.play();
-		*/
+		if(ding.duration>0){
+			ding.currentTime=0;
+			ding.play();
+		}
+		
 	};
 
 
