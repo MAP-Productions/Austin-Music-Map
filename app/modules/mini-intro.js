@@ -20,7 +20,7 @@ function(App, Backbone) {
 			});
 		},
 		afterRender: function() {
-			setTimeout(this.removeMiniIntro, 6500);
+			setTimeout(this.removeMiniIntro, 8500);
 		},
 		removeMiniIntro : function()
 		{
