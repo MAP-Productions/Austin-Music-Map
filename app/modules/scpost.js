@@ -82,10 +82,9 @@ define([
 					media_creator_username:App.track.user.username,
 					media_creator_realname:App.track.user.username
 				});
-				$('.modal-content').find('h1').remove();
-				this.$el.find('.form-content').hide();
-				this.$el.find('.thanks').show();
-				this.$el.find('#modal-btn').removeClass('btn-submit').addClass('btn-close');
+				
+				$('.sc-details').remove();
+				$('.sc-thanks').show();
 				this.submitted=true;
 			}
 			
