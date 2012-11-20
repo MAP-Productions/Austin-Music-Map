@@ -123,11 +123,13 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			App.soundscape.play();
 			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
+			$('.map-extras').fadeIn();
 		}
 		else
 		{
 			App.soundscape.pause();
 			$('#logo img').removeClass('map');
+			$('.map-extras').hide();
 		}
 	}
 

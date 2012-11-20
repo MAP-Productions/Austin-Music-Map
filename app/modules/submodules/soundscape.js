@@ -15,6 +15,7 @@ function(App, Backbone)
 	
 		var _this=this;
 		this.loaded=false;
+		this.muted=false;
 		var audio = $('<audio>').attr({'id':'amm-soundscape'});
 		var codec;
 		if(Modernizr.audio.mp3 === '') codec ='ogg';
@@ -59,11 +60,25 @@ function(App, Backbone)
 
 		}
 
+		_.delay(function(){$('#mute-button').click(function(){console.log('cliocked');_this.muteToggle();});},100);
+
 	};
 
 	Soundscape.play=function(){
 
-		if(this.loaded)document.getElementById('amm-soundscape').play();
+		if(this.loaded&&!this.muted)document.getElementById('amm-soundscape').play();
+	};
+
+	Soundscape.muteToggle=function(){
+		if(this.muted){
+			$('#mute-button').removeClass('muted').addClass('audible');
+			this.muted=false;
+			if(this.loaded)document.getElementById('amm-soundscape').play();
+		}else{
+			$('#mute-button').removeClass('audible').addClass('muted');
+			this.muted=true;
+			this.pause();
+		}
 	};
 
 	Soundscape.pause=function(){
@@ -72,14 +87,14 @@ function(App, Backbone)
 	};
 
 	Soundscape.ding = function(){
-		
-		var dingNo=Math.floor(1+Math.random()*10);
-		var ding=document.getElementById('amm-ding-'+dingNo);
-		if(ding.duration>0){
-			ding.currentTime=0;
-			ding.play();
+		if(!this.muted){
+			var dingNo=Math.floor(1+Math.random()*10);
+			var ding=document.getElementById('amm-ding-'+dingNo);
+			if(ding.duration>0){
+				ding.currentTime=0;
+				ding.play();
+			}
 		}
-		
 	};
 
 
