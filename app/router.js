@@ -11,6 +11,7 @@ define([
 	"modules/map",
 	"modules/scpost",
 	"modules/introduction",
+	"modules/mini-intro",
 
 	// submodules
 	"modules/submodules/player-slider",
@@ -20,7 +21,7 @@ define([
 
 ],
 
-function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduction, PlayerSlider,Fuzz,Soundscape,Helpers) {
+function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduction, MiniIntro, PlayerSlider,Fuzz,Soundscape,Helpers) {
 	// Defining the application router, you can attach sub routers here.
 	var Router = Backbone.Router.extend({
 		routes: {
@@ -116,7 +117,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 	*/
 
 	function initialize(to) {
-		initAMM();
+		initAMM(to);
 		cleanup(to);
 		if(to=="map")
 		{
@@ -124,6 +125,14 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
 			$('.map-extras').fadeIn();
+			// show small intro circle if:
+			// a) this is not the first visit and this is your first time at the map
+			// b) this is your first visit, but you came in via something other than map
+			if ( (!Helpers.firstVisit && (App.page.mapView === undefined)) || (Helpers.firstVisit && App.entryPoint !== 'map') ) {
+				var miniIntro = new MiniIntro.View();
+				$('#main').append( miniIntro.el );
+				miniIntro.render();
+			}
 		}
 		else
 		{
@@ -136,8 +145,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 	// ensure this happens only once
 	var initAMM = _.once( init );
 
-	function init()
+	function init(to)
 	{
+		App.entryPoint = to;
 
 		if(!Modernizr.canvas) window.location="old-browser.html";
 		// draw the base layout
@@ -148,7 +158,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		App.soundscape=Soundscape;
 		App.soundscape.initialize();
 
-		if ( Helpers.firstVisit ) {
+		if ( to === 'map' && Helpers.firstVisit ) {
 			var introScreen = new Introduction.View();
 			$('#main').append( introScreen.el );
 			introScreen.render();
