@@ -1,0 +1,90 @@
+.sc-upload
+{
+
+	.sc-display
+	{
+		
+		padding: 8px;
+		position: relative;
+
+		#sc-record-progress
+		{
+			display: block;
+			font-size: 24px;
+		}
+
+		#sc-record-status
+		{
+			color: #6C3;
+			text-shadow: 0 0 10px #6C3;
+		}
+
+		#recording-options
+		{
+			font-size: 12px;
+			overflow: hidden;
+			position: absolute;
+			right: 10px;
+			top: 10px;
+			width: 50%;
+			text-align: right;
+
+			a#sc-upload
+			{
+				cursor:pointer;
+				font-weight:bold;
+				color: #6C3;
+
+				&:hover {
+					color: #390;
+					text-shadow: 0 0 10px #6C3;
+				}
+			}
+
+			#sc-cancel-record
+			{
+				cursor:pointer;
+				color: #ff8e4d;
+			}
+		}
+
+		.sc-inner
+		{
+			float:left;
+			margin-left:20px;
+		}
+
+	}
+}
+
+
+
+
+.modal-content .info-box .record-btn {
+	background: url(../img/record-icons-sprite.png);
+	display: block;
+	float:left;
+	width: 65px;
+	height: 64px;
+	text-indent: -9999px;
+}
+
+.modal-content .info-box .record-btn:hover {
+	background-position: -65px 0;
+}
+
+.modal-content .info-box .record-btn.stop {
+	background-position: -130px 0;
+}
+
+.modal-content .info-box .record-btn.stop:hover {
+	background-position: -195px 0;
+}
+
+.modal-content .info-box .record-btn.play {
+	background-position: -260px 0;
+}
+
+.modal-content .info-box .record-btn.play:hover {
+	background-position: -325px 0;
+}
