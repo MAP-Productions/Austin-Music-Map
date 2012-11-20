@@ -11,7 +11,8 @@
 
 	<meta property="og:image" content="http://austinmusicmap.com/assets/img/amm_logo.png"/>
 	<meta property="og:site_name" content="Austin Music Map"/>
-
+	<meta property="fb:app_id" content="48119224995" />
+	<meta property="og:description" content="The Austin Music Map is a participatory documentary project that explores Austin&#039;s diverse sonic..." />
 
 	<link rel="shortcut icon" href="assets/img/amm.ico" />
 	<title>Austin Music Map</title>
