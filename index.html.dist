@@ -4,6 +4,15 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
+
+	<meta property="og:title" content="Austin Music Map"/>
+	<meta property="og:type" content="movie"/>
+	<meta property="og:url" content="http://austinmusicmap.com/"/>
+
+	<meta property="og:image" content="http://austinmusicmap.com/assets/img/amm_logo.png"/>
+	<meta property="og:site_name" content="Austin Music Map"/>
+
+
 	<link rel="shortcut icon" href="assets/img/amm.ico" />
 	<title>Austin Music Map</title>
 
