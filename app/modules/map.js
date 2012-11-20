@@ -309,6 +309,8 @@ define([
 									
 									function drawLargeImage()
 									{
+										var largeImgH=largeImg.height*window.innerWidth/largeImg.width;
+//															var hOffset=Math.max(0,window.innerHeight)/2)
 										if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 										else
 										{
@@ -331,7 +333,7 @@ define([
 											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
 											tmpCtx.closePath();
 											tmpCtx.clip();
-											tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+											tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
 											tmpCtx.restore();
 											
 											if(i>=1) {
@@ -360,7 +362,8 @@ define([
 															tmpCtx.arc(layer._point.x, layer._point.y,(radius+50) + i*8, 0, Math.PI * 2, false);
 															tmpCtx.closePath();
 															tmpCtx.clip();
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+															
+															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth,largeImgH);
 															tmpCtx.restore();
 														
 															if(i>=1) {
@@ -390,7 +393,7 @@ define([
 															tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
 															tmpCtx.closePath();
 															tmpCtx.clip();
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, window.innerWidth);
+															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
 															tmpCtx.restore();
 							
 															if(i>=1) {
