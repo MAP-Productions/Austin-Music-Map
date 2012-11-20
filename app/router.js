@@ -128,11 +128,12 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			// show small intro circle if:
 			// a) this is not the first visit and this is your first time at the map
 			// b) this is your first visit, but you came in via something other than map
-			if ( (!Helpers.firstVisit && (App.page.mapView === undefined)) || (Helpers.firstVisit && App.entryPoint !== 'map') ) {
+			if ( (!Helpers.firstVisit && !App.mapVisited) || (Helpers.firstVisit && App.entryPoint !== 'map') ) {
 				var miniIntro = new MiniIntro.View();
 				$('#main').append( miniIntro.el );
 				miniIntro.render();
 			}
+			App.mapVisited = true;
 		}
 		else
 		{
@@ -147,6 +148,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 	function init(to)
 	{
+		App.mapVisited = false;
 		App.entryPoint = to;
 
 		if(!Modernizr.canvas) window.location="old-browser.html";
