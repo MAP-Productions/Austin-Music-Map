@@ -119,7 +119,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 	function initialize(to) {
 		initAMM(to);
 		cleanup(to);
-		if(to=="map")
+		if(to=="map"||to=="playlist")
 		{
 			App.soundscape.play();
 			$(window).bind('resize.amm_map',refreshMapLayout);
