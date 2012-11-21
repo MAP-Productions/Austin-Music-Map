@@ -17,6 +17,11 @@ function(App, Backbone)
 		hasPlayed : false,
 		delay : 2000,
 
+initialize : function()
+{
+	console.log('!!!!!!!!!	init player loader', this);
+},
+
 		listenToPlayer : function( player )
 		{
 			this.player = player;

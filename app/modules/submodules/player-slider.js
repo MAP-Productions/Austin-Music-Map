@@ -61,7 +61,6 @@ function(App, Backbone, Loader )
 
 		resizeWindow : function()
 		{
-			console.log('resize the player!! updated');
 			App.players.get('current').fitWindow();
 		},
 
@@ -74,7 +73,7 @@ function(App, Backbone, Loader )
 		{
 			var _this = this;
 			var key = this.url();
-			this.on('change:remixItems', this.onProjectLoaded, this);
+			this.on('change:remixItems', this.onProjectDataLoaded, this);
 			if( sessionStorage.getItem( this.url() ))
 			{
 				this.set( JSON.parse(sessionStorage[key] ) );
@@ -102,13 +101,15 @@ function(App, Backbone, Loader )
 			this.set('playlist_title', this.collectionModel.get('title'));
 		},
 
-		onProjectLoaded : function()
+		onProjectDataLoaded : function()
 		{
 			var _this = this;
 			this.off('change:remixItems');
 
+			App.players.clear({silent:true});
+
 			// updateLoader
-			App.players.on('change:current', function(){
+			App.players.on('current_ready', function(){
 				_this.loaderView.listenToPlayer( App.players.get('current') );
 			});
 			
@@ -214,6 +215,7 @@ function(App, Backbone, Loader )
 			}
 
 			App.players.set('current', App.players.get('story') || App.players.get('remix') );
+			App.players.trigger('current_ready');
 
 			var _this = this;
 
