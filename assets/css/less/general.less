@@ -364,18 +364,20 @@ body {
 }
 
 .possible-by-localore {
-	left: 0px;
+	right: 0px;
 }
 
 #mute-button {
 	
 	width:50px;
-	height:50px;
-	right:20px;
+	height:33px;
+	left:20px;
 	bottom:20px;
 	position:fixed;
 	z-index: 20000000;
 	cursor:pointer;
+	background-size: 70%;
+	background-repeat: no-repeat;
 	&.audible{
 		background-image:url(../img/mute_off.png);
 	}
@@ -385,5 +387,6 @@ body {
 
 }
 
-
-
+.map-extras {
+	display: none;
+}
