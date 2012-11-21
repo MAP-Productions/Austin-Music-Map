@@ -195,8 +195,9 @@ module.exports = function(grunt) {
 				files: {
 					"dist/release/": "assets/img/**",
 					"dist/release/": "assets/audio/**",
+					"dist/release/fonts/": "assets/css/fonts/**",
 					"assets/img/layers": "assets/vendor/zeegaplayer/dist/release/img/layers/*",
-					"assets/img/zeegaplayer": "assets/vendor/zeegaplayer/dist/release/img/*"
+					"assets/img/zeegaplayer": "assets/vendor/zeegaplayer/dist/release/img/*"					
 				},
 				options: { "basePath" : "/", "flatten" : false }
 			}
