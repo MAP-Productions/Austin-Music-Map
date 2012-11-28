@@ -24,7 +24,7 @@ function(App, Backbone, Loader )
 
 		url : function()
 		{
-			return localStorage.api+"/items/"+ this.get('collection_id') +"/items";
+			return localStorage.api+"/items/"+ this.get('collection_id') +"/items?limit=200";
 		},
 
 		initialize : function()
