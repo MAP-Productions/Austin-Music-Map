@@ -6,7 +6,7 @@ RewriteEngine on
 RewriteCond %{REQUEST_URI} "/old-browser.html"
 RewriteRule (.*) $1 [L]
 
-RewriteBase /amm/
+RewriteBase /
 # Check if this is the noredirect query string
 #RewriteCond %{QUERY_STRING} (^|&)m=0(&|$)
 # Set a cookie, and skip the next rule
