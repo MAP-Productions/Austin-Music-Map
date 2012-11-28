@@ -53,9 +53,9 @@ function(App, Backbone)
 
 		closeModal : function()
 		{
-			//window.history.back();
+			window.history.back();
 			//window.location = "/";
-			App.router.navigate("", { trigger: true } );
+			//App.router.navigate("", { trigger: true } );
 			return false;
 		},
 
