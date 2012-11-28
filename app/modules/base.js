@@ -99,7 +99,7 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 
 		expandLeftMenu : function()
 		{
-			if($.browser.msie) this.$('#controlsLeft').show('slide');
+			if($.browser.msie) this.$('#controlsLeft').show();
 			else this.$('#controlsLeft').show('slide');
 		}
 
