@@ -6,6 +6,9 @@ RewriteEngine on
 RewriteCond %{REQUEST_URI} "/old-browser.html"
 RewriteRule (.*) $1 [L]
 
+RewriteCond %{REQUEST_URI} "/soundcloud-callback.html"
+RewriteRule (.*) $1 [L]
+
 RewriteBase /amm/
 # Check if this is the noredirect query string
 #RewriteCond %{QUERY_STRING} (^|&)m=0(&|$)
