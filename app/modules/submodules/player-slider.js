@@ -27,7 +27,6 @@ function(App, Backbone, Loader )
 			var url;
 			if(this.get('playlist_title')=="Recently Added") url = localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=50";
 			else url = localStorage.api+"/items/"+ this.get('collection_id') +"/items?limit=200";
-			console.log(url);
 			return url;
 		},
 
@@ -43,7 +42,7 @@ function(App, Backbone, Loader )
 			this.initEvents();
 			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
 			this.collectionModel.fetch().success(function(response){
-				console.log(response.items[0].title);
+				
 				_this.updatePlaylistTitle(_this.collectionModel);
 				_this.superFetch();
 			});

@@ -6,17 +6,21 @@ define([
 
 ], function(App, Backbone) {
 	
+	var recentCollectionId = 62472,
+		featuredCollectionId = 53567,
+		defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
+		
 	var Map = App.module();
 
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
-		collectionId: 53567,
+		collectionId: featuredCollectionId,
 		defaults: {
 			title: 'Map'
 		},
 
 		initialize: function() {
-			console.log('init map', $('#appBase').height(), $('#appBase').width());
+			
 			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
 			App.playlistCollection = new PlaylistCollection();
@@ -38,7 +42,7 @@ define([
 
 	Map.Views.Featured = Backbone.LayoutView.extend({
 		template : 'mapfeatured',
-		serialize : function(){ console.log(this.model.toJSON());return this.model.toJSON(); }
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
@@ -76,36 +80,57 @@ define([
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
-		latLng: new L.LatLng(30.266702991845,-97.745532989502),
-		
+		latLng: defaultCenter,
+		points: { "type": "FeatureCollection", "features": []},
+
 		initialize : function(options){
+			window.mapview=this;
 			_.extend(this,options);
-			this.featuredPoints = this.createPoints(this.collection);
+			this.parsePoints(this.collection);
 		},
 		
-		createPoints:function(collection){
-
-			var p =[];
+		parsePoints:function(collection,reset){
+			
+			var p;
+			if(_.isNull(reset)||reset) p=[];
+			else p=this.points.features;
+			
 			_.each(_.toArray(collection), function(item){
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
-
+					
+					if(collection.id == recentCollectionId){
+						var newTags = item.get('tags');
+						newTags[newTags.length]="recent";
+						item.set('tags',newTags);
+					}
 					item.attributes.playlists=App.playlistCollection.getMatches(item.get('tags'));
-
-
+					if(_.isUndefined(_.find(p,function(obj){return item.get('media_geo_latitude')==obj.geometry.coordinates[1];}))){
 						
-					p.push({
-						"type": "Feature",
-						"geometry": {
-							"type": "Point",
-							"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
-						},
-						"properties":item.attributes,
-						"id":item.id
-					});
+						p.push({
+							"type": "Feature",
+							"geometry": {
+								"type": "Point",
+								"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
+							},
+							"properties":item.attributes,
+							"id":item.id
+						});
+					}
 				}
 			});
-			return { "type": "FeatureCollection", "features": p};
+			this.points.features=p;
+		},
+
+		loadPlaylist:function(id){
+			var _this=this,
+				collection = new MapCollection({id:id});
+			
+			collection.fetch({success:function(collection,response){
+				_this.parsePoints(collection,true);
+				_this.resetPoints();
+			}});
+
 		},
 
 		afterRender:function(){
@@ -129,26 +154,25 @@ define([
 			});
 			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
-			this.loadItems(this.featuredPoints);
-
+			this.drawPoints(this.points);
 	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
 			
 		},
-		clearItems:function(){
-			console.log('claer items called');
+		resetPoints:function(){
+			
 			$('.map-overlay').remove();
 			var map=this.map;
 			map.featureOn=false;
 			_.each(map._layers,function(layer){
 				if(!_.isUndefined(layer.feature))map.removeLayer(layer);
 			});
-			this.loadItems(this.featuredPoints);
-			
+			this.drawPoints(this.points);
 		},
-		loadItems:function(points){
-			console.log('load items called');
+
+		drawPoints:function(points){
+			
 			this.itemsLayer='';
 			var map=this.map,
 				radius=108,
@@ -245,7 +269,7 @@ define([
 						})
 						.on('click',function(e){
 							
-							console.log('clickity click click');
+							
 							if(!map.featureOn){
 
 
@@ -471,6 +495,9 @@ define([
 				return false;
 			});
 			}
+
+
+			
 			L.geoJson([points], {
 
 				
@@ -605,7 +632,7 @@ define([
 					},
 					onEachFeature:onEachFeature
 				}).addTo(map);
-				this.loadItems(this.featuredPoints);
+				this.drawPoints(this.points);
 			//});
 
 
@@ -641,6 +668,7 @@ define([
 		},
 		
 		url: function(){
+			if(this.id == recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
 			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
