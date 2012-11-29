@@ -27,7 +27,7 @@ initialize : function()
 			this.player = player;
 			this.updateLoaderTitle( player );
 			this.$('.layer-loading').empty();
-			player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
+			// player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
 
 			player.on('layer_loading', this.addLoadingItem, this);
 			player.on('layer_ready', this.onLayerLoaded, this);
@@ -73,6 +73,8 @@ initialize : function()
 		{
 			if(!this.hasPlayed)
 			{
+console.log('updated0000000');
+				
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
@@ -90,7 +92,17 @@ initialize : function()
 		exit : function()
 		{
 			var _this = this;
-			_this.$el.fadeOut(function(){ _this.remove(); });
+			this.remove();
+
+			/*
+			if (jQuery.browser.msie) {
+				this.remove();
+			} else {
+				_this.$el.fadeOut(500, function(){
+					_this.remove();
+				});	
+			}
+			*/
 		}
 	});
 
