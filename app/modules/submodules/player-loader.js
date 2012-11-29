@@ -38,11 +38,23 @@ initialize : function()
 		updateLoaderTitle : function( player )
 		{
 			var _this = this;
-			if( this.model.get('playlist_title') ) this.$('.loader-title').text( this.model.get('playlist_title'));
+			if( this.model.get('playlist_title') ){
+				if(this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map!");
+				else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+				
+			}
 			else
 			{
 				this.model.on('change:playlist_title', function(){
-					_this.$('.loader-title').text( _this.model.get('playlist_title'));
+
+
+
+
+					if(_this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map");
+					else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+				
+					
+
 				});
 			}
 		},
