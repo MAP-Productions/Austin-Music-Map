@@ -5,8 +5,9 @@ AddType font/ttf TTF
 AddType font/otf otf
 AddType font/otf OTF
 AddType fontobject eot
-AddType xml .svg
-AddType image/svg
+AddType xml svg
+AddType image/svg svg
+
 
 # Enable the RewriteEngine
 RewriteEngine on
