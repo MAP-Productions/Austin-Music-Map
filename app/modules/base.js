@@ -33,10 +33,19 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 		{
 			if( this.$('#controlsLeft .controls-inner').is(':visible') )
 			{
-				var _this = this;
-				this.$('#controlsLeft').hide('slide',{direction:'left'}, function(){
-					_this.drawLeftMenu(opts.next);
-				});
+
+				if($.browser.msie)
+				{
+					this.$('#controlsLeft').hide();
+					this.drawLeftMenu(opts.next);
+				}
+				else
+				{
+					var _this = this;
+					this.$('#controlsLeft').hide('slide',{direction:'left'}, function(){
+						_this.drawLeftMenu(opts.next);
+					});
+				}
 			}
 			else if(opts.next)
 			{
@@ -62,7 +71,8 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 		{
 			var searchView = new Search.View();
 			this.setView('#controlsLeft .controls-inner', searchView );
-			this.$('#controlsLeft').hide('slide',{direction:'right'});
+            if($.browser.msie) this.$('#controlsLeft').hide();
+            else this.$('#controlsLeft').hide('slide',{direction:'right'});
 			searchView.render();
 			this.expandLeftMenu();
 		},
@@ -71,7 +81,8 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 		{
 			var allPlaylistsView = new AllPlaylists.View();
 			this.setView('#controlsLeft .controls-inner', allPlaylistsView );
-			this.$('#controlsLeft').hide('slide',{direction:'right'});
+			if($.browser.msie) this.$('#controlsLeft').hide();
+			else this.$('#controlsLeft').hide('slide',{direction:'right'});
 			allPlaylistsView.render();
 			this.expandLeftMenu();
 		},
@@ -80,14 +91,16 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 		{
 			this.playlistView = new Playlist.Views.PlaylistView({model:model});
 			this.setView('#controlsLeft .controls-inner', this.playlistView );
-			this.$('#controlsLeft').hide('slide',{direction:'right'},1000);
+			if($.browser.msie) this.$('#controlsLeft').hide();
+			else this.$('#controlsLeft').hide('slide',{direction:'right'},1000);
 			this.playlistView.render();
 			this.expandLeftMenu();
 		},
 
 		expandLeftMenu : function()
 		{
-			this.$('#controlsLeft').show('slide');
+			if($.browser.msie) this.$('#controlsLeft').show();
+			else this.$('#controlsLeft').show('slide');
 		}
 
 	});
