@@ -80,12 +80,13 @@ define([
 		
 		initialize : function(options){
 			_.extend(this,options);
+			this.featuredPoints = this.createPoints(this.collection);
 		},
 		
-		createPoints:function(){
+		createPoints:function(collection){
 
 			var p =[];
-			_.each(_.toArray(this.collection), function(item){
+			_.each(_.toArray(collection), function(item){
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
 
@@ -128,7 +129,7 @@ define([
 			});
 			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
-			this.loadItems();
+			this.loadItems(this.featuredPoints);
 
 	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
@@ -143,16 +144,15 @@ define([
 			_.each(map._layers,function(layer){
 				if(!_.isUndefined(layer.feature))map.removeLayer(layer);
 			});
-			this.loadItems();
+			this.loadItems(this.featuredPoints);
 			
 		},
-		loadItems:function(){
+		loadItems:function(points){
 			console.log('load items called');
 			this.itemsLayer='';
 			var map=this.map,
 				radius=108,
 				diameter=2*radius,
-				points = this.createPoints(),
 				itemLayer=this.itemLayer;
 			var _this = this;
 			
@@ -297,7 +297,21 @@ define([
 								
 								largeImg.onload = function()
 								{
-									console.log('WINDOW.INNERHEIGHT' + window.innerHeight);
+									
+									var largeImgW, largeImgH;
+									if(largeImg.height/largeImg.width>window.innerHeight/window.innerWidth){
+										largeImgW=window.innerWidth;
+										largeImgH=largeImg.height*window.innerWidth/largeImg.width;
+									}else{
+										largeImgW=largeImg.width*window.innerHeight/largeImg.height;
+										largeImgH=window.innerHeight;
+									}
+									
+									
+
+
+
+
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -314,7 +328,7 @@ define([
 									
 									function drawLargeImage()
 									{
-										var largeImgH=largeImg.height*window.innerWidth/largeImg.width;
+										
 										if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 										else
 										{
@@ -337,7 +351,7 @@ define([
 											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
 											tmpCtx.closePath();
 											tmpCtx.clip();
-											tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
+											tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 											tmpCtx.restore();
 											
 											if(i>=1) {
@@ -367,7 +381,7 @@ define([
 															tmpCtx.closePath();
 															tmpCtx.clip();
 															
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth,largeImgH);
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 															tmpCtx.restore();
 														
 															if(i>=1) {
@@ -397,7 +411,7 @@ define([
 															tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
 															tmpCtx.closePath();
 															tmpCtx.clip();
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 															tmpCtx.restore();
 							
 															if(i>=1) {
@@ -484,16 +498,7 @@ define([
 					}
 					return L.marker(latlng,{icon:ico});
 
-					/*
-					return L.circleMarker(latlng, {
-						radius: 8,
-						fillColor: "blue",
-						color: "#000",
-						weight: 1,
-						opacity: 1,
-						fillOpacity: 0.8
-					});
-*/
+				
 				}
 			}).addTo(map);
 		
@@ -600,7 +605,7 @@ define([
 					},
 					onEachFeature:onEachFeature
 				}).addTo(map);
-				this.loadItems();
+				this.loadItems(this.featuredPoints);
 			//});
 
 
