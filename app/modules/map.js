@@ -136,6 +136,7 @@ define([
 			
 		},
 		clearItems:function(){
+			console.log('claer items called');
 			$('.map-overlay').remove();
 			var map=this.map;
 			map.featureOn=false;
@@ -146,6 +147,7 @@ define([
 			
 		},
 		loadItems:function(){
+			console.log('load items called');
 			this.itemsLayer='';
 			var map=this.map,
 				radius=108,
@@ -282,6 +284,8 @@ define([
 								
 								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
+								
+
 								var largeImg = document.createElement('img');
 		
 
@@ -293,6 +297,7 @@ define([
 								
 								largeImg.onload = function()
 								{
+									console.log('WINDOW.INNERHEIGHT' + window.innerHeight);
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -310,7 +315,6 @@ define([
 									function drawLargeImage()
 									{
 										var largeImgH=largeImg.height*window.innerWidth/largeImg.width;
-//															var hOffset=Math.max(0,window.innerHeight)/2)
 										if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 										else
 										{
@@ -606,6 +610,7 @@ define([
 			var shelf = new Map.Views.SpotlightShelf();
 			shelf.render();
 			$('#appBase').append( shelf.el );
+
 
 			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
 			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
