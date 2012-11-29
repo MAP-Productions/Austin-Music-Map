@@ -21,7 +21,7 @@ define([
 			this.recordedLength = 0;
 			SC.initialize({
 				client_id: "3b1730e670b204fc2bc9611a88461ee2",
-				redirect_uri: "http://dev.zeega.org/ammcallback/callback.html"
+				redirect_uri: "http://austinmusicmap.com/soundcloud-callback.html"
 			});
 
 		},
