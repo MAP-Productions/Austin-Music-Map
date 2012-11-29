@@ -4,6 +4,7 @@ AddType font/ttf ttf
 AddType font/ttf TTF
 AddType font/otf otf
 AddType font/otf OTF
+AddType fontobject eot
 
 # Enable the RewriteEngine
 RewriteEngine on
