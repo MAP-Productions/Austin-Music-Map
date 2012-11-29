@@ -47,13 +47,14 @@ function(App, Backbone, Loader )
 		initEvents : function()
 		{
 			var _this = this;
+			
 			$(window).bind('keyup.playerSlider', function(e){
 				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
 			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
 			$(window).bind('resize.amm_players',lazyResize);
 
-			//$(window).resize(lazyResize);
+			$(window).resize(lazyResize);
 
 			App.players.on('frame_updated', this.frameUpdated, this);
 
@@ -258,6 +259,7 @@ function(App, Backbone, Loader )
 		{
 			var width = window.innerHeight*16/9;
 			var left = (window.innerWidth-width)/2;
+			console.log('@@@ update youtube size', width, left);
 			this.$('.visual-element-youtube').css({
 				'height': window.innerHeight,
 				'width' : width,

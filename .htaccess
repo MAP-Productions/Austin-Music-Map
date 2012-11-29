@@ -50,10 +50,10 @@ DirectorySlash Off
 
 
 # Map resources to release distribution
-RewriteRule ^app/(.*)$ dist/release/$1 [NC,L]
-RewriteRule ^assets/js/libs/(.*)$ dist/release/$1 [NC,L]
-RewriteRule ^assets/audio/(.*)$ dist/release/assets/audio/$1 [NC,L]
-RewriteRule ^assets/css/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^app/(.*)$ dist/debug/$1 [NC,L]
+RewriteRule ^assets/js/libs/(.*)$ dist/debug/$1 [NC,L]
+RewriteRule ^assets/audio/(.*)$ dist/debug/assets/audio/$1 [NC,L]
+RewriteRule ^assets/css/(.*)$ dist/debug/$1 [NC,L]
 RewriteRule ^zeegaapi/(.*)$ http://alpha.zeega.org/api/$1 [P]
 
 # These conditions ensure that the file does not exist and that the current

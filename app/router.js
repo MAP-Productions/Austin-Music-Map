@@ -188,6 +188,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		{
 			App.Player.exit();
 			App.Player = null;
+
 		}
 
 	}
