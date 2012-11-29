@@ -73,8 +73,6 @@ initialize : function()
 		{
 			if(!this.hasPlayed)
 			{
-console.log('updated0000000');
-				
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
