@@ -674,6 +674,17 @@ define([
 		parse: function(response){
 			
 			return response.items;
+		},
+		
+		comparator: function(playlist1,playlist2) {
+			console.log('COMPARING!');
+			if ( playlist1.get('title') < playlist2.get('title') ) {
+				return -1;
+			} else if ( playlist1.get('title') > playlist2.get('title') ) {
+				return 1;
+			} else {
+				return 0;
+			}
 		}
 	});
 
