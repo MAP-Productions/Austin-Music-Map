@@ -81,20 +81,30 @@ define([
 		id : 'base-map',
 		template: 'map',
 		latLng: defaultCenter,
-		points: { "type": "FeatureCollection", "features": []},
+		featureCollection: { "type": "FeatureCollection", "features": []},
 
 		initialize : function(options){
 			window.mapview=this;
 			_.extend(this,options);
-			this.parsePoints(this.collection);
+			this.addFeatures(this.collection);
 		},
 		
-		parsePoints:function(collection,reset){
+
+		addFeatures:function(collection,reset){
 			
-			var p;
-			if(_.isNull(reset)||reset) p=[];
-			else p=this.points.features;
+			var features;
+			if(!_.isUndefined(reset)&&reset)features=[];
+			else features=this.featureCollection.features;
+
+			var newFeatures = this.parseFeatures(collection,features);
+			this.featureCollection.features = _.union(features,newFeatures);
 			
+			return { "type": "FeatureCollection", "features": newFeatures};
+
+		},
+
+		parseFeatures:function(collection,features){
+			var p=[];
 			_.each(_.toArray(collection), function(item){
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
@@ -105,8 +115,16 @@ define([
 						item.set('tags',newTags);
 					}
 					item.attributes.playlists=App.playlistCollection.getMatches(item.get('tags'));
-					if(_.isUndefined(_.find(p,function(obj){return item.get('media_geo_latitude')==obj.geometry.coordinates[1];}))){
-						
+					if(_.isUndefined(_.find(features,function(obj){return item.get('media_geo_latitude')==obj.geometry.coordinates[1];}))){
+						features.push({
+							"type": "Feature",
+							"geometry": {
+								"type": "Point",
+								"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
+							},
+							"properties":item.attributes,
+							"id":item.id
+						});
 						p.push({
 							"type": "Feature",
 							"geometry": {
@@ -119,7 +137,8 @@ define([
 					}
 				}
 			});
-			this.points.features=p;
+			return p;
+
 		},
 
 		loadPlaylist:function(id){
@@ -127,10 +146,52 @@ define([
 				collection = new MapCollection({id:id});
 			
 			collection.fetch({success:function(collection,response){
-				_this.parsePoints(collection,true);
+				_this.addFeatures(collection,true);
 				_this.resetPoints();
 			}});
 
+		},
+
+		animateMap:function(){
+			
+			this.drawIntroPoints(this.featureCollection);
+
+			var map=this.map,
+				counter=0,
+				_this=this,
+				layerArray=_.shuffle(_.filter(_.toArray(map._layers),function(layer){return !_.isUndefined(layer.feature);}));
+
+
+			//console.log(map._layers[Math.floor(Math.rand()*map._layers.length)]);
+			function animatePoint(){
+				var layer = layerArray[counter];
+				
+				layer.fire('animate');
+				_.delay(function(){
+					$('#popup-'+layer.feature.properties.id).trigger('mousemove');
+				},250);
+				
+				if(counter>3){
+					clearInterval(_this.introAnimation);
+					_.delay(function(){_this.resetPoints();},3000);
+				}
+				counter++;
+			}
+			//animatePoint();
+
+			this.introAnimation = setInterval(animatePoint,1200);
+			
+
+		},
+
+		loadRecent:function(){
+			var _this=this,
+				collection = new MapCollection({id:recentCollectionId});
+			
+			collection.fetch({success:function(collection,response){
+				var recentPoints=_this.addFeatures(collection,false);
+				_this.resetPoints();
+			}});
 		},
 
 		afterRender:function(){
@@ -154,24 +215,26 @@ define([
 			});
 			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
-			this.drawPoints(this.points);
-	//		This loads neighborhood polygons
+			this.animateMap();
+			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
-			
 		},
+
+
 		resetPoints:function(){
-			
+			if(this.introAnimation)clearInterval(this.introAnimation);
+			if(this.dotAnimate)clearInterval(this.dotAnimate);
 			$('.map-overlay').remove();
 			var map=this.map;
 			map.featureOn=false;
 			_.each(map._layers,function(layer){
 				if(!_.isUndefined(layer.feature))map.removeLayer(layer);
 			});
-			this.drawPoints(this.points);
+			this.drawPoints(this.featureCollection);
 		},
 
-		drawPoints:function(points){
+		drawPoints:function(features){
 			
 			this.itemsLayer='';
 			var map=this.map,
@@ -182,6 +245,7 @@ define([
 			
 
 			function onEachFeature(feature, layer) {
+			
 				layer.on("mouseover", function (e) {
 					
 					var isFeature = _.contains(feature.properties.tags,'feature');
@@ -238,7 +302,7 @@ define([
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
 					var r=0;
-					function drawThumb(){
+					drawThumb = function(){
 						if(_.isNull(document.getElementById("canvas-"+feature.id))){
 							clearInterval(drawThumbAnim);
 						}
@@ -254,16 +318,24 @@ define([
 							if(r>=1)clearInterval(drawThumbAnim);
 							r=parseFloat(r)+0.05;
 						}
-					}
-					var drawThumbAnim=setInterval(drawThumb,20);
+					};
+					drawThumbAnim=setInterval(drawThumb,20);
 
 
 					popup.on('mousemove',function(e){
+						
 						if(!map.featureOn){
-							var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
-									if(d>20){
-										clearInterval(drawThumbAnim);
-										$("#popup-" + feature.id).fadeOut('fast',function(){$(this).remove(); });
+							if(_.isUndefined(e.which)){
+								console.log('clearing Interval');
+								clearInterval(drawThumbAnim);
+								$("#popup-" + feature.id).fadeOut('fast',function(){$(this).remove(); });
+							}
+							else{
+								var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
+										if(d>20){
+											clearInterval(drawThumbAnim);
+											$("#popup-" + feature.id).fadeOut('fast',function(){$(this).remove(); });
+									}
 								}
 							}
 						})
@@ -492,19 +564,14 @@ define([
 								}
 							}
 						});
+				
+
 				return false;
-			});
+				});
+				
 			}
 
-
-			
-			L.geoJson([points], {
-
-				
-				onEachFeature:onEachFeature,
-				
-
-				pointToLayer: function (feature, latlng) {
+			function pointToLayer(feature, latlng) {
 					
 				
 					var ico;
@@ -526,9 +593,126 @@ define([
 					return L.marker(latlng,{icon:ico});
 
 				
-				}
+			}
+			L.geoJson([features], {
+				onEachFeature:onEachFeature,
+				pointToLayer: pointToLayer
 			}).addTo(map);
+
+		},
+		drawIntroPoints:function(features,intro){
+			
+			this.itemsLayer='';
+			var map=this.map,
+				radius=108,
+				diameter=2*radius,
+				itemLayer=this.itemLayer;
+			var _this = this;
+			
+
+			function onEachFeature(feature, layer) {
+				layer.on("animate",function(){
+					var layerPoint=map.latLngToContainerPoint(layer._latlng);
+					layer._point=layerPoint;
+					var x=layer._point.x-radius;
+					var y=layer._point.y-radius-30;
+					var height = diameter+30;
+					var popup = $("<div></div>", {
+						id: "animate-popup-" + feature.id,
+						css: {
+							position: "absolute",
+							top: y+"px",
+							left: x+"px",
+							zIndex: 12,
+							width:diameter+"px",
+							height:height+"px",
+							cursor: "pointer"
 		
+						}
+					}).addClass('map-overlay');
+
+					
+					var popupTemplate =
+						"<div id='wrapper-"+feature.id+"' style='z-index:18; position:absolute; top:30px; opacity:.8'>"+
+							""+
+							"<div class='rollover-title-wrapper'>"+
+								"<div class='marker-container'></div>"+
+								"<div class='rollover-title'>"+
+									"<h2>"+
+										feature.properties.title +
+									"</h2>"+
+								"</div>"+
+								"<div class='rollover-meta'>"+
+									"<h3>"+
+										'by '+ feature.properties.media_creator_username +
+									"</h3>"+
+								"</div>"+
+							"</div>"+
+							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
+						"</div>";
+
+					var hed = $(popupTemplate).appendTo(popup);
+					// Add the popup to the map
+					popup.appendTo($('body'));
+					
+					var thumbImg = document.createElement('img');
+					thumbImg.src = feature.properties.thumbnail_url;
+					var r=0;
+					//var limit = Math.random()*0.7+0.3;
+					var limit =1;
+					animThumb = function(){
+						if(_.isNull(document.getElementById("canvas-"+feature.id))){
+							clearInterval(drawThumbAnim);
+						}
+						else{
+							var tmpCtx=document.getElementById("canvas-"+feature.id).getContext("2d");
+							tmpCtx.save();
+							tmpCtx.beginPath();
+							tmpCtx.arc(radius, radius, radius*r, 0, Math.PI * 2, true);
+							tmpCtx.closePath();
+							tmpCtx.clip();
+							tmpCtx.drawImage(thumbImg, 0, 0, diameter, diameter);
+							tmpCtx.restore();
+							if(r>=limit){
+								clearInterval(drawThumbAnim);
+								_.delay(function(){$("#animate-popup-" + feature.id).fadeOut('slow',function(){$(this).remove(); });},2000);
+							}
+							r=parseFloat(r)+0.05;
+						}
+					};
+					drawThumbAnim=setInterval(animThumb,30);
+				
+					return false;
+				});
+			}
+
+			function pointToLayer(feature, latlng) {
+					
+				
+					var ico;
+					if(_.indexOf(feature.properties.tags,'feature')>-1){
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +' dot-red"></i>'
+						});
+						
+					}
+					else {
+						ico = L.divIcon({
+							className : 'custom-icon',
+							iconAnchor: new L.Point(10,10),
+							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>'
+						});
+					}
+					return L.marker(latlng,{icon:ico});
+			}
+
+			L.geoJson([features], {
+				onEachFeature:onEachFeature,
+				pointToLayer: pointToLayer
+			}).addTo(map);
+
 		},
 
 		loadNeighborhoods:function(){
@@ -632,12 +816,10 @@ define([
 					},
 					onEachFeature:onEachFeature
 				}).addTo(map);
-				this.drawPoints(this.points);
+				this.drawPoints(this.featureCollection);
 			//});
-
-
-
 		},
+
 		loadSpotlightShelf : function() {
 			var shelf = new Map.Views.SpotlightShelf();
 			shelf.render();
