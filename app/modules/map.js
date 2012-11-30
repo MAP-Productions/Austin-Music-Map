@@ -172,14 +172,14 @@ define([
 				},250);
 				
 				if(counter>3){
-					clearInterval(_this.animateInterval);
+					clearInterval(_this.introAnimation);
 					_.delay(function(){_this.resetPoints();},3000);
 				}
 				counter++;
 			}
 			//animatePoint();
 
-			this.animateInterval = setInterval(animatePoint,1200);
+			this.introAnimation = setInterval(animatePoint,1200);
 			
 
 		},
@@ -223,6 +223,7 @@ define([
 
 
 		resetPoints:function(){
+			if(this.introAnimation)clearInterval(this.introAnimation);
 			if(this.dotAnimate)clearInterval(this.dotAnimate);
 			$('.map-overlay').remove();
 			var map=this.map;
