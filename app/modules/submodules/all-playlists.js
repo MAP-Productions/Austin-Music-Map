@@ -12,6 +12,10 @@ function(App, Backbone )
 	AllPlaylists.View = Backbone.LayoutView.extend({
 
 		template : 'all-playlists',
+		events: {
+			'click .toggle-playlists' : 'togglePlaylists',
+			'click .playlist .show-on-map' : 'showPlaylistOnMap'
+		},
 
 		initialize : function()
 		{
@@ -27,13 +31,15 @@ function(App, Backbone )
 		{
 			return {playlists:App.playlistCollection.toJSON()};
 		},
-
-		events : {
-			'click .toggle-playlists' : 'togglePlaylists'
-		},
 		togglePlaylists : function()
 		{
 			this.$('.all-playlists-container').slideToggle();
+		},
+		showPlaylistOnMap: function(e) {
+			var id = $(e.currentTarget).parent().attr('href').split('/')[1];
+			e.preventDefault();
+			e.stopPropagation();
+			App.page.mapView.loadPlaylist(id);
 		}
 
 	});

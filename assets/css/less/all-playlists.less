@@ -1,6 +1,6 @@
 .toggle-playlists
 {
-	padding-left:105px !important;
+	padding-left:116px !important;
 }
 
 .all-playlists-container {
@@ -15,7 +15,7 @@
 	position: absolute;
 	left: 0;
 	top: 52px;
-	width: 180px;
+	width: 200px;
 	background: rgba(147, 149, 152, 0.9);
 
 	ul.playlists {
@@ -26,8 +26,12 @@
 			font-size: 0.7em;
 			margin: 10px 0;
 			line-height: 1em;
-			text-shadow: 0 -1px #BBB;
-			width: 1024px;
+			letter-spacing: 0.25em;
+
+			&.hotplaylist {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
 		}
 
 		a:link
@@ -35,9 +39,21 @@
 			text-decoration: none;
 			color:#222;
 			transition: color 0.5s;
+			display: block;
+			position: relative;
+			width: 155px;
 			-moz-transition: color 0.5s; /* Firefox 4 */
 			-webkit-transition: color 0.5s; /* Safari and Chrome */
 			-o-transition: color 0.5s; /* Opera */
+
+			.show-on-map {
+				width: 10px;
+				height: 16px;
+				background: url(../img/map-icon.png);
+				position: absolute;
+				right: 0px;
+				top: 0;
+			}
 		}
 		a:hover
 		{
@@ -48,5 +64,12 @@
 			-webkit-transition: color 0.5s; /* Safari and Chrome */
 			-o-transition: color 0.5s; /* Opera */
 		}
+
+		&.hot-playlists {
+			border-bottom: 1px solid #222;
+			padding-bottom: 4px;
+		}
+
 	}
+
 }

@@ -897,9 +897,27 @@ define([
 		},
 		
 		parse: function(response){
-			
 			return response.items;
+		},
+
+		comparator: function(playlist1,playlist2) {
+			// always on top if it has tag 'hotplaylist'
+			if ( _.contains(playlist1.get('tags'), 'hotplaylist' ) && !_.contains(playlist2.get('tags'), 'hotplaylist' ) ) {
+				return -1;
+			} else if (_.contains(playlist2.get('tags'), 'hotplaylist' ) && !_.contains(playlist1.get('tags'), 'hotplaylist' )) {
+				return 1;
+			} else {
+				// if not sort alphabetically
+				if ( playlist1.get('title') < playlist2.get('title') ) {
+					return -1;
+				} else if ( playlist1.get('title') > playlist2.get('title') ) {
+					return 1;
+				} else {
+					return 0;
+				}
+			}
 		}
+
 	});
 
 	// Required, return the module for AMD compliance
