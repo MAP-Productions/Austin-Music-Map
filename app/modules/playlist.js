@@ -3,6 +3,7 @@ define([
 	// Libs
 	"backbone",
 	"modules/playlistmap",
+	"modules/map",
 	// submodules
 	"modules/submodules/helpers",
 	
@@ -11,7 +12,7 @@ define([
 	
 ],
 
-function(App, Backbone, PlaylistMap, Helper,Fuzz )
+function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 {
 
@@ -222,8 +223,22 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		onFrameChange : function( info )
 		{
+
 			if(info)
 			{
+				
+				//check if necessary to fetch master playlist collection
+				if(_.isUndefined(App.playlistCollection)){
+					var _this=this;
+					App.playlistCollection = new Map.PlaylistCollection();
+					App.playlistCollection.fetch({success:function(collection,response){
+						App.playlistCollection.createKeys();
+						_this.updateRelatedPlaylists(info);
+					}});
+				}else{
+					this.updateRelatedPlaylists(info);
+				}
+
 				App.players.trigger('frame_updated', info);
 				this.updateURL();
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
@@ -231,6 +246,20 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 				this.updatePlaylistDropdown();
 				this.scrollTitles();
 			}
+		},
+		updateRelatedPlaylists: function(info){
+
+			$('#related-playlists').empty();
+			var playlists=App.playlistCollection.getMatches(info.layers[0].attr.tags);
+			if( playlists.length>0){
+				_.each(playlists,function(playlist){
+					if(playlist.id!=App.players.get('current').id) $('#related-playlists').append('<li><a href="#playlist/'+playlist.id+'">'+playlist.get('title')+'</a></li>');
+				});
+			}
+			if( playlists.length<4){
+				$('#related-playlists').append('<li><a href="#playlist/'+Map.recentCollectionId+'">Recently Contributed</a></li>');
+			}
+
 		},
 
 		updateControlsState : function( info )
@@ -255,6 +284,7 @@ function(App, Backbone, PlaylistMap, Helper,Fuzz )
 
 		updatePlaylistDropdown : function()
 		{
+
 			this.$('.playlist-container .playlist').empty();
 			_.each( App.players.get('current').getProjectData().frames, function(frame){
 				var isActive = frame.id == App.players.get('current').getFrameData().id;

@@ -6,24 +6,29 @@ define([
 
 ], function(App, Backbone) {
 	
-	var recentCollectionId = 62472,
-		featuredCollectionId = 53567,
-		defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
-		
 	var Map = App.module();
+
+
+
+
+	Map.recentCollectionId = 62472,
+	Map.featuredCollectionId = 53567,
+	Map.defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
+		
+	
 
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
-		collectionId: featuredCollectionId,
+		collectionId: Map.featuredCollectionId,
 		defaults: {
 			title: 'Map'
 		},
 
 		initialize: function() {
 			
-			var mapCollection = new MapCollection({id:this.collectionId});
+			var mapCollection = new Map.Collection({id:this.collectionId});
 			var _this=this;
-			App.playlistCollection = new PlaylistCollection();
+			App.playlistCollection = new Map.PlaylistCollection();
 			App.playlistCollection.fetch({success:function(collection,response){
 				App.playlistCollection.createKeys();
 				App.playlistCollection.getMatches(['Blues']);
@@ -80,7 +85,7 @@ define([
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
-		latLng: defaultCenter,
+		latLng: Map.defaultCenter,
 		featureCollection: { "type": "FeatureCollection", "features": []},
 
 		initialize : function(options){
@@ -109,7 +114,7 @@ define([
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
 					
-					if(collection.id == recentCollectionId){
+					if(collection.id == Map.recentCollectionId){
 						var newTags = item.get('tags');
 						newTags[newTags.length]="recent";
 						item.set('tags',newTags);
@@ -143,7 +148,7 @@ define([
 
 		loadPlaylist:function(id){
 			var _this=this,
-				collection = new MapCollection({id:id});
+				collection = new Map.Collection({id:id});
 			
 			collection.fetch({success:function(collection,response){
 				_this.addFeatures(collection,true);
@@ -186,7 +191,7 @@ define([
 
 		loadRecent:function(){
 			var _this=this,
-				collection = new MapCollection({id:recentCollectionId});
+				collection = new Map.Collection({id:Map.recentCollectionId});
 			
 			collection.fetch({success:function(collection,response){
 				var recentPoints=_this.addFeatures(collection,false);
@@ -841,7 +846,7 @@ define([
 	});
 
 
-	var MapCollection = Backbone.Collection.extend({
+	Map.Collection = Backbone.Collection.extend({
 
 	
 		initialize:function(options){
@@ -850,7 +855,7 @@ define([
 		},
 		
 		url: function(){
-			if(this.id == recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
+			if(this.id == Map.recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
 			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
@@ -861,7 +866,7 @@ define([
 
 	});
 
-	var PlaylistCollection = Backbone.Collection.extend({
+	Map.PlaylistCollection = Backbone.Collection.extend({
 
 	
 		initialize:function(){
