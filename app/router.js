@@ -198,7 +198,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 	function refreshMap()
 	{
 		console.log('refresh map');
-		if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
+		if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 	}
 	var refreshMapLayout = _.debounce(refreshMap, 100);
 
