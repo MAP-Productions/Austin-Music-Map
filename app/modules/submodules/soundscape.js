@@ -13,14 +13,16 @@ function(App, Backbone)
 
 	Soundscape.initialize=function(){
 	
-		var _this=this;
 		this.loaded=false;
 		this.muted=false;
-		var audio = $('<audio>').attr({'id':'amm-soundscape'});
-		var codec;
+
+		var _this=this,
+			codec,
+			audio = $('<audio>').attr({'id':'amm-soundscape'});
 		if(Modernizr.audio.mp3 === '') codec ='ogg';
 		else codec ='mp3';
 
+		$('body').append("<div id='soundscape-audio'></div>");
 
 		if(codec=='mp3'){
 			//audio.on('canplay',function(){console.log('soundscape can play');});
@@ -45,18 +47,13 @@ function(App, Backbone)
 		}
 		
 
-		audio.attr({'src':'assets/audio/soundscape.'+codec}).appendTo('body');
+		audio.attr({'src':'assets/audio/soundscape.'+codec}).appendTo('#soundscape-audio');
 
 		for(var i=1;i<=5;i++){
-
 			var j=5+i;
-			
-			
-			$('body').append($('<audio>').attr({'src':'assets/audio/static'+i+'.'+codec,'id':'amm-static-'+i}));
-			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+i}));
-			$('body').append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+j}));
-			
-
+			$('#soundscape-audio').append($('<audio>').attr({'src':'assets/audio/static'+i+'.'+codec,'id':'amm-static-'+i}))
+									.append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+i}))
+									.append($('<audio>').attr({'src':'assets/audio/ding'+i+'.'+codec,'id':'amm-ding-'+j}));
 
 		}
 
