@@ -24,7 +24,10 @@ function(App, Backbone, Loader )
 
 		url : function()
 		{
-			return localStorage.api+"/items/"+ this.get('collection_id') +"/items";
+			var url;
+			if(this.get('playlist_title')=="Recently Added") url = localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=50";
+			else url = localStorage.api+"/items/"+ this.get('collection_id') +"/items?limit=200";
+			return url;
 		},
 
 		initialize : function()
@@ -38,22 +41,25 @@ function(App, Backbone, Loader )
 
 			this.initEvents();
 			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
-			this.collectionModel.fetch().success(function(){
+			this.collectionModel.fetch().success(function(response){
+				
 				_this.updatePlaylistTitle(_this.collectionModel);
+				_this.superFetch();
 			});
-			this.superFetch();
+			
 		},
 
 		initEvents : function()
 		{
 			var _this = this;
+			
 			$(window).bind('keyup.playerSlider', function(e){
 				if(e.which == 27) App.router.navigate('/',{trigger:true});
 			});
 			var lazyResize = _.debounce(function(){ _this.resizeWindow(); }, 300);
 			$(window).bind('resize.amm_players',lazyResize);
 
-			//$(window).resize(lazyResize);
+			$(window).resize(lazyResize);
 
 			App.players.on('frame_updated', this.frameUpdated, this);
 
@@ -258,6 +264,7 @@ function(App, Backbone, Loader )
 		{
 			var width = window.innerHeight*16/9;
 			var left = (window.innerWidth-width)/2;
+			console.log('@@@ update youtube size', width, left);
 			this.$('.visual-element-youtube').css({
 				'height': window.innerHeight,
 				'width' : width,

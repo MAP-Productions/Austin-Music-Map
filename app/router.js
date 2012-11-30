@@ -89,7 +89,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
+			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 
 		},
 		goToRemix : function(collectionID,itemID)
@@ -102,7 +102,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			if(App.page&&App.page.type=='Map') App.page.mapView.clearItems();
+			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		}
 
 	});
@@ -188,6 +188,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		{
 			App.Player.exit();
 			App.Player = null;
+
 		}
 
 	}

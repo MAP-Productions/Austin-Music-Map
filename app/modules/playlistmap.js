@@ -54,7 +54,6 @@ define([
 		},
 		updateMap:function(){
 			var layer =App.players.get('current').getFrameData().layers[0];
-			console.log("UPDATE MAP WID DIS",layer);
 			if(!_.isUndefined(this.marker))this.map.removeLayer(this.marker);
 			if(!_.isUndefined(layer)&&!_.isUndefined(layer.attr)&&layer.attr.media_geo_latitude>0){
 
@@ -79,7 +78,7 @@ define([
 				
 				this.map.setView(latlng,14,true);
 				this.marker = L.marker(latlng, {icon:ico}).addTo(this.map);
-				console.log(this.marker);
+				
 			}
 			
 		}
