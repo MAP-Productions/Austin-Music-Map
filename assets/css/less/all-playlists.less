@@ -26,8 +26,12 @@
 			font-size: 0.7em;
 			margin: 10px 0;
 			line-height: 1em;
-			text-shadow: 0 -1px #BBB;
 			width: 1024px;
+
+			&.hotplaylist {
+				font-weight: bold;
+				text-transform: uppercase;
+			}
 		}
 
 		a:link
@@ -48,5 +52,12 @@
 			-webkit-transition: color 0.5s; /* Safari and Chrome */
 			-o-transition: color 0.5s; /* Opera */
 		}
+
+		&.hot-playlists {
+			border-bottom: 1px solid #222;
+			padding-bottom: 4px;
+		}
+
 	}
+
 }

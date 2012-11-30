@@ -1,10 +1,25 @@
 <a class="text-link toggle-playlists" href="#">playlists</a>
 <div class="all-playlists-container" style="display: none;">
+
+	<ul class="playlists hot-playlists">
+		<% _.each(playlists,function(playlist){
+			if (_.contains(playlist.tags,'hotplaylist')) { %>
+
+			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,15) %><% if(playlist.title.length > 15){ %>…<% } %></a></li>
+
+		<%	}
+		}) %>
+	</ul>
+
 	<ul class="playlists">
 
-		<% _.each(playlists,function(playlist){ %>
-			<li><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,15) %><% if(playlist.title.length > 15){ %>…<% } %></a></li>
-		<% }) %>
+		<% _.each(playlists,function(playlist){
+			if (!_.contains(playlist.tags,'hotplaylist')) { %>
+
+			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,15) %><% if(playlist.title.length > 15){ %>…<% } %></a></li>
+
+		<%	}
+		}) %>
 
 	</ul>
 </div>
