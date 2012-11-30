@@ -1,15 +1,25 @@
 AddType audio/mpeg        mp3
 AddType audio/ogg oga ogg
+AddType font/ttf ttf
+AddType font/ttf TTF
+AddType font/otf otf
+AddType font/otf OTF
+AddType fontobject eot
+AddType xml svg
+AddType image/svg svg
+
+
 # Enable the RewriteEngine
 RewriteEngine on
 
 RewriteCond %{REQUEST_URI} "/old-browser.html"
 RewriteRule (.*) $1 [L]
 
+
 RewriteCond %{REQUEST_URI} "/soundcloud-callback.html"
 RewriteRule (.*) $1 [L]
 
-RewriteBase /amm/
+RewriteBase /
 
 # Check if this is the noredirect query string
 #RewriteCond %{QUERY_STRING} (^|&)m=0(&|$)
@@ -49,10 +59,10 @@ DirectorySlash Off
 
 
 # Map resources to release distribution
-RewriteRule ^app/(.*)$ dist/debug/$1 [NC,L]
-RewriteRule ^assets/js/libs/(.*)$ dist/debug/$1 [NC,L]
-RewriteRule ^assets/audio/(.*)$ dist/debug/assets/audio/$1 [NC,L]
-RewriteRule ^assets/css/(.*)$ dist/debug/$1 [NC,L]
+RewriteRule ^app/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^assets/js/libs/(.*)$ dist/release/$1 [NC,L]
+RewriteRule ^assets/audio/(.*)$ dist/release/assets/audio/$1 [NC,L]
+RewriteRule ^assets/css/(.*)$ dist/release/$1 [NC,L]
 RewriteRule ^zeegaapi/(.*)$ http://alpha.zeega.org/api/$1 [P]
 
 # These conditions ensure that the file does not exist and that the current
