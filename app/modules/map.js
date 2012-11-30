@@ -6,17 +6,21 @@ define([
 
 ], function(App, Backbone) {
 	
+	var recentCollectionId = 62472,
+		featuredCollectionId = 53567,
+		defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
+		
 	var Map = App.module();
 
 	Map.Model = Backbone.Model.extend({
 		type: 'Map',
-		collectionId: 53567,
+		collectionId: featuredCollectionId,
 		defaults: {
 			title: 'Map'
 		},
 
 		initialize: function() {
-			console.log('init map', $('#appBase').height(), $('#appBase').width());
+			
 			var mapCollection = new MapCollection({id:this.collectionId});
 			var _this=this;
 			App.playlistCollection = new PlaylistCollection();
@@ -38,7 +42,7 @@ define([
 
 	Map.Views.Featured = Backbone.LayoutView.extend({
 		template : 'mapfeatured',
-		serialize : function(){ console.log(this.model.toJSON());return this.model.toJSON(); }
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 	Map.Views.SpotlightShelf = Backbone.LayoutView.extend({
@@ -76,35 +80,57 @@ define([
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
-		latLng: new L.LatLng(30.266702991845,-97.745532989502),
-		
+		latLng: defaultCenter,
+		points: { "type": "FeatureCollection", "features": []},
+
 		initialize : function(options){
+			window.mapview=this;
 			_.extend(this,options);
+			this.parsePoints(this.collection);
 		},
 		
-		createPoints:function(){
-
-			var p =[];
-			_.each(_.toArray(this.collection), function(item){
+		parsePoints:function(collection,reset){
+			
+			var p;
+			if(_.isNull(reset)||reset) p=[];
+			else p=this.points.features;
+			
+			_.each(_.toArray(collection), function(item){
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
-
+					
+					if(collection.id == recentCollectionId){
+						var newTags = item.get('tags');
+						newTags[newTags.length]="recent";
+						item.set('tags',newTags);
+					}
 					item.attributes.playlists=App.playlistCollection.getMatches(item.get('tags'));
-
-
+					if(_.isUndefined(_.find(p,function(obj){return item.get('media_geo_latitude')==obj.geometry.coordinates[1];}))){
 						
-					p.push({
-						"type": "Feature",
-						"geometry": {
-							"type": "Point",
-							"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
-						},
-						"properties":item.attributes,
-						"id":item.id
-					});
+						p.push({
+							"type": "Feature",
+							"geometry": {
+								"type": "Point",
+								"coordinates": [item.get('media_geo_longitude'), item.get('media_geo_latitude')]
+							},
+							"properties":item.attributes,
+							"id":item.id
+						});
+					}
 				}
 			});
-			return { "type": "FeatureCollection", "features": p};
+			this.points.features=p;
+		},
+
+		loadPlaylist:function(id){
+			var _this=this,
+				collection = new MapCollection({id:id});
+			
+			collection.fetch({success:function(collection,response){
+				_this.parsePoints(collection,true);
+				_this.resetPoints();
+			}});
+
 		},
 
 		afterRender:function(){
@@ -128,29 +154,29 @@ define([
 			});
 			this.map.setView(this.latLng, 13);
 			this.map.featureOn=false;
-			this.loadItems();
-
+			this.drawPoints(this.points);
 	//		This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
 			
 		},
-		clearItems:function(){
+		resetPoints:function(){
+			
 			$('.map-overlay').remove();
 			var map=this.map;
 			map.featureOn=false;
 			_.each(map._layers,function(layer){
 				if(!_.isUndefined(layer.feature))map.removeLayer(layer);
 			});
-			this.loadItems();
-			
+			this.drawPoints(this.points);
 		},
-		loadItems:function(){
+
+		drawPoints:function(points){
+			
 			this.itemsLayer='';
 			var map=this.map,
 				radius=108,
 				diameter=2*radius,
-				points = this.createPoints(),
 				itemLayer=this.itemLayer;
 			var _this = this;
 			
@@ -243,7 +269,7 @@ define([
 						})
 						.on('click',function(e){
 							
-							console.log('clickity click click');
+							
 							if(!map.featureOn){
 
 
@@ -282,6 +308,8 @@ define([
 								
 								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
+								
+
 								var largeImg = document.createElement('img');
 		
 
@@ -293,6 +321,21 @@ define([
 								
 								largeImg.onload = function()
 								{
+									
+									var largeImgW, largeImgH;
+									if(largeImg.height/largeImg.width>window.innerHeight/window.innerWidth){
+										largeImgW=window.innerWidth;
+										largeImgH=largeImg.height*window.innerWidth/largeImg.width;
+									}else{
+										largeImgW=largeImg.width*window.innerHeight/largeImg.height;
+										largeImgH=window.innerHeight;
+									}
+									
+									
+
+
+
+
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -309,8 +352,7 @@ define([
 									
 									function drawLargeImage()
 									{
-										var largeImgH=largeImg.height*window.innerWidth/largeImg.width;
-//															var hOffset=Math.max(0,window.innerHeight)/2)
+										
 										if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))) clearInterval(drawThumbAnim);
 										else
 										{
@@ -333,7 +375,7 @@ define([
 											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
 											tmpCtx.closePath();
 											tmpCtx.clip();
-											tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
+											tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 											tmpCtx.restore();
 											
 											if(i>=1) {
@@ -363,7 +405,7 @@ define([
 															tmpCtx.closePath();
 															tmpCtx.clip();
 															
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth,largeImgH);
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 															tmpCtx.restore();
 														
 															if(i>=1) {
@@ -393,7 +435,7 @@ define([
 															tmpCtx.arc(layer._point.x, layer._point.y,radius+58 - i*8, 0, Math.PI * 2, false);
 															tmpCtx.closePath();
 															tmpCtx.clip();
-															tmpCtx.drawImage(largeImg, 0, 0, window.innerWidth, largeImgH);
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
 															tmpCtx.restore();
 							
 															if(i>=1) {
@@ -453,6 +495,9 @@ define([
 				return false;
 			});
 			}
+
+
+			
 			L.geoJson([points], {
 
 				
@@ -480,16 +525,7 @@ define([
 					}
 					return L.marker(latlng,{icon:ico});
 
-					/*
-					return L.circleMarker(latlng, {
-						radius: 8,
-						fillColor: "blue",
-						color: "#000",
-						weight: 1,
-						opacity: 1,
-						fillOpacity: 0.8
-					});
-*/
+				
 				}
 			}).addTo(map);
 		
@@ -596,7 +632,7 @@ define([
 					},
 					onEachFeature:onEachFeature
 				}).addTo(map);
-				this.loadItems();
+				this.drawPoints(this.points);
 			//});
 
 
@@ -606,6 +642,7 @@ define([
 			var shelf = new Map.Views.SpotlightShelf();
 			shelf.render();
 			$('#appBase').append( shelf.el );
+
 
 			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
 			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
@@ -631,6 +668,7 @@ define([
 		},
 		
 		url: function(){
+			if(this.id == recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
 			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
@@ -675,9 +713,8 @@ define([
 			
 			return response.items;
 		},
-		
+
 		comparator: function(playlist1,playlist2) {
-			console.log('COMPARING!');
 			if ( playlist1.get('title') < playlist2.get('title') ) {
 				return -1;
 			} else if ( playlist1.get('title') > playlist2.get('title') ) {
@@ -686,6 +723,7 @@ define([
 				return 0;
 			}
 		}
+
 	});
 
 	// Required, return the module for AMD compliance
