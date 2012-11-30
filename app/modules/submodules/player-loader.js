@@ -27,7 +27,7 @@ initialize : function()
 			this.player = player;
 			this.updateLoaderTitle( player );
 			this.$('.layer-loading').empty();
-			player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
+			// player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
 
 			player.on('layer_loading', this.addLoadingItem, this);
 			player.on('layer_ready', this.onLayerLoaded, this);
@@ -38,11 +38,23 @@ initialize : function()
 		updateLoaderTitle : function( player )
 		{
 			var _this = this;
-			if( this.model.get('playlist_title') ) this.$('.loader-title').text( this.model.get('playlist_title'));
+			if( this.model.get('playlist_title') ){
+				if(this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map!");
+				else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+				
+			}
 			else
 			{
 				this.model.on('change:playlist_title', function(){
-					_this.$('.loader-title').text( _this.model.get('playlist_title'));
+
+
+
+
+					if(_this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map");
+					else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+				
+					
+
 				});
 			}
 		},
@@ -78,7 +90,17 @@ initialize : function()
 		exit : function()
 		{
 			var _this = this;
-			_this.$el.fadeOut(function(){ _this.remove(); });
+			this.remove();
+
+			/*
+			if (jQuery.browser.msie) {
+				this.remove();
+			} else {
+				_this.$el.fadeOut(500, function(){
+					_this.remove();
+				});	
+			}
+			*/
 		}
 	});
 

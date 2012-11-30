@@ -23,7 +23,7 @@ function(App, Backbone)
 
 
 		if(codec=='mp3'){
-			audio.on('canplay',function(){console.log('soundscape can play');});
+			//audio.on('canplay',function(){console.log('soundscape can play');});
 			audio.on('canplaythrough',function(){
 				if(App.page&&App.page.type=='Map') {
 					this.play();
@@ -33,7 +33,7 @@ function(App, Backbone)
 		}
 		else{
 			audio.on('canplay',function(){
-				console.log('canplay');
+				
 
 				if(App.page&&App.page.type=='Map'&&_this.loaded) {
 					console.log('canplaythrough');
@@ -60,7 +60,7 @@ function(App, Backbone)
 
 		}
 
-		_.delay(function(){$('#mute-button').click(function(){console.log('cliocked');_this.muteToggle();});},100);
+		_.delay(function(){$('#mute-button').click(function(){_this.muteToggle();});},100);
 
 	};
 
