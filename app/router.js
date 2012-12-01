@@ -123,7 +123,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			App.soundscape.play();
 			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
-			$('.map-extras').fadeIn();
+
 			// show small intro circle if:
 			// a) this is not the first visit and this is your first time at the map
 			// b) this is your first visit, but you came in via something other than map
@@ -133,13 +133,11 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				miniIntro.render();
 			}
 			App.mapVisited = true;
+			$('.map-extras').fadeIn();
 		} else {
 			App.soundscape.pause();
 			$('#logo img').removeClass('map');
 			$('.map-extras').hide();
-			if(to == "playlist") {
-				$('.bottom-credit').show();
-			}
 		}
 	}
 
