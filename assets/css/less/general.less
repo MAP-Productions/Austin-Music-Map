@@ -353,32 +353,31 @@ body {
 	z-index: 20000000;
 	background-color:rgba(255,255,255,.6);
 	padding:2px;
+	right: 0;
+
+	a {
+		color: rgba(0,0,0,.6);
+	}
 }
 
-.bottom-credit a {
-	color: rgba(0,0,0,.6);
-}
-
-.powered-by-zeega {
-	right: 0px;
-}
-
-.possible-by {
-	right: 0px;
+.map-legend {
+	position: fixed;
+	bottom: 17px;
+	left: 131px;
+	z-index: 20000000;
 }
 
 #mute-button {
-	
 	width:91px;
 	height:22px;
-	left:20px;
-	bottom:20px;
+	left:16px;
+	bottom:22px;
 	position:fixed;
 	z-index: 20000000;
 	cursor:pointer;
 	background :url(../img/mute-unmute.png) 0 0;
+
 	&.muted{
 		background-position: 0 -22px;
 	}
-
 }
