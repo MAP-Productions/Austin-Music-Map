@@ -11,8 +11,8 @@ define([
 
 
 
-	Map.recentCollectionId = 62472,
-	Map.featuredCollectionId = 53567,
+	Map.recentCollectionId = 62472;
+	Map.featuredCollectionId = 53567;
 	Map.defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
 		
 	
@@ -625,7 +625,9 @@ define([
 
 			function onEachFeature(feature, layer) {
 				layer.on("animate",function(){
-					var layerPoint=map.latLngToContainerPoint(layer._latlng);
+					
+							App.soundscape.ding();
+							var layerPoint=map.latLngToContainerPoint(layer._latlng);
 					layer._point=layerPoint;
 					var x=layer._point.x-radius;
 					var y=layer._point.y-radius-30;
