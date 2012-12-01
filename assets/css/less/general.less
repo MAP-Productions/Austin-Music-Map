@@ -363,30 +363,22 @@ body {
 	right: 0px;
 }
 
-.possible-by-localore {
+.possible-by {
 	right: 0px;
 }
 
 #mute-button {
 	
-	width:50px;
-	height:33px;
+	width:91px;
+	height:22px;
 	left:20px;
 	bottom:20px;
 	position:fixed;
 	z-index: 20000000;
 	cursor:pointer;
-	background-size: 70%;
-	background-repeat: no-repeat;
-	&.audible{
-		background-image:url(../img/mute_off.png);
-	}
+	background :url(../img/mute-unmute.png) 0 0;
 	&.muted{
-		background-image:url(../img/mute_on.png);
+		background-position: 0 -22px;
 	}
 
-}
-
-.map-extras {
-	display: none;
 }
