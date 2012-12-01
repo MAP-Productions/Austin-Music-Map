@@ -133,11 +133,15 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				miniIntro.render();
 			}
 			App.mapVisited = true;
-			$('.map-extras').fadeIn();
+			_.delay( function() {
+				$('.map-extras').fadeIn();
+			}, 10);
 		} else {
 			App.soundscape.pause();
 			$('#logo img').removeClass('map');
-			$('.map-extras').hide();
+			_.delay( function() {
+				$('.map-extras').hide();
+			}, 10);
 		}
 	}
 
