@@ -578,13 +578,21 @@ define([
 
 			function pointToLayer(feature, latlng) {
 					
+
+					//create arbitrary but consistent point classes for each feature
+					var k=0;
+					for(var i=0;i<feature.properties.title.length;i++){
+						k+= feature.properties.title.charCodeAt(i);
+					}
+					k=k%57;
+					
 				
 					var ico;
 					if(_.indexOf(feature.properties.tags,'feature')>-1){
 						ico = L.divIcon({
 							className : 'custom-icon',
 							iconAnchor: new L.Point(10,10),
-							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +' dot-red"></i>'
+							html:'<i class="amm-dot-'+ k +' dot-red"></i>'
 						});
 						
 					}
@@ -592,7 +600,7 @@ define([
 						ico = L.divIcon({
 							className : 'custom-icon',
 							iconAnchor: new L.Point(10,10),
-							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>'
+							html:'<i class="amm-dot-'+ k +'"></i>'
 						});
 					}
 					return L.marker(latlng,{icon:ico});
@@ -694,23 +702,31 @@ define([
 			function pointToLayer(feature, latlng) {
 					
 				
-					var ico;
-					if(_.indexOf(feature.properties.tags,'feature')>-1){
-						ico = L.divIcon({
-							className : 'custom-icon',
-							iconAnchor: new L.Point(10,10),
-							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +' dot-red"></i>'
-						});
-						
-					}
-					else {
-						ico = L.divIcon({
-							className : 'custom-icon',
-							iconAnchor: new L.Point(10,10),
-							html:'<i class="amm-dot-'+ Math.floor(Math.random()*57) +'"></i>'
-						});
-					}
-					return L.marker(latlng,{icon:ico});
+				//create arbitrary but consistent point classes for each feature
+				var k=0;
+				for(var i=0;i<feature.properties.title.length;i++){
+					k+= feature.properties.title.charCodeAt(i);
+				}
+				k=k%57;
+				
+			
+				var ico;
+				if(_.indexOf(feature.properties.tags,'feature')>-1){
+					ico = L.divIcon({
+						className : 'custom-icon',
+						iconAnchor: new L.Point(10,10),
+						html:'<i class="amm-dot-'+ k +' dot-red"></i>'
+					});
+					
+				}
+				else {
+					ico = L.divIcon({
+						className : 'custom-icon',
+						iconAnchor: new L.Point(10,10),
+						html:'<i class="amm-dot-'+ k +'"></i>'
+					});
+				}
+				return L.marker(latlng,{icon:ico});
 			}
 
 			L.geoJson([features], {
