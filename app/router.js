@@ -83,9 +83,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 		goToStory : function(collectionID,itemID)
 		{
+			this.playerType = 'story';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
-			console.log('go to story', collectionID, itemID);
 			initialize('playlist');
 
 			App.Player = new PlayerSlider.Model({
@@ -98,9 +98,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 		goToRemix : function(collectionID,itemID)
 		{
+			this.playerType = 'remix';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
-			console.log('go to remix', collectionID, itemID);
 			initialize('playlist');
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
@@ -111,10 +111,10 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 		goToRemixSlide : function(collectionID,itemID, slideID)
 		{
+			this.playerType = 'remix';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
 			this.slide_id = slideID;
-			console.log('go to remix', collectionID, itemID);
 			initialize('playlist');
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
