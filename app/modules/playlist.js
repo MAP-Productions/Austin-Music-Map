@@ -169,7 +169,13 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 		updateURL : function()
 		{
-			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
+
+			if(App.players && App.players.get('remix') && (App.players.get('remix') == App.players.get('current')) )
+				this.amm_player_type = 'remix';
+			else this.amm_player_type = 'story';
+			App.router.item_id = App.players.get('current').getFrameData().id;
+//			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
+			if( this.amm_player_type == 'story') App.router.navigate('playlist/'+ App.router.collection_id +'/'+ this.amm_player_type +'/'+ App.router.item_id );
 		},
 
 		startPlayerEvents : function()
