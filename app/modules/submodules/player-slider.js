@@ -209,6 +209,20 @@ function(App, Backbone, Loader )
 				};
 				if(this.model.get('start_frame')) remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
 
+				// check to see if frame exists
+				var audioItemIDArray = _.map( remixArgs.data.child_items, function(item){
+					if(item.media_type == 'Audio') return item.id;
+				});
+
+				// redirects player if the id passed into remix is not a frame
+				if( !_.contains(audioItemIDArray, remixArgs.start_frame) )
+				{
+					// if id is not contained in frame array, then it must be an image slide
+					remixArgs.start_slide_id = remixArgs.start_frame;
+					// set start_frame
+					remixArgs.start_frame = audioItemIDArray[0];
+				}
+
 				var remixView = new PlayerTargetView({
 					args: remixArgs,
 					attributes:{
