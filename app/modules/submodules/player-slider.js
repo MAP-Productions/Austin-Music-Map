@@ -204,7 +204,8 @@ function(App, Backbone, Loader )
 					collection_mode: 'slideshow', // standard, slideshow,
 					data: this.model.get('remixItems'),
 					div_id: remixID,
-					keyboard: false
+					keyboard: false,
+					start_slide_id: this.model.get('start_slide_id')
 				};
 				if(this.model.get('start_frame')) remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
 
@@ -258,18 +259,23 @@ function(App, Backbone, Loader )
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 			this.project.load(this.options.args);
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
+			this.project.on('slideshow_update', this.updateSlideshowURL, this);
 		},
 
 		updateYoutubeSize : function()
 		{
 			var width = window.innerHeight*16/9;
 			var left = (window.innerWidth-width)/2;
-			console.log('@@@ update youtube size', width, left);
 			this.$('.visual-element-youtube').css({
 				'height': window.innerHeight,
 				'width' : width,
 				'left' : left
 			});
+		},
+
+		updateSlideshowURL : function(slideInfo)
+		{
+			App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ slideInfo.frame +'/slide/'+ slideInfo.data.id);
 		}
 	});
 

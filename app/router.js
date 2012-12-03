@@ -41,7 +41,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			// routes to remixes
 			"playlist/:collectionID/remix" : "goToRemix",
 			"playlist/:collectionID/remix/" : "goToRemix",
-			"playlist/:collectionID/remix/:itemID" : "goToRemix"
+			"playlist/:collectionID/remix/:itemID" : "goToRemix",
+
+			"playlist/:collectionID/remix/:itemID/slide/:slideID" : "goToRemixSlide"
 
 		},
 
@@ -81,6 +83,8 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 		goToStory : function(collectionID,itemID)
 		{
+			this.collection_id = collectionID;
+			this.item_id = itemID;
 			console.log('go to story', collectionID, itemID);
 			initialize('playlist');
 
@@ -94,13 +98,29 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 		goToRemix : function(collectionID,itemID)
 		{
-
+			this.collection_id = collectionID;
+			this.item_id = itemID;
 			console.log('go to remix', collectionID, itemID);
 			initialize('playlist');
 			App.Player = new PlayerSlider.Model({
 				collection_id: collectionID,
 				item_id: itemID,
 				start_frame: itemID
+			});
+			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
+		},
+		goToRemixSlide : function(collectionID,itemID, slideID)
+		{
+			this.collection_id = collectionID;
+			this.item_id = itemID;
+			this.slide_id = slideID;
+			console.log('go to remix', collectionID, itemID);
+			initialize('playlist');
+			App.Player = new PlayerSlider.Model({
+				collection_id: collectionID,
+				item_id: itemID,
+				start_frame: itemID,
+				start_slide_id: parseInt(slideID,10)
 			});
 			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		}
