@@ -205,6 +205,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 		playerNext : function()
 		{
 			App.players.get('current').cueNext();
+			if( _.isNull( App.players.get('current').getFrameData().next ) ) this.remixToggle();
 		},
 		playPause : function()
 		{
