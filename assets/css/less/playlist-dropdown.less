@@ -10,8 +10,44 @@
 	width: 293px;
 	left: 137px;
 	top: 52px;
-	background: rgba(147,149,152,0.9);
 	overflow: hidden;
+
+	.share-toggle {
+		background: url(../img/share-toggle-bg.png);
+		border-bottom: 1px solid #58595b;
+		color: #313233;
+		cursor: pointer;
+		font-size: 9px;
+		font-weight: bold;
+		height: 21px;
+		letter-spacing: 0.2em;
+		line-height: 21px;
+		overflow: hidden;
+		text-align: center;
+		vertical-align: middle;
+
+		.arrow {
+			display: inline-block;
+			width: 16px;
+			height: 9px;
+			background: url(../img/share-arrow-sprite.png);
+			vertical-align: middle;
+			margin-right: 6px;
+		}
+
+		&.active {
+			color: #fff;
+
+			.arrow {
+				background-position: 0 -9px;
+			}
+		}
+	}
+
+	.share-this {
+		background: rgba(147,149,152,0.9);
+		border-bottom: 1px solid #58595b;
+	}
 
 	#playlist-map{
 		width:293px;
@@ -26,7 +62,6 @@
 
 	ul.playlist
 	{
-		border-top: 1px solid #58595b;
 		border-bottom: 1px solid #58595b;
 
 
@@ -40,7 +75,7 @@
 			vertical-align: middle;
 			overflow: hidden;
 
-			background: transparent;
+			background: rgba(147,149,152,0.9);
 			transition: background 0.5s;
 			-moz-transition: background 0.5s; /* Firefox 4 */
 			-webkit-transition: background 0.5s; /* Safari and Chrome */
@@ -133,6 +168,10 @@
 
 	.related
 	{
+		background: rgba(147,149,152,0.9);
+		border-radius: 0 0 4px 4px;
+		padding-bottom: 9px;
+
 		h3
 		{
 			padding: 12px 0 17px;
@@ -145,7 +184,7 @@
 		ul
 		{
 			overflow: hidden;
-			margin: 7px 0 9px;
+			padding: 7px 0 0;
 		}
 		ul li
 		{

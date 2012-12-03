@@ -73,7 +73,8 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause',
 			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
-			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider',
+			'click .share-toggle' : 'toggleShare'
 		},
 
 		events : {
@@ -84,7 +85,8 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause',
 			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
-			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider',
+			'click .share-toggle' : 'toggleShare'
 		},
 
 		onMouseoverSlider : function(e)
@@ -342,6 +344,10 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				}
 
 			});
+		},
+		toggleShare: function(e) {
+			$(e.currentTarget).toggleClass('active');
+			this.$('.share-this').slideToggle();
 		}
 
 	});
