@@ -23,11 +23,21 @@
 	</div>
 </div>
 <div class="playlist-container">
+	<h3 class="share-toggle"><span class="arrow"></span>share this track</h3>
+	<div class="share-this" style="display: none;">
+		<div class="buttons">
+			<span class="facebook" class="active">Facebook</span>
+			<span class="twitter">Twitter</span>
+			<button class="cancel">Cancel</button>
+			<button class="share">Share</button>
+		</div>
+		<h4>Message (optional)</h4>
+		<textarea id="shareMessage"></textarea>
+	</div>
 	<ul class="playlist open"></ul>
 	<div id="playlist-map-wrapper"></div>
 	
 	<div class="related">
-		<!-- temporary until related playlists activated -->
 		<h2 style="padding-top:2px;padding-bottom:2px;"></h2>
 		
 		<h3>Related Playlists</h3>
