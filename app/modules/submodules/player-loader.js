@@ -40,7 +40,7 @@ initialize : function()
 			var _this = this;
 			if( this.model.get('playlist_title') ){
 				if(this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map!");
-				else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+				else $('.player-loader-header').find('h2').html("Loading all media associated with: <span class='loader-title'>"+_this.model.get('playlist_title')+"</span></h2>");
 				
 			}
 			else
@@ -51,7 +51,7 @@ initialize : function()
 
 
 					if(_this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map");
-					else _this.$('.loader-title').text( _this.model.get('playlist_title'));
+					else $('.player-loader-header').find('h2').html("Loading all media associated with: <span class='loader-title'>"+_this.model.get('playlist_title')+"</span></h2>");
 				
 					
 
