@@ -249,6 +249,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				this.updateURL();
 				this.$('.playing-subtitle').text( info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username );
 				this.updateControlsState( info );
+				this.updateShareLinks( info );
 				this.updatePlaylistDropdown();
 				this.scrollTitles();
 			}
@@ -342,6 +343,17 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				}
 
 			});
+		},
+
+		updateShareLinks: function(info) {
+			var encodedUrl = encodeURIComponent(window.location);
+			var encodedTitle = encodeURIComponent(info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username);
+			var encodedTweet = encodeURIComponent('Check out this track on Austin Music Map: ' + info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username + ' - ' + window.location);
+			var encodedMessage = encodeURIComponent('Check out this track on Austin Music Map:\n' + info.layers[0].attr.title + ' by ' + info.layers[0].attr.media_creator_username + '\n' + window.location);
+
+			this.$('.share-facebook').attr('href','http://www.facebook.com/sharer.php?s=100&p[title]=' + encodedTitle + '&p[url]=' + encodedUrl + '&p[images][0]=http://www.austinmusicmap.com/assets/img/amm_logo.png&p[summary]=View%20this%20track%20on%20Austin%20Music%20Map!');
+			this.$('.share-twitter').attr('href','http://twitter.com/home?status=' + encodedTweet);
+			this.$('.share-email').attr('href','mailto:?subject=Check%20out%20this%20track%20on%20Austin%20Music%20Map!&Body=' + encodedMessage);
 		}
 	});
 
