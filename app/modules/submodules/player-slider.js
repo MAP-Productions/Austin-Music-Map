@@ -210,17 +210,16 @@ function(App, Backbone, Loader )
 				if(this.model.get('start_frame')) remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
 
 				// check to see if frame exists
-				var audioItemIDArray = _.map( remixArgs.data.child_items, function(item){
+				var audioItemIDArray = _.map( remixArgs.data.items[0].child_items, function(item){
 					if(item.media_type == 'Audio') return item.id;
 				});
-
 				// redirects player if the id passed into remix is not a frame
 				if( !_.contains(audioItemIDArray, remixArgs.start_frame) )
 				{
 					// if id is not contained in frame array, then it must be an image slide
 					remixArgs.start_slide_id = remixArgs.start_frame;
 					// set start_frame
-					remixArgs.start_frame = audioItemIDArray[0];
+					remixArgs.start_frame = _.compact(audioItemIDArray)[0];
 				}
 
 				var remixView = new PlayerTargetView({
@@ -235,7 +234,8 @@ function(App, Backbone, Loader )
 				//this.model.players.remix = remixView.project;
 			}
 
-			App.players.set('current', App.players.get('story') || App.players.get('remix') );
+			App.players.set('current', App.router.playerType == 'story' && App.players.get('story') ? App.players.get('story') : App.players.get('remix') );
+
 			App.players.trigger('current_ready');
 
 			var _this = this;
@@ -252,6 +252,8 @@ function(App, Backbone, Loader )
 			this.getViews(function(view){
 				view.initPlayer();
 			});
+			if(App.router.playerType=='remix' && App.players.get('story') ) $('.player-slider').addClass('view-remix');
+
 		},
 
 		serialize : function(){ return this.model.toJSON(); }
@@ -289,7 +291,11 @@ function(App, Backbone, Loader )
 
 		updateSlideshowURL : function(slideInfo)
 		{
-			App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ slideInfo.frame +'/slide/'+ slideInfo.data.id);
+			if( slideInfo.frame == this.project.currentFrame.id && slideInfo.data)
+			{
+				App.router.slide_id = slideInfo.data.id;
+				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ slideInfo.frame +'/slide/'+ slideInfo.data.id);
+			}
 		}
 	});
 
