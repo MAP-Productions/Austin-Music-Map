@@ -38,7 +38,7 @@ define([
 		afterRender:function(){
 			
 
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-lo6au7ho/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('assets/img/map.png#{z}/{x}/{y}', {maxZoom: 18, attribution: ''});
 				
 			this.map = new L.Map(this.el,{
@@ -76,7 +76,7 @@ define([
 						});
 					}
 				
-				this.map.setView(latlng,14,true);
+				this.map.setView(latlng,16,true);
 				this.marker = L.marker(latlng, {icon:ico}).addTo(this.map);
 				
 			}

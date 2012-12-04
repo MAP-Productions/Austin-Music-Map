@@ -203,7 +203,9 @@ define([
 
 		afterRender:function(){
 			
-
+			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
+				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
+				bounds = new L.LatLngBounds(southWest, northEast);
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
 					maxZoom: 18,
@@ -218,6 +220,7 @@ define([
 				boxZoom:false,
 				zoomControl:false,
 				attribution:'',
+				maxBounds:bounds,
 				layers: [cloudmade,homemade]
 			});
 			this.map.setView(this.latLng, 13);
@@ -306,11 +309,11 @@ define([
 							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
 						"</div>";
 
-					var hed = $(popupTemplate).appendTo(popup);
+					var popupContent = $(popupTemplate).appendTo(popup);
 					// Add the popup to the map
 					popup.appendTo($('body'));
 
-					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },500);
+					_.delay(function(){ $(popupContent).find('.rollover-title-wrapper').fadeIn(); },500);
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
@@ -391,10 +394,10 @@ define([
 									}
 								}).addClass('map-overlay');
 								
-								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
+								$("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
 								
-
+								
 								var largeImg = document.createElement('img');
 		
 
@@ -415,12 +418,6 @@ define([
 										largeImgW=largeImg.width*window.innerHeight/largeImg.height;
 										largeImgH=window.innerHeight;
 									}
-									
-									
-
-
-
-
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -435,6 +432,8 @@ define([
 									var shrinkAnim;
 									var expandAnim;
 									
+
+
 									function drawLargeImage()
 									{
 										
@@ -471,6 +470,44 @@ define([
 													gapState = 'small';
 
 												
+												$('.p-link').click(function(){
+													$('#popup-'+feature.id).remove();
+													var ii=0;
+													function drawFullImage(){
+														if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
+															clearInterval(drawFullImageAnim);
+														}
+														else
+														{
+															//$('.back-to-map').hide();
+															var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+															tmpCtx.globalCompositeOperation = 'destination-over';
+															tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+														
+															tmpCtx.save();
+															tmpCtx.beginPath();
+															tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+															tmpCtx.arc(layer._point.x, layer._point.y,(radius+50)*(1-ii), 0, Math.PI * 2, false);
+															tmpCtx.closePath();
+															tmpCtx.clip();
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
+															tmpCtx.restore();
+							
+															if(ii>=0.9) {
+																clearInterval(drawFullImageAnim);
+																drawFullImageAnim=false;
+															}
+															ii=parseFloat(ii)+0.1;
+														}
+													}
+
+
+
+													
+													drawFullImageAnim=setInterval(drawFullImage,30);
+												
+												});
+
 												$('.map-overlay').on('mousemove',function(e){
 													var i=0;
 													var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
@@ -532,6 +569,7 @@ define([
 														}
 													}
 
+
 													if(d>radius&&d<radius+20&&gapState=='small'){
 														clearInterval(shrinkGapAnim);
 														if(!expandGapAnim){
@@ -539,6 +577,7 @@ define([
 															expandGapAnim=setInterval(expandGap,30);
 														}
 													}
+
 
 													else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
 														clearInterval(expandGapAnim);
@@ -674,7 +713,8 @@ define([
 							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
 						"</div>";
 
-					var hed = $(popupTemplate).appendTo(popup);
+					$(popupTemplate).appendTo(popup);
+					
 					// Add the popup to the map
 					popup.appendTo($('body'));
 					
