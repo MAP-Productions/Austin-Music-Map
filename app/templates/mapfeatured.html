@@ -9,9 +9,9 @@
 		<div class="bottom">
 			<ul class="in-playlists">
 
-				<% if( playlists[0] ){ %><li><a href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[0].attributes.title %></a></li><% } %>
-				<% if( playlists[1] ){ %><li><a href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[1].attributes.title %></a></li><% } %>
-				<% if( playlists[2] ){ %><li><a href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[2].attributes.title %></a></li><% } %>
+				<% if( playlists[0] ){ %><li><a class='p-link' href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[0].attributes.title %></a></li><% } %>
+				<% if( playlists[1] ){ %><li><a class='p-link' href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[1].attributes.title %></a></li><% } %>
+				<% if( playlists[2] ){ %><li><a class='p-link' href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[2].attributes.title %></a></li><% } %>
 			</ul>
 
 		</div>

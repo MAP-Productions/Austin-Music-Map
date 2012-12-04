@@ -93,7 +93,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
+			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 
 		},
 		goToRemix : function(collectionID,itemID)
@@ -107,7 +107,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
+			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		},
 		goToRemixSlide : function(collectionID,itemID, slideID)
 		{
@@ -122,7 +122,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				start_frame: itemID,
 				start_slide_id: parseInt(slideID,10)
 			});
-			if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
+			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		}
 
 	});
