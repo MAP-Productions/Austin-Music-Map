@@ -77,11 +77,6 @@ define([
 		}
 	});
 
-	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
-		template: 'spotlight-item',
-		serialize : function(){ return this.model.toJSON(); }
-	});
-
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
@@ -897,14 +892,18 @@ define([
 		},
 
 		loadSpotlightShelf : function() {
-			var shelf = new Map.Views.SpotlightShelf();
+			var spotlightItems = this.collection.filter( function(item) {
+					return (_.contains( item.get('tags'), 'kutfeature' ));
+				}),
+				spotlightCollection = new Map.PlaylistCollection(spotlightItems),
+				shelf = new Map.Views.SpotlightShelf();
+
 			shelf.render();
 			$('#appBase').append( shelf.el );
 
-
-			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
-			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
-			var itemThree = new Map.Views.SpotlightItem( {model : this.collection.at(2) } );
+			var itemOne = new Map.Views.SpotlightItem( { model : spotlightItems[0] } );
+			var itemTwo = new Map.Views.SpotlightItem( { model : spotlightItems[1] } );
+			var itemThree = new Map.Views.SpotlightItem( { model : spotlightItems[2] } );
 			shelf.setView(".spotlight-one", itemOne);
 			shelf.setView(".spotlight-two", itemTwo);
 			shelf.setView(".spotlight-three", itemThree);
@@ -914,6 +913,11 @@ define([
 			itemThree.render();
 		}
 
+	});
+
+	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
+		template: 'spotlight-item',
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 
@@ -931,7 +935,6 @@ define([
 		},
 
 		parse: function(response){
-			
 			return response.items;
 		}
 
