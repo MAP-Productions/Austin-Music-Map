@@ -12,41 +12,50 @@
 	top: 52px;
 	overflow: hidden;
 
-	.share-toggle {
-		background: url(../img/share-toggle-bg.png);
+	.share-this {
+		background: url(../img/playlist-share-bg.png);
 		border-bottom: 1px solid #58595b;
 		color: #313233;
 		cursor: pointer;
-		font-size: 9px;
+		font-size: 11px;
 		font-weight: bold;
-		height: 21px;
+		height: 42px;
 		letter-spacing: 0.2em;
-		line-height: 21px;
+		line-height: 42px;
 		overflow: hidden;
 		text-align: center;
 		vertical-align: middle;
 
-		.arrow {
-			display: inline-block;
-			width: 16px;
+		h3 {
+			background: url(../img/share-arrow.png) no-repeat left center;
+			display: inline;
 			height: 9px;
-			background: url(../img/share-arrow-sprite.png);
+			padding: 0 14px 0 22px;
 			vertical-align: middle;
-			margin-right: 6px;
+			width: 16px;
 		}
 
-		&.active {
-			color: #fff;
+		.share-link {
+			background-repeat: no-repeat;
+			display: inline-block;
+			height: 23px;
+			margin-left: 5px;
+			text-indent: -9999px;
+			vertical-align: middle;
+			width: 23px;
 
-			.arrow {
-				background-position: 0 -9px;
+			&.facebook {
+				background-image: url(../img/logo_share_facebook.png);
+			}
+
+			&.twitter {
+				background-image: url(../img/logo_share_twitter.png);
+			}
+
+			&.email {
+				background-image: url(../img/logo_share_email.png);
 			}
 		}
-	}
-
-	.share-this {
-		background: rgba(147,149,152,0.9);
-		border-bottom: 1px solid #58595b;
 	}
 
 	#playlist-map{

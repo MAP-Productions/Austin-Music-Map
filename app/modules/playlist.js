@@ -73,8 +73,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause',
 			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
-			'mouseleave .stories-remix-slider' : 'onMouseoutSlider',
-			'click .share-toggle' : 'toggleShare'
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
 		},
 
 		events : {
@@ -85,8 +84,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'click .forward' : 'playerNext',
 			'click .play-pause' : 'playPause',
 			'mouseenter .stories-remix-slider' : 'onMouseoverSlider',
-			'mouseleave .stories-remix-slider' : 'onMouseoutSlider',
-			'click .share-toggle' : 'toggleShare'
+			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
 		},
 
 		onMouseoverSlider : function(e)
@@ -344,12 +342,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				}
 
 			});
-		},
-		toggleShare: function(e) {
-			$(e.currentTarget).toggleClass('active');
-			this.$('.share-this').slideToggle();
 		}
-
 	});
 
 	var PlaylistItemView = Backbone.LayoutView.extend({
