@@ -157,6 +157,8 @@ define([
 
 		},
 
+
+
 		animateMap:function(){
 			
 			this.drawIntroPoints(this.featureCollection);
@@ -237,6 +239,12 @@ define([
 				if(!_.isUndefined(layer.feature))map.removeLayer(layer);
 			});
 			this.drawPoints(this.featureCollection);
+		},
+
+		resetMap:function(){
+
+			this.addFeatures(this.collection,true);
+			this.resetPoints();
 		},
 
 		drawPoints:function(features){
