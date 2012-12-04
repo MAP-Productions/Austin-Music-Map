@@ -28,6 +28,17 @@ function(App, Backbone, Playlist, Search, AllPlaylists )
 		{
 			App.trigger('base_layout_ready');
 		},
+		events:{
+			'click #logo':'goHome'
+		},
+
+		goHome:function(){
+			console.log('going home', App.router);
+			if(App.page&&App.page.type=='Map') App.page.mapView.resetMap();
+			App.router.navigate('/',{'trigger':true});
+			
+			return false;
+		},
 
 		hideLeftMenu : function(opts)
 		{
