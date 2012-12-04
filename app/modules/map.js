@@ -895,22 +895,29 @@ define([
 			var spotlightItems = this.collection.filter( function(item) {
 					return (_.contains( item.get('tags'), 'kutfeature' ));
 				}),
-				spotlightCollection = new Map.PlaylistCollection(spotlightItems),
 				shelf = new Map.Views.SpotlightShelf();
 
 			shelf.render();
 			$('#appBase').append( shelf.el );
 
-			var itemOne = new Map.Views.SpotlightItem( { model : spotlightItems[0] } );
-			var itemTwo = new Map.Views.SpotlightItem( { model : spotlightItems[1] } );
-			var itemThree = new Map.Views.SpotlightItem( { model : spotlightItems[2] } );
-			shelf.setView(".spotlight-one", itemOne);
-			shelf.setView(".spotlight-two", itemTwo);
-			shelf.setView(".spotlight-three", itemThree);
+			if (spotlightItems[0]) {
+				var itemOne = new Map.Views.SpotlightItem( { model : spotlightItems[0] } );
+				shelf.setView(".spotlight-one", itemOne);
+				itemOne.render();
+			}
 
-			itemOne.render();
-			itemTwo.render();
-			itemThree.render();
+			if (spotlightItems[1]) {
+				var itemTwo = new Map.Views.SpotlightItem( { model : spotlightItems[1] } );
+				shelf.setView(".spotlight-two", itemTwo);
+				itemTwo.render();
+			}
+			
+			if (spotlightItems[2]) {
+				var itemThree = new Map.Views.SpotlightItem( { model : spotlightItems[2] } );
+				shelf.setView(".spotlight-three", itemThree);
+				itemThree.render();
+			}
+
 		}
 
 	});
