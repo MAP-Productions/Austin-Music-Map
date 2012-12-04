@@ -89,7 +89,6 @@ define([
 		featureCollection: { "type": "FeatureCollection", "features": []},
 
 		initialize : function(options){
-			window.mapview=this;
 			_.extend(this,options);
 			this.addFeatures(this.collection);
 		},
@@ -342,7 +341,6 @@ define([
 						
 						if(!map.featureOn){
 							if(_.isUndefined(e.which)){
-								console.log('clearing Interval');
 								clearInterval(drawThumbAnim);
 								$("#popup-" + feature.id).fadeOut('fast',function(){$(this).remove(); });
 							}
@@ -441,41 +439,45 @@ define([
 										else
 										{
 
+											if(i<1) {
+												var f;
+												if(i<0.7){
+													f = 1-(0.7-i)*(0.7-i);
+												}
+												else{
+													f=1;
+												}
 
-											var f;
-											if(i<0.7){
-												f = 1-(0.7-i)*(0.7-i);
+												var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+												tmpCtx.globalCompositeOperation = 'destination-over';
+												
+												tmpCtx.save();
+												tmpCtx.beginPath();
+												tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
+												tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
+												tmpCtx.closePath();
+												tmpCtx.clip();
+												tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
+												tmpCtx.restore();
 											}
-											else{
-												f=1;
-											}
-
-											var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-											tmpCtx.globalCompositeOperation = 'destination-over';
-											
-											tmpCtx.save();
-											tmpCtx.beginPath();
-											tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
-											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
-											tmpCtx.closePath();
-											tmpCtx.clip();
-											tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
-											tmpCtx.restore();
-											
-											if(i>=1) {
-											
+											else if(i>=1){
+												
 												clearInterval(drawLargeImageAnim);
 												$('.back-to-map').fadeIn('fast');
 												var shrinkGapAnim,expandGapAnim,
 													gapState = 'small';
 
+											
 												
-												$('.p-link').click(function(){
+												$('#item-playlist').click(function(){
+													$(this).unbind();
+													
 													$('#popup-'+feature.id).remove();
 													var ii=0;
 													function drawFullImage(){
 														if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
 															clearInterval(drawFullImageAnim);
+															drawFullImageAnim=false;
 														}
 														else
 														{
@@ -494,19 +496,22 @@ define([
 															tmpCtx.restore();
 							
 															if(ii>=0.9) {
+															
 																clearInterval(drawFullImageAnim);
 																drawFullImageAnim=false;
 															}
 															ii=parseFloat(ii)+0.1;
 														}
 													}
-
-
-
-													
 													drawFullImageAnim=setInterval(drawFullImage,30);
-												
+											
 												});
+											
+												if(window.location.hash.indexOf('playlist')>-1){
+													$('#item-playlist').trigger('click');
+												}
+
+												
 
 												$('.map-overlay').on('mousemove',function(e){
 													var i=0;

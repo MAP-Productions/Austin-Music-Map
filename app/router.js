@@ -63,22 +63,19 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		participate : function() {
 			initialize('modal');
 			App.modal = new Participate.Model();
-			//$('.selected').removeClass('selected');
-			//$('#nav-participate').addClass('selected');
+
 		},
 
 		about : function() {
 			initialize('modal');
 			App.modal = new About.Model();
-			//$('.selected').removeClass('selected');
-			//$('#nav-participate').addClass('selected');
+
 		},
 
 		contact : function() {
 			initialize('modal');
 			App.modal = new Contact.Model();
-			//$('.selected').removeClass('selected');
-			//$('#nav-participate').addClass('selected');
+
 		},
 
 		goToStory : function(collectionID,itemID)
@@ -93,8 +90,6 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
-
 		},
 		goToRemix : function(collectionID,itemID)
 		{
@@ -107,7 +102,6 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				item_id: itemID,
 				start_frame: itemID
 			});
-			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		},
 		goToRemixSlide : function(collectionID,itemID, slideID)
 		{
@@ -122,7 +116,6 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				start_frame: itemID,
 				start_slide_id: parseInt(slideID,10)
 			});
-			//if(App.page&&App.page.type=='Map') App.page.mapView.resetPoints();
 		}
 
 	});
@@ -147,6 +140,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 			// show small intro circle if:
 			// a) this is not the first visit and this is your first time at the map
 			// b) this is your first visit, but you came in via something other than map
+			
 			if ( (!Helpers.firstVisit && !App.mapVisited) || (Helpers.firstVisit && App.entryPoint !== 'map') ) {
 				var miniIntro = new MiniIntro.View();
 				$('#main').append( miniIntro.el );
