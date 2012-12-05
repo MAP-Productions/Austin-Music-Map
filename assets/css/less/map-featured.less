@@ -4,12 +4,13 @@
 .back-to-map
 {
 	background:url(../img/back-to-map.png);
-	width: 214px;
-	height: 76px;
+	width: 141px;
+	height: 37px;
 	display:none;
 	position: absolute;
-	left: -6px;
-	bottom: -40px;
+	left: 36px;
+	bottom: -37px;
+	cursor:pointer;
 }
 
 .featured-popup
@@ -25,6 +26,7 @@
 		font-family: 'florencesans', sans-serif;
 		height: 218px;
 		width: 218px;
+		cursor:pointer;
 
 		.marker-container
 		{
@@ -182,25 +184,28 @@
 		.top
 		{
 			//border-radius: 109px 109px 0 0;
-			height: 50%;
+			height: 70%;
+			padding-top:25%;
 
-			h2
-			{
-				bottom:0;
-				font-weight: bold;
-				font-size: 9px;
-				margin-bottom: 15px;
-				position: absolute;
-				width:100%;
-				letter-spacing: 0.3em;
-				line-height: 1.5em;
-			}
+			
 		}
 
 		.bottom
 		{
-			top:50%;
+			top:70%;
 			border-radius: 0 0 109px 109px;
+			h2
+			{
+				top: 15px;
+				font-weight: bold;
+				font-size: 8.5px;
+				margin-bottom: 15px;
+				position: absolute;
+				width: 64%;
+				padding-left: 18%;
+				letter-spacing: 0em;
+				line-height: 1.5em;
+			}
 		}
 	}
 
@@ -246,15 +251,24 @@
 		letter-spacing: 0.3em;
 		text-decoration: none;
 
+		span {
+			display: inline-block;
+			padding: 0 25px;
+			line-height: 20px;
+		}
+
 		&:hover
 		{
-			color:orangered;
-			text-shadow:0 0 5px orange;
+			text-shadow:0 0 5px #efa71d;
 			-webkit-transition: color 0.2s linear;
 			-moz-transition: color 0.2s linear;
 			-ms-transition: color 0.2s linear;
 			-o-transition: color 0.2s linear;
 			transition: color 0.2s linear;
+
+			span {
+				background: url(../img/arrow-glow.png) no-repeat left top;
+			}
 		}
 	}
 

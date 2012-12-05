@@ -77,11 +77,6 @@ define([
 		}
 	});
 
-	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
-		template: 'spotlight-item',
-		serialize : function(){ return this.model.toJSON(); }
-	});
-
 	Map.Views.Main  = Backbone.LayoutView.extend({
 		id : 'base-map',
 		template: 'map',
@@ -89,12 +84,42 @@ define([
 		featureCollection: { "type": "FeatureCollection", "features": []},
 
 		initialize : function(options){
-			window.mapview=this;
 			_.extend(this,options);
 			this.addFeatures(this.collection);
 		},
 		
+		afterRender:function(){
+			
+			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
+				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
+				bounds = new L.LatLngBounds(southWest, northEast);
+			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
+					maxZoom: 18,
+					attribution: ''
+				});
 
+			this.map = new L.Map(this.el,{
+				// dragging:false,
+				touchZoom:false,
+				scrollWheelZoom:false,
+				doubleClickZoom:false,
+				boxZoom:false,
+				zoomControl:false,
+				attribution:'',
+				maxBounds:bounds,
+				layers: [cloudmade,homemade]
+			});
+			this.map.setView(this.latLng, 13);
+			this.map.featureOn=false;
+			this.animateMap();
+			//this.resetPoints();
+			//This loads neighborhood polygons
+			//this.loadNeighborhoods();
+			this.loadSpotlightShelf();
+		
+		},
+		
 		addFeatures:function(collection,reset){
 			
 			var features;
@@ -157,8 +182,6 @@ define([
 
 		},
 
-
-
 		animateMap:function(){
 			
 			this.drawIntroPoints(this.featureCollection);
@@ -188,7 +211,6 @@ define([
 
 			this.introAnimation = setInterval(animatePoint,1200);
 			
-
 		},
 
 		loadRecent:function(){
@@ -200,34 +222,6 @@ define([
 				_this.resetPoints();
 			}});
 		},
-
-		afterRender:function(){
-			
-
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
-					maxZoom: 18,
-					attribution: ''
-				});
-
-			this.map = new L.Map(this.el,{
-				// dragging:false,
-				touchZoom:false,
-				scrollWheelZoom:false,
-				doubleClickZoom:false,
-				boxZoom:false,
-				zoomControl:false,
-				attribution:'',
-				layers: [cloudmade,homemade]
-			});
-			this.map.setView(this.latLng, 13);
-			this.map.featureOn=false;
-			this.animateMap();
-			//This loads neighborhood polygons
-			//this.loadNeighborhoods();
-			this.loadSpotlightShelf();
-		},
-
 
 		resetPoints:function(){
 			if(this.introAnimation)clearInterval(this.introAnimation);
@@ -279,9 +273,7 @@ define([
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:height+"px",
-							cursor: "pointer"
-		
+							height:height+"px"
 						}
 					}).addClass('map-overlay');
 
@@ -306,11 +298,11 @@ define([
 							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
 						"</div>";
 
-					var hed = $(popupTemplate).appendTo(popup);
+					var popupContent = $(popupTemplate).appendTo(popup);
 					// Add the popup to the map
 					popup.appendTo($('body'));
 
-					_.delay(function(){ $(hed).find('.rollover-title-wrapper').fadeIn(); },500);
+					_.delay(function(){ $(popupContent).find('.rollover-title-wrapper').fadeIn(); },500);
 					
 					var thumbImg = document.createElement('img');
 					thumbImg.src = feature.properties.thumbnail_url;
@@ -339,7 +331,6 @@ define([
 						
 						if(!map.featureOn){
 							if(_.isUndefined(e.which)){
-								console.log('clearing Interval');
 								clearInterval(drawThumbAnim);
 								$("#popup-" + feature.id).fadeOut('fast',function(){$(this).remove(); });
 							}
@@ -380,7 +371,7 @@ define([
 								var overlay = $("<div></div>", {
 									id: "overlay-" + feature.id,
 									css: {
-										cursor: "pointer",
+										
 										position: "absolute",
 										top: "0px",
 										left: "0px",
@@ -391,10 +382,10 @@ define([
 									}
 								}).addClass('map-overlay');
 								
-								var hedd = $("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
+								$("<div id='overlay-wrapper-"+feature.id+"' style='opacity:1'><canvas id='overlay-canvas-"+feature.id+"' width='"+window.innerWidth+"' height='"+window.innerHeight+"' style='position: absolute; left: 0; top: 0;'></canvas></div>").appendTo(overlay);
 								overlay.appendTo($('body'));
 								
-
+								
 								var largeImg = document.createElement('img');
 		
 
@@ -415,12 +406,6 @@ define([
 										largeImgW=largeImg.width*window.innerHeight/largeImg.height;
 										largeImgH=window.innerHeight;
 									}
-									
-									
-
-
-
-
 										
 									var i=0;
 									var k = Math.sqrt(window.innerHeight*window.innerHeight+window.innerWidth*window.innerWidth);
@@ -435,6 +420,8 @@ define([
 									var shrinkAnim;
 									var expandAnim;
 									
+
+
 									function drawLargeImage()
 									{
 										
@@ -442,35 +429,80 @@ define([
 										else
 										{
 
+											if(i<1) {
+												var f;
+												if(i<0.7){
+													f = 1-(0.7-i)*(0.7-i);
+												}
+												else{
+													f=1;
+												}
 
-											var f;
-											if(i<0.7){
-												f = 1-(0.7-i)*(0.7-i);
+												var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+												tmpCtx.globalCompositeOperation = 'destination-over';
+												
+												tmpCtx.save();
+												tmpCtx.beginPath();
+												tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
+												tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
+												tmpCtx.closePath();
+												tmpCtx.clip();
+												tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
+												tmpCtx.restore();
 											}
-											else{
-												f=1;
-											}
-
-											var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
-											tmpCtx.globalCompositeOperation = 'destination-over';
-											
-											tmpCtx.save();
-											tmpCtx.beginPath();
-											tmpCtx.arc(layer._point.x, layer._point.y,d, 0, Math.PI * 2, true);
-											tmpCtx.arc(layer._point.x, layer._point.y, (radius+50) + (1-f)*(d-(radius+50)), 0, Math.PI * 2, false);
-											tmpCtx.closePath();
-											tmpCtx.clip();
-											tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
-											tmpCtx.restore();
-											
-											if(i>=1) {
-											
+											else if(i>=1){
+												
 												clearInterval(drawLargeImageAnim);
 												$('.back-to-map').fadeIn('fast');
 												var shrinkGapAnim,expandGapAnim,
 													gapState = 'small';
 
+											
 												
+												$('#item-playlist').click(function(){
+													$(this).unbind();
+													
+													$('#popup-'+feature.id).remove();
+													var ii=0;
+													function drawFullImage(){
+														if(_.isNull(document.getElementById("overlay-canvas-"+feature.id))){
+															clearInterval(drawFullImageAnim);
+															drawFullImageAnim=false;
+														}
+														else
+														{
+															//$('.back-to-map').hide();
+															var tmpCtx=document.getElementById("overlay-canvas-"+feature.id).getContext("2d");
+															tmpCtx.globalCompositeOperation = 'destination-over';
+															tmpCtx.clearRect(0,0,window.innerWidth,window.innerHeight);
+														
+															tmpCtx.save();
+															tmpCtx.beginPath();
+															tmpCtx.arc(layer._point.x, layer._point.y,10000, 0, Math.PI * 2, true);
+															tmpCtx.arc(layer._point.x, layer._point.y,(radius+50)*(1-ii), 0, Math.PI * 2, false);
+															tmpCtx.closePath();
+															tmpCtx.clip();
+															tmpCtx.drawImage(largeImg, 0, 0, largeImgW, largeImgH);
+															tmpCtx.restore();
+							
+															if(ii>=0.9) {
+															
+																clearInterval(drawFullImageAnim);
+																drawFullImageAnim=false;
+															}
+															ii=parseFloat(ii)+0.1;
+														}
+													}
+													drawFullImageAnim=setInterval(drawFullImage,30);
+											
+												});
+											
+												if(window.location.hash.indexOf('playlist')>-1){
+													$('#item-playlist').trigger('click');
+												}
+
+												
+
 												$('.map-overlay').on('mousemove',function(e){
 													var i=0;
 													var d= Math.sqrt((e.pageX-layer._point.x)*(e.pageX-layer._point.x)+(e.pageY-layer._point.y)*(e.pageY-layer._point.y));
@@ -532,6 +564,7 @@ define([
 														}
 													}
 
+
 													if(d>radius&&d<radius+20&&gapState=='small'){
 														clearInterval(shrinkGapAnim);
 														if(!expandGapAnim){
@@ -539,6 +572,7 @@ define([
 															expandGapAnim=setInterval(expandGap,30);
 														}
 													}
+
 
 													else if((gapState == 'large'&&d<radius)||(gapState == 'large'&&d>radius+50)){
 														clearInterval(expandGapAnim);
@@ -621,6 +655,7 @@ define([
 			}).addTo(map);
 
 		},
+
 		drawIntroPoints:function(features,intro){
 			
 			this.itemsLayer='';
@@ -648,9 +683,7 @@ define([
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:height+"px",
-							cursor: "pointer"
-		
+							height:height+"px"
 						}
 					}).addClass('map-overlay');
 
@@ -674,7 +707,8 @@ define([
 							"<canvas id='canvas-"+feature.id+"' width='"+diameter+"' height='"+diameter+"'></canvas>"+
 						"</div>";
 
-					var hed = $(popupTemplate).appendTo(popup);
+					$(popupTemplate).appendTo(popup);
+					
 					// Add the popup to the map
 					popup.appendTo($('body'));
 					
@@ -852,23 +886,39 @@ define([
 		},
 
 		loadSpotlightShelf : function() {
-			var shelf = new Map.Views.SpotlightShelf();
+			var spotlightItems = this.collection.filter( function(item) {
+					return (_.contains( item.get('tags'), 'kutfeature' ));
+				}),
+				shelf = new Map.Views.SpotlightShelf();
+
 			shelf.render();
 			$('#appBase').append( shelf.el );
 
+			if (spotlightItems[0]) {
+				var itemOne = new Map.Views.SpotlightItem( { model : spotlightItems[0] } );
+				shelf.setView(".spotlight-one", itemOne);
+				itemOne.render();
+			}
 
-			var itemOne = new Map.Views.SpotlightItem( {model : this.collection.at(0) } );
-			var itemTwo = new Map.Views.SpotlightItem( {model : this.collection.at(1) } );
-			var itemThree = new Map.Views.SpotlightItem( {model : this.collection.at(2) } );
-			shelf.setView(".spotlight-one", itemOne);
-			shelf.setView(".spotlight-two", itemTwo);
-			shelf.setView(".spotlight-three", itemThree);
+			if (spotlightItems[1]) {
+				var itemTwo = new Map.Views.SpotlightItem( { model : spotlightItems[1] } );
+				shelf.setView(".spotlight-two", itemTwo);
+				itemTwo.render();
+			}
+			
+			if (spotlightItems[2]) {
+				var itemThree = new Map.Views.SpotlightItem( { model : spotlightItems[2] } );
+				shelf.setView(".spotlight-three", itemThree);
+				itemThree.render();
+			}
 
-			itemOne.render();
-			itemTwo.render();
-			itemThree.render();
 		}
 
+	});
+
+	Map.Views.SpotlightItem = Backbone.LayoutView.extend({
+		template: 'spotlight-item',
+		serialize : function(){ return this.model.toJSON(); }
 	});
 
 
@@ -886,7 +936,6 @@ define([
 		},
 
 		parse: function(response){
-			
 			return response.items;
 		}
 
