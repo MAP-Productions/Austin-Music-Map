@@ -17,10 +17,11 @@ function(App, Backbone)
 		hasPlayed : false,
 		delay : 2000,
 
-initialize : function()
-{
-	console.log('!!!!!!!!!	init player loader', this);
-},
+		initialize : function()
+		{
+
+			console.log('!!!!!!!!!	init player loader', this);
+		},
 
 		listenToPlayer : function( player )
 		{
@@ -37,18 +38,18 @@ initialize : function()
 		updateLoaderTitle : function( player )
 		{
 			var _this = this;
-			if( this.model.get('playlist_title') ){
-				if(this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map!");
-				else $('.player-loader-header').find('h2').html("Loading all media associated with: <span class='loader-title'>"+_this.model.get('playlist_title')+"</span></h2>");
-			}
-			else
-			{
-				this.model.on('change:playlist_title', function(){
-					if(_this.model.get('playlist_title')=='Recently Added') $('.player-loader-header').find('h2').html("Loading media recently added to the Austin Music Map");
-					else $('.player-loader-header').find('h2').html("Loading all media associated with: <span class='loader-title'>"+_this.model.get('playlist_title')+"</span></h2>");
-				
-				});
-			}
+			this.model.on('change:playlist_title', function(){
+					if(_this.model.get('playlist_title')=='Recently Added'){
+						$('.col-right.standard').hide();
+						$('.col-right.recent').show();
+					}
+					else{
+						$('.loader-title').html(_this.model.get('playlist_title'));
+						$('.col-right.recent').hide();
+						$('.col-right.standard').show();
+					}
+			});
+			if( this.model.get('playlist_title') )this.model.trigger('change:playlist_title');
 
 		},
 
