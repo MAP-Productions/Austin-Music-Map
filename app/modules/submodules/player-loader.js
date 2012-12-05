@@ -41,12 +41,12 @@ function(App, Backbone)
 			this.model.on('change:playlist_title', function(){
 					if(_this.model.get('playlist_title')=='Recently Added'){
 						$('.col-right.standard').hide();
-						$('.col-right.recent').show();
+						$('.col-right.recent').fadeIn('fast');
 					}
 					else{
 						$('.loader-title').html(_this.model.get('playlist_title'));
 						$('.col-right.recent').hide();
-						$('.col-right.standard').show();
+						$('.col-right.standard').fadeIn('fast');
 					}
 			});
 			if( this.model.get('playlist_title') )this.model.trigger('change:playlist_title');
