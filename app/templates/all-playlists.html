@@ -5,7 +5,7 @@
 		<% _.each(playlists,function(playlist){
 			if (_.contains(playlist.tags,'hotplaylist')) { %>
 
-			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,14) %><% if(playlist.title.length > 14){ %>…<% } %> <span class="show-on-map"></span></a></li>
+			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"> <span class="playlist-item"><%= playlist.title.substring(0,14) %></span><% if(playlist.title.length > 14){ %>…<% } %> <span class="show-on-map"></span></a></li>
 
 		<%	}
 		}) %>
@@ -16,7 +16,7 @@
 		<% _.each(playlists,function(playlist){
 			if (!_.contains(playlist.tags,'hotplaylist')) { %>
 
-			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"><%= playlist.title.substring(0,14) %><% if(playlist.title.length > 14){ %>…<% } %> <span class="show-on-map"></span></a></li>
+			<li class="<%= playlist.tags.join(' ') %>"><a href="playlist/<%= playlist.id %>"> <span class="playlist-item"><%= playlist.title.substring(0,14) %><% if(playlist.title.length > 14){ %>…<% } %></span> <span class="show-on-map"></span></a></li>
 
 		<%	}
 		}) %>
