@@ -14,8 +14,8 @@
 	overflow-x:hidden;
 	position: absolute;
 	left: 0;
-	top: 52px;
-	width: 200px;
+	top: 51px;
+	width: 188px;
 	background: rgba(147, 149, 152, 0.9);
 
 	ul.playlists {
@@ -41,10 +41,11 @@
 			transition: color 0.5s;
 			display: block;
 			position: relative;
-			width: 155px;
+			width: 166px;
 			-moz-transition: color 0.5s; /* Firefox 4 */
 			-webkit-transition: color 0.5s; /* Safari and Chrome */
 			-o-transition: color 0.5s; /* Opera */
+			margin-left:-10px;
 
 			.show-on-map {
 				width: 10px;
@@ -53,16 +54,29 @@
 				position: absolute;
 				right: 0px;
 				top: 0;
+				opacity:0.4;
+				&:hover{
+					opacity:1;
+				}
 			}
 		}
-		a:hover
+	
+		.playlist-item
 		{
-			text-shadow: 0 1px #333;
-			color:#f26532;
-			transition: color 0.5s;
-			-moz-transition: color 0.5s; /* Firefox 4 */
-			-webkit-transition: color 0.5s; /* Safari and Chrome */
-			-o-transition: color 0.5s; /* Opera */
+			padding-left:20px;
+
+			&:hover
+			{
+				text-shadow:0 0 5px #efa71d;
+				-webkit-transition: color 0.2s linear;
+				-moz-transition: color 0.2s linear;
+				-ms-transition: color 0.2s linear;
+				-o-transition: color 0.2s linear;
+				transition: color 0.2s linear;
+
+				background: url(../img/arrow-glow.png) no-repeat left top;
+				background-size:15px;
+			}
 		}
 
 		&.hot-playlists {
