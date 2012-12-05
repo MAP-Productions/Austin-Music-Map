@@ -88,7 +88,38 @@ define([
 			this.addFeatures(this.collection);
 		},
 		
+		afterRender:function(){
+			
+			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
+				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
+				bounds = new L.LatLngBounds(southWest, northEast);
+			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
+					maxZoom: 18,
+					attribution: ''
+				});
 
+			this.map = new L.Map(this.el,{
+				// dragging:false,
+				touchZoom:false,
+				scrollWheelZoom:false,
+				doubleClickZoom:false,
+				boxZoom:false,
+				zoomControl:false,
+				attribution:'',
+				maxBounds:bounds,
+				layers: [cloudmade,homemade]
+			});
+			this.map.setView(this.latLng, 13);
+			this.map.featureOn=false;
+			this.animateMap();
+			//this.resetPoints();
+			//This loads neighborhood polygons
+			//this.loadNeighborhoods();
+			this.loadSpotlightShelf();
+		
+		},
+		
 		addFeatures:function(collection,reset){
 			
 			var features;
@@ -151,8 +182,6 @@ define([
 
 		},
 
-
-
 		animateMap:function(){
 			
 			this.drawIntroPoints(this.featureCollection);
@@ -182,7 +211,6 @@ define([
 
 			this.introAnimation = setInterval(animatePoint,1200);
 			
-
 		},
 
 		loadRecent:function(){
@@ -194,37 +222,6 @@ define([
 				_this.resetPoints();
 			}});
 		},
-
-		afterRender:function(){
-			
-			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
-				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
-				bounds = new L.LatLngBounds(southWest, northEast);
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
-					maxZoom: 18,
-					attribution: ''
-				});
-
-			this.map = new L.Map(this.el,{
-				// dragging:false,
-				touchZoom:false,
-				scrollWheelZoom:false,
-				doubleClickZoom:false,
-				boxZoom:false,
-				zoomControl:false,
-				attribution:'',
-				maxBounds:bounds,
-				layers: [cloudmade,homemade]
-			});
-			this.map.setView(this.latLng, 13);
-			this.map.featureOn=false;
-			this.animateMap();
-			//This loads neighborhood polygons
-			//this.loadNeighborhoods();
-			this.loadSpotlightShelf();
-		},
-
 
 		resetPoints:function(){
 			if(this.introAnimation)clearInterval(this.introAnimation);
@@ -276,9 +273,7 @@ define([
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:height+"px",
-							cursor: "pointer"
-		
+							height:height+"px"
 						}
 					}).addClass('map-overlay');
 
@@ -376,7 +371,7 @@ define([
 								var overlay = $("<div></div>", {
 									id: "overlay-" + feature.id,
 									css: {
-										cursor: "pointer",
+										
 										position: "absolute",
 										top: "0px",
 										left: "0px",
@@ -660,6 +655,7 @@ define([
 			}).addTo(map);
 
 		},
+
 		drawIntroPoints:function(features,intro){
 			
 			this.itemsLayer='';
@@ -687,9 +683,7 @@ define([
 							left: x+"px",
 							zIndex: 12,
 							width:diameter+"px",
-							height:height+"px",
-							cursor: "pointer"
-		
+							height:height+"px"
 						}
 					}).addClass('map-overlay');
 

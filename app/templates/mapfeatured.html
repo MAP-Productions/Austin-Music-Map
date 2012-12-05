@@ -4,15 +4,15 @@
 	<div id="marker-container" class="marker"></div>
 	<div class="content">
 		<div class="top">
-			<h2>Play this track in playlist:</h2>
-		</div>
-		<div class="bottom">
 			<ul id="item-playlist" class="in-playlists">
 
 				<% if( playlists[0] ){ %><li><a class='p-link' href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span><%= playlists[0].attributes.title %></span></a></li><% } %>
 				<% if( playlists[1] ){ %><li><a class='p-link' href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span><%= playlists[1].attributes.title %></span></a></li><% } %>
 				<% if( playlists[2] ){ %><li><a class='p-link' href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span><%= playlists[2].attributes.title %></span></a></li><% } %>
 			</ul>
+		</div>
+		<div class="bottom">
+			<h2>Select a playlist above to play this track.</h2>
 
 		</div>
 	</div>
