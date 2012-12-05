@@ -48,6 +48,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 
 		index: function() {
+			
 //			App.on('base_layout_ready', function(){
 			if(!App.page || (App.page && App.page.type != 'Map') ) App.page = new Map.Model();
 
@@ -80,6 +81,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 		goToStory : function(collectionID,itemID)
 		{
+			
 			this.playerType = 'story';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
@@ -93,6 +95,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 		goToRemix : function(collectionID,itemID)
 		{
+			
 			this.playerType = 'remix';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
@@ -105,6 +108,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		},
 		goToRemixSlide : function(collectionID,itemID, slideID)
 		{
+			
 			this.playerType = 'remix';
 			this.collection_id = collectionID;
 			this.item_id = itemID;
@@ -133,6 +137,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 		initAMM(to);
 		cleanup(to);
 		if(to=="map") {
+			App.router.lastContent=Backbone.history.getFragment();
 			App.soundscape.play();
 			$(window).bind('resize.amm_map',refreshMapLayout);
 			$('#logo img').addClass('map');
@@ -151,6 +156,7 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 				$('.map-extras').fadeIn();
 			}, 10);
 		} else {
+			if(to==="playlist")App.router.lastContent=Backbone.history.getFragment();
 			App.soundscape.pause();
 			$('#logo img').removeClass('map');
 			_.delay( function() {
