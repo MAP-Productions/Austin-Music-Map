@@ -53,9 +53,11 @@ function(App, Backbone)
 
 		closeModal : function()
 		{
-			window.history.back();
+			//window.history.back();
 			//window.location = "/";
-			//App.router.navigate("", { trigger: true } );
+
+			if(_.isUndefined(App.router.lastContent))  App.router.navigate("", { trigger: true } );
+			else App.router.navigate(App.router.lastContent, { trigger: true } );
 			return false;
 		},
 
