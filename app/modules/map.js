@@ -931,7 +931,7 @@ define([
 		},
 		
 		url: function(){
-			if(this.id == Map.recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
+			if(this.id == Map.recentCollectionId) return localStorage.api+"/items/search?type=-Collection AND -project&sort=date-desc&page=1&user=1311&limit=200";
 			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
