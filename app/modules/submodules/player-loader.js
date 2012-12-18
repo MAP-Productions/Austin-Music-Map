@@ -19,14 +19,18 @@ function(App, Backbone)
 
 		initialize : function()
 		{
-
+			_.bindAll(this, 'updateLoaderTitle');
 			console.log('!!!!!!!!!	init player loader', this);
+		},
+
+		afterRender: function() {
+			this.model.on('change:playlist_title', this.updateLoaderTitle);
 		},
 
 		listenToPlayer : function( player )
 		{
 			this.player = player;
-			this.updateLoaderTitle( player );
+
 			this.$('.layer-loading').empty();
 			// player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
 
@@ -35,21 +39,20 @@ function(App, Backbone)
 			player.on('visual_ready', this.onPlayerReady, this);
 		},
 
-		updateLoaderTitle : function( player )
+		updateLoaderTitle : function()
 		{
-			var _this = this;
-			this.model.on('change:playlist_title', function(){
-					if(_this.model.get('playlist_title')=='Recently Added'){
-						$('.col-right.standard').hide();
-						$('.col-right.recent').fadeIn('fast');
-					}
-					else{
-						$('.loader-title').html(_this.model.get('playlist_title'));
-						$('.col-right.recent').hide();
-						$('.col-right.standard').fadeIn('fast');
-					}
-			});
-			if( this.model.get('playlist_title') )this.model.trigger('change:playlist_title');
+
+			console.log('UPDATELOADERTITLE',this.model.get('playlist_title'));
+
+			if ( this.model.get('playlist_title') == 'Recently Added' ) {
+				//$('.col-right.standard').hide();
+				$('.col-right.recent').fadeIn('fast');
+			}
+			else{
+				$('.loader-title').html( this.model.get('playlist_title') );
+				//$('.col-right.recent').hide();
+				$('.col-right.standard').fadeIn('fast');
+			}
 
 		},
 
@@ -87,16 +90,6 @@ function(App, Backbone)
 		{
 			var _this = this;
 			this.remove();
-
-			/*
-			if (jQuery.browser.msie) {
-				this.remove();
-			} else {
-				_this.$el.fadeOut(500, function(){
-					_this.remove();
-				});	
-			}
-			*/
 		}
 	});
 
