@@ -94,7 +94,7 @@ define([
 
 	var SCAudio = Backbone.Model.extend({
 		type:'Audio',
-		url:'soundcloud.php',
+		url:localStorage.api+'items',
 		defaults : {
 			media_type:'Audio',
 			layer_type:'Audio',
