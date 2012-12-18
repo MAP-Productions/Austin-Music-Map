@@ -52,7 +52,6 @@
 				color:#222;
 				position: absolute;
 				font-weight: bold;
-				padding: 0 10%;
 				text-transform:uppercase;
 			}
 		}
@@ -104,10 +103,11 @@
 		h2
 		{
 			bottom:0;
+			left: 10%;
+			right: 10%;
 			color:#222;
 			position: absolute;
 			font-weight: bold;
-			padding: 0 10%;
 			text-transform:uppercase;
 		}
 	}
@@ -253,8 +253,9 @@
 
 		span {
 			display: inline-block;
-			padding: 0 25px;
-			line-height: 20px;
+			line-height: 25px;
+			padding-left: 25px;
+			margin-left: -25px;
 		}
 
 		&:hover
@@ -267,7 +268,7 @@
 			transition: color 0.2s linear;
 
 			span {
-				background: url(../img/arrow-glow.png) no-repeat left top;
+				background: url(../img/arrow-glow.png) no-repeat 0 2px;
 			}
 		}
 	}
