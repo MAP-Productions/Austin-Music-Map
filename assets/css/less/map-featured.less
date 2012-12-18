@@ -234,12 +234,12 @@
 		letter-spacing: 0.2em;
 	}
 
-	.in-playlists a
+	.in-playlists li
 	{
 		display: block;
 		font-size: 12px;
 		font-weight:bold;
-		line-height: 1.5em;
+		line-height: 1.4em;
 		color: #222;
 		-webkit-transition: color 0.5s linear;
 		-moz-transition: color 0.5s linear;
@@ -247,30 +247,42 @@
 		-o-transition: color 0.5s linear;
 		transition: color 0.5s linear;
 		text-transform: uppercase;
-		margin: 6px auto;
+		margin: 8px 15px;
 		letter-spacing: 0.3em;
-		text-decoration: none;
 
-		span {
-			display: inline-block;
-			line-height: 25px;
-			padding-left: 25px;
-			margin-left: -25px;
-		}
+		a {
+			color: #222;
+			display: inline;
+			position: relative;
+			text-decoration: none;
 
-		&:hover
-		{
-			text-shadow:0 0 5px #efa71d;
-			-webkit-transition: color 0.2s linear;
-			-moz-transition: color 0.2s linear;
-			-ms-transition: color 0.2s linear;
-			-o-transition: color 0.2s linear;
-			transition: color 0.2s linear;
-
-			span {
+			.arrow {
+				display: none;
+				position: absolute;
+				left: -24px;
+				top: -5px;
+				width: 19px;
+				height: 20px;
 				background: url(../img/arrow-glow.png) no-repeat 0 2px;
 			}
+
+			&:hover
+			{
+				text-shadow:0 0 5px #efa71d;
+				-webkit-transition: color 0.2s linear;
+				-moz-transition: color 0.2s linear;
+				-ms-transition: color 0.2s linear;
+				-o-transition: color 0.2s linear;
+				transition: color 0.2s linear;
+
+				.arrow
+				{
+					display: block;
+				}
+
+			}
 		}
+
 	}
 
 	a:hover { color: #111; }
