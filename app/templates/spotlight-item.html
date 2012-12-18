@@ -11,16 +11,16 @@
 <div class="spotlight-featured" >
 	<div class="content">
 		<div class="top">
-			<h2>Play this track in playlist:</h2>
+			<ul id="item-playlist" class="in-playlists">
+
+				<% if( playlists[0] ){ %><li><a class='p-link' href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'feature') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span class="arrow"></span><%= playlists[0].attributes.title %></a></li><% } %>
+				<% if( playlists[1] ){ %><li><a class='p-link' href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'feature') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span class="arrow"></span><%= playlists[1].attributes.title %></a></li><% } %>
+				<% if( playlists[2] ){ %><li><a class='p-link' href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'feature') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><span class="arrow"></span><%= playlists[2].attributes.title %></a></li><% } %>
+
+			</ul>
 		</div>
 		<div class="bottom">
-			<ul class="in-playlists">
-
-				<% if( playlists[0] ){ %><li><a href="/playlist/<%=playlists[0].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[0].attributes.title %></a></li><% } %>
-				<% if( playlists[1] ){ %><li><a href="/playlist/<%=playlists[1].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[1].attributes.title %></a></li><% } %>
-				<% if( playlists[2] ){ %><li><a href="/playlist/<%=playlists[2].id%>/<% if( _.include(tags, 'Story') ){ %>story<% } else{ %>remix<%}%>/<%=id%>"><%= playlists[2].attributes.title %></a></li><% } %>
-			</ul>
-
+			<h2>Select a playlist above to play this track.</h2>
 		</div>
 	</div>
 </div>
