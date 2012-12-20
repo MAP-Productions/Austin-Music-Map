@@ -32,11 +32,11 @@ function(App, Backbone)
 			this.player = player;
 
 			this.$('.layer-loading').empty();
-			// player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
+			player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
 
 			player.on('layer_loading', this.addLoadingItem, this);
 			player.on('layer_ready', this.onLayerLoaded, this);
-			player.on('visual_ready', this.onPlayerReady, this);
+			player.on('frame_ready', this.onPlayerReady, this);
 		},
 
 		updateLoaderTitle : function()

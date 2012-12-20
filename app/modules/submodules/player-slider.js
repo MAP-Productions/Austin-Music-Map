@@ -141,7 +141,10 @@ function(App, Backbone, Loader )
 
 		frameUpdated : function(info)
 		{
-			
+			var height = $('.visual-element-slideshow').closest(".ZEEGA-player").height();
+			$('.visual-element-slideshow').css({
+				height:  height + "px"
+			});
 		}
 		
 	});
