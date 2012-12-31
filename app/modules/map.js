@@ -956,7 +956,8 @@ define([
 		createKeys:function(){
 			var keys=[];
 			_.each(this.models,function(model){
-				keys.push(model.get('attributes').tags.toLowerCase());
+				if(!_.isUndefined(model.get('attributeds').tags))keys.push(model.get('attributes').tags.toLowerCase());
+
 			});
 			this.keys=keys;
 		},
@@ -998,4 +999,8 @@ define([
 	// Required, return the module for AMD compliance
 	return Map;
 
+
 });
+
+
+
