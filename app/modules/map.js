@@ -956,7 +956,7 @@ define([
 		createKeys:function(){
 			var keys=[];
 			_.each(this.models,function(model){
-				if(!_.isUndefined(model.get('attributeds').tags))keys.push(model.get('attributes').tags.toLowerCase());
+				if(!_.isUndefined(model.get('attributes').tags))keys.push(model.get('attributes').tags.toLowerCase());
 
 			});
 			this.keys=keys;
