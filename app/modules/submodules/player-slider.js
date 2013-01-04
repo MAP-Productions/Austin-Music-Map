@@ -25,7 +25,7 @@ function(App, Backbone, Loader )
 		url : function()
 		{
 			var url;
-			if(this.get('playlist_title')=="Recently Added") url = localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=50";
+			if(this.get('playlist_title')=="Recently Added") url = localStorage.api+"/items/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=50";
 			else url = localStorage.api+"/items/"+ this.get('collection_id') +"/items?limit=200";
 			return url;
 		},
