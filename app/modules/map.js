@@ -931,7 +931,7 @@ define([
 		},
 		
 		url: function(){
-			if(this.id == Map.recentCollectionId) return localStorage.api+"/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
+			if(this.id == Map.recentCollectionId) return localStorage.api+"/items/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=200";
 			return localStorage.api+'/items/'+this.id+'/items';
 		},
 
@@ -956,7 +956,8 @@ define([
 		createKeys:function(){
 			var keys=[];
 			_.each(this.models,function(model){
-				keys.push(model.get('attributes').tags.toLowerCase());
+				if(!_.isUndefined(model.get('attributes').tags))keys.push(model.get('attributes').tags.toLowerCase());
+
 			});
 			this.keys=keys;
 		},
@@ -965,7 +966,12 @@ define([
 			var matches = [];
 			var models = this.models;
 			_.each(_.intersection(this.keys,candidates),function(key){
-				matches.push(_.find(models, function(model){ return key == model.get('attributes').tags.toLowerCase(); }));
+				matches.push(_.find(models, function(model){
+                                if(!_.isUndefined(model.get('attributes').tags)) return key == model.get('attributes').tags.toLowerCase();
+
+else return false;
+ }));
+
 			});
 
 			return matches;
@@ -998,4 +1004,8 @@ define([
 	// Required, return the module for AMD compliance
 	return Map;
 
+
 });
+
+
+
