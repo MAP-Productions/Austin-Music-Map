@@ -79,9 +79,9 @@ function(App, Base, Playlist, Participate, About, Contact, Map, SCPost, Introduc
 
 		},
 
-		goToStory : function(collectionID,itemID)
-		{
+		goToStory : function( collectionID, itemID ) {
 			
+			console.log('go to story', collectionID, itemID );
 			this.playerType = 'story';
 			this.collection_id = collectionID;
 			this.item_id = itemID;

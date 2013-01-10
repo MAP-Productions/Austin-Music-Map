@@ -22,35 +22,32 @@ function(App, Backbone, Loader )
 			item_id: null
 		},
 
-		url : function()
-		{
+		url : function() {
 			var url;
 			if(this.get('playlist_title')=="Recently Added") url = localStorage.api+"/items/search?exclude_content=Collection&sort=date-desc&content=all&page=1&r_itemswithcollections=1&user=1311&limit=50";
 			else url = localStorage.api+"/items/"+ this.get('collection_id') +"/items?limit=200";
 			return url;
 		},
 
-		initialize : function()
-		{
+		initialize : function() {
 			var _this = this;
 
 			// render loader view
-			this.loaderView = new Loader.View({model:this});
-			$('body').append(this.loaderView.el);
+			this.loaderView = new Loader.View({ model: this });
+			$('body').append( this.loaderView.el );
 			this.loaderView.render();
 
 			this.initEvents();
 			this.collectionModel = new FeaturedCollectionModel(this.toJSON());
-			this.collectionModel.fetch().success(function(response){
-				
+
+			this.collectionModel.fetch().success(function( response ) {
 				_this.updatePlaylistTitle(_this.collectionModel);
 				_this.superFetch();
 			});
 			
 		},
 
-		initEvents : function()
-		{
+		initEvents : function() {
 			var _this = this;
 			
 			$(window).bind('keyup.playerSlider', function(e){
@@ -65,83 +62,80 @@ function(App, Backbone, Loader )
 
 		},
 
-		resizeWindow : function()
-		{
-			App.players.get('current').fitWindow();
+		resizeWindow: function() {
+			App.players.get('current').project.fitWindow();
 		},
 
-		endEvents : function()
-		{
+		endEvents: function() {
 			$(window).unbind('keyup.playerSlider');
 		},
 
-		superFetch : function()
-		{
-			var _this = this;
-			var key = this.url();
+		superFetch : function() {
+			var _this = this,
+				key = this.url();
+console.log('	super fetch', this, key );
 			this.on('change:remixItems', this.onProjectDataLoaded, this);
-			if( sessionStorage.getItem( this.url() ))
-			{
+			if( sessionStorage.getItem( this.url() )) {
 				this.set( JSON.parse(sessionStorage[key] ) );
-				parseResponse(this);
-			}
-			else
-			{
+					console.log('	cached response:', JSON.parse(sessionStorage[key])) ;
+				parseResponse( this );
+			} else {
 				this.fetch().success(function(res){
+					console.log('	response:', res);
 					sessionStorage[ key ] = JSON.stringify(res);
-					parseResponse(_this);
+					parseResponse( _this );
 				});
 			}
 		},
 
-		renderPlaylist : function()
-		{
+		renderPlaylist : function() {
 			if(this.ready)
 			{
 				App.BaseLayout.showPlaylistMenu( this );
 			}
 		},
 
-		updatePlaylistTitle : function()
-		{
+		updatePlaylistTitle : function() {
 			this.set('playlist_title', this.collectionModel.get('title'));
 		},
 
-		onProjectDataLoaded : function()
-		{
+		onProjectDataLoaded : function() {
 			var _this = this;
 			this.off('change:remixItems');
 
-			App.players.clear({silent:true});
+console.log('	on project data loaded', App,App.players )
+
+			App.players.clear({ silent: true });
 
 			// updateLoader
 			App.players.on('current_ready', function(){
+				console.log('	on current ready', App.players.get('current') );
 				_this.loaderView.listenToPlayer( App.players.get('current') );
 			});
 			
 			// render player layout
-			this.layout = new ProjectPlayerLayout({model:this});
+			this.layout = new ProjectPlayerLayout({ model: this });
 			$('body').append( this.layout.el );
 			this.layout.render();
+			this.layout.generateZeegas();
 		},
 
-		exit : function()
-		{
+		exit : function() {
 
 			if(this.loaderView) this.loaderView.exit();
 
 			$(window).unbind('resize.amm_players');
 
 			this.endEvents();
-			App.players.get('current').pause();
-			if(App.players.get('story')) App.players.get('story').destroy();
-			if(App.players.get('remix')) App.players.get('remix').destroy();
+			App.players.get('current').project.pause();
+			if(App.players.get('story')) App.players.get('story').project.destroy();
+			if(App.players.get('remix')) App.players.get('remix').project.destroy();
 			this.layout.remove();
 		},
 
-		frameUpdated : function(info)
-		{
+		frameUpdated : function(info) {
 			var height = $('.visual-element-slideshow').closest(".ZEEGA-player").height();
+			console.log('		--frame updated', height)
 			$('.visual-element-slideshow').css({
 				height:  height + "px"
 			});
@@ -151,12 +145,10 @@ function(App, Backbone, Loader )
 
 	// I need this model for the title only really
 	var FeaturedCollectionModel = Backbone.Model.extend({
-		url : function()
-		{
+		url : function() {
 			return localStorage.api+"/items/"+ this.get('collection_id');
 		},
-		parse : function(res)
-		{
+		parse : function(res) {
 			return res.items[0];
 		}
 	});
@@ -166,25 +158,27 @@ function(App, Backbone, Loader )
 		template : 'player-slider',
 		className : 'player-slider-wrapper',
 
-		initialize: function()
-		{
+		generateZeegas: function() {
 			// init project and/or remix players and register them in App
 			// default to project
 			this.model.projectPlayers = {};
 
-			if( this.model.get('storyItems').items[0].child_items.length )
-			{
-				var projectID = _.uniqueId('player-project-');
-				var args = {
-					autoplay: false,
-					collection_mode: 'slideshow',
-					data: this.model.get('storyItems'),
-					id: this.model.get('collection_id'),
-					//url: 'http://alpha.zeega.org/api/items/49217',
-					div_id: projectID,
-					keyboard: false
-				};
-				if(this.model.get('start_frame')) args.start_frame = parseInt(this.model.get('start_frame'),10);
+			if( this.model.get('storyItems').items.length ) {
+				var projectID = _.uniqueId('player-project-'),
+					args = {
+						autoplay: false,
+						data: this.model.get('storyItems'),
+						id: this.model.get('collection_id'),
+
+						startFrame: 1,
+
+						//url: 'http://alpha.zeega.org/api/items/49217',
+						target: "#" + projectID,
+						keyboard: false
+					};
+				if(this.model.get('start_frame')) {
+					args.start_frame = parseInt(this.model.get('start_frame'),10);
+				}
 
 				var projectView = new PlayerTargetView({
 					args: args,
@@ -194,31 +188,42 @@ function(App, Backbone, Loader )
 					}
 				});
 
+				console.log('PROJECT VIEW', projectView );
+
 				this.insertView('.player-slider', projectView );
 
-				App.players.set('story', projectView.project );
+				App.players.set('story', projectView );
 				//this.model.players.story = projectView.project;
 			}
-			if( this.model.get('remixItems').items[0].child_items.length )
-			{
+			if( this.model.get('remixItems').items.length ) {
 				var remixID = 'player-remix';
 				var remixArgs = {
 					autoplay: false,
-					collection_mode: 'slideshow', // standard, slideshow,
 					data: this.model.get('remixItems'),
-					div_id: remixID,
+					target: "#" + remixID,
 					keyboard: false,
-					start_slide_id: this.model.get('start_slide_id')
-				};
-				if(this.model.get('start_frame')) remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
+					startFrame: 1,
 
+					layerOptions: {
+						slideshow: {
+							display: true,
+							start: null,
+							start_id: this.model.get('start_slide_id'),
+							bleed: false
+						}
+					}
+				};
+				if(this.model.get('start_frame')) {
+					remixArgs.start_frame = parseInt(this.model.get('start_frame'),10);
+				}
 				// check to see if frame exists
 				var audioItemIDArray = _.map( remixArgs.data.items[0].child_items, function(item){
-					if(item.media_type == 'Audio') return item.id;
+					if(item.media_type == 'Audio') {
+						return item.id;
+					}
 				});
 				// redirects player if the id passed into remix is not a frame
-				if( !_.contains(audioItemIDArray, remixArgs.start_frame) )
-				{
+				if( !_.contains(audioItemIDArray, remixArgs.start_frame) ) {
 					// if id is not contained in frame array, then it must be an image slide
 					remixArgs.start_slide_id = remixArgs.start_frame;
 					// set start_frame
@@ -233,13 +238,12 @@ function(App, Backbone, Loader )
 					}
 				});
 				this.insertView( '.player-slider', remixView );
-				App.players.set('remix', remixView.project );
+				App.players.set('remix', remixView );
 				//this.model.players.remix = remixView.project;
 			}
 
 			App.players.set('current', App.router.playerType == 'story' && App.players.get('story') ? App.players.get('story') : App.players.get('remix') );
-
-			App.players.trigger('current_ready');
+console.log('	current ready', App.players.get('current'), App.players.get('remix'), App.players.get('story'));
 
 			var _this = this;
 
@@ -247,42 +251,56 @@ function(App, Backbone, Loader )
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
 			});
 
-			
 		},
 
-		afterRender: function()
-		{
+		afterRender: function() {
 			this.getViews(function(view){
 				view.initPlayer();
+				App.players.trigger('current_ready');
 			});
-			if(App.router.playerType=='remix' && App.players.get('story') ) $('.player-slider').addClass('view-remix');
-
+			if( App.router.playerType == 'remix' && App.players.get('story') ) {
+				$('.player-slider').addClass('view-remix');
+			}
 		},
 
-		serialize : function(){ return this.model.toJSON(); }
+		serialize : function() {
+			return this.model.toJSON();
+		}
 
 	});
 
 	var PlayerTargetView = Backbone.LayoutView.extend({
 		template : 'single-player',
 
-		initialize : function()
-		{
-			this.project = new Zeega.player({window_fit:true});
-		},
-
-		initPlayer : function()
-		{
+		initPlayer : function() {
 			var _this = this;
-			//this.project.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e:', _this.cid,e,obj);});
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
-			this.project.load(this.options.args);
+
+			//this.project.load(this.options.args);
+			this.project = new Zeega.player( _.extend({ window_fit: true }, this.options.args ) );
+
+			// this.project.on('all', function(e, obj){
+			// 	if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
+			// }.bind( this ));
+
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 			this.project.on('slideshow_update', this.updateSlideshowURL, this);
+			
 		},
 
-		updateYoutubeSize : function()
-		{
+		afterRender: function() {
+			// this.project = new Zeega.player( _.extend({ window_fit: true }, this.options.args ) );
+
+			// this.project.on('all', function(e, obj){
+			// 	if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
+			// }.bind( this ));
+
+			// this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
+			// this.project.on('slideshow_update', this.updateSlideshowURL, this);
+		},
+
+
+		updateYoutubeSize : function() {
 			var width = window.innerHeight*16/9;
 			var left = (window.innerWidth-width)/2;
 			this.$('.visual-element-youtube').css({
@@ -292,29 +310,30 @@ function(App, Backbone, Loader )
 			});
 		},
 
-		updateSlideshowURL : function(slideInfo)
-		{
-			if( slideInfo.frame == this.project.currentFrame.id && slideInfo.data)
-			{
+		updateSlideshowURL : function(slideInfo) {
+			if( slideInfo.frame == this.project.currentFrame.id && slideInfo.data) {
 				App.router.slide_id = slideInfo.data.id;
 				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ slideInfo.frame +'/slide/'+ slideInfo.data.id);
 			}
 		}
 	});
 
-	var parseResponse = function(model)
-	{
+	var parseResponse  = function( model ) {
 		var storyItems = [];
 		var remixItems = [];
 		_.each( model.get('items'), function(item){
 			if( _.contains(item.tags, 'story') ) storyItems.push(item);
-			else remixItems.push(item);
+			else remixItems. push( item);
 		});
-		model.set({
-			// I have to wrap this stuff for now until the api is updated
-			storyItems: {items:[{child_items:storyItems}]},
-			remixItems: {items:[{child_items:remixItems}]}
-		});
+
+		var wrappedItems = {
+			storyItems: { items: storyItems },
+			remixItems: { items: remixItems }
+		};
+		console.log("	parse res", wrappedItems, storyItems,remixItems);
+
+
+		model.set( wrappedItems );
 	};
 
 	return ProjectPlayer;

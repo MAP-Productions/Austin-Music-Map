@@ -14,11 +14,11 @@ function(App, Backbone)
 		template : 'player-loader',
 		className : 'player-loader',
 
+		listening: false,
 		hasPlayed : false,
 		delay : 2000,
 
-		initialize : function()
-		{
+		initialize : function() {
 			_.bindAll(this, 'updateLoaderTitle');
 			console.log('!!!!!!!!!	init player loader', this);
 		},
@@ -27,20 +27,23 @@ function(App, Backbone)
 			this.model.on('change:playlist_title', this.updateLoaderTitle);
 		},
 
-		listenToPlayer : function( player )
-		{
-			this.player = player;
+		listenToPlayer : function( player ) {
+			if ( !this.listening ) {
+				this.player = player.project;
 
-			this.$('.layer-loading').empty();
-			player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('e: loader: ',e,obj);});
+		console.log('listen to player', this.player);
 
-			player.on('layer_loading', this.addLoadingItem, this);
-			player.on('layer_ready', this.onLayerLoaded, this);
-			player.on('frame_ready', this.onPlayerReady, this);
+				this.$('.layer-loading').empty();
+				this.player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('		e: loader: ',e,obj);});
+
+				this.player.on('layer_loading', this.addLoadingItem, this);
+				this.player.on('layer_ready', this.onLayerLoaded, this);
+				this.player.on('frame_ready', this.onPlayerReady, this);
+				this.listening = true;
+			}
 		},
 
-		updateLoaderTitle : function()
-		{
+		updateLoaderTitle : function(){
 
 			console.log('UPDATELOADERTITLE',this.model.get('playlist_title'));
 
@@ -56,22 +59,17 @@ function(App, Backbone)
 
 		},
 
-		addLoadingItem : function( layerdata )
-		{
+		addLoadingItem : function( layerdata ) {
 			if(layerdata.type != 'SlideShow') this.$('.layer-loading').append('<li class="unloaded" data-id="'+ layerdata.id +'"><div class="col-left"><i class="zicon-'+ layerdata.attr.media_type.toLowerCase() +' loader-media-icon"></i></div>'+ layerdata.attr.title + ' by '+ htmlDecode(layerdata.attr.media_creator_username) +'</li>');
 			console.log('------player', this.player.getProjectData() );
-
 		},
 
-		onLayerLoaded : function( layerdata )
-		{
+		onLayerLoaded : function( layerdata ) {
 			this.$(".layer-loading").find("[data-id='" + layerdata.id + "']").removeClass('unloaded');
 		},
 
-		onPlayerReady : function()
-		{
-			if(!this.hasPlayed)
-			{
+		onPlayerReady : function() {
+			if ( !this.hasPlayed ) {
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
@@ -86,8 +84,7 @@ function(App, Backbone)
 			}
 		},
 
-		exit : function()
-		{
+		exit : function() {
 			var _this = this;
 			this.remove();
 		}
