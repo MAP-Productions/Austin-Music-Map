@@ -169,7 +169,7 @@ console.log('	on project data loaded', App,App.players )
 						autoplay: false,
 						data: this.model.get('storyItems'),
 						id: this.model.get('collection_id'),
-
+						preloadRadius: 4,
 						startFrame: 1,
 
 						//url: 'http://alpha.zeega.org/api/items/49217',
@@ -203,6 +203,7 @@ console.log('	on project data loaded', App,App.players )
 					target: "#" + remixID,
 					keyboard: false,
 					startFrame: 1,
+					preloadRadius: 4,
 
 					layerOptions: {
 						slideshow: {
