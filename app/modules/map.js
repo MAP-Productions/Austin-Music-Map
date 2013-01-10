@@ -470,7 +470,7 @@ define([
 
 											
 												
-												$('#item-playlist').click(function(){
+												$('#item-playlist .p-link').click(function(){
 													$(this).unbind();
 													
 													$('#popup-'+feature.id).remove();
