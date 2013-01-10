@@ -125,7 +125,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			if ( mediaLayer ) {
 				mediaLayer.visualElement.mediaPlayer.setCurrentTime( duration * percentClicked );
 			}
-			
+
 			this.$('.elapsed').css('width', ( percentClicked * 100 ) + '%');
 			
 		},
@@ -181,7 +181,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				App.players.get('current').project.on('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').project.on('media_timeupdate', this.onTimeUpdate, this);
 				//auto advance
-				App.players.get('current').project.on('playback_ended', this.playerNext, this);
+//				App.players.get('current').project.on('playback_ended', this.playerNext, this);
 			}
 		},
 
@@ -303,15 +303,18 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			if(!_.isUndefined(this.playlistMap)) this.playlistMap.updateMap();
 		},
 
-		onTimeUpdate : function( info )
-		{
+		onTimeUpdate : function( info ) {
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
 			this.$('.time-elapsed').text( Helper.convertTime(info.current_time) );
 			this.$('.time-duration').text( Helper.convertTime(info.duration) );
+
+			// this is a hack because the popcorn `ended` event is busted :(
+			if ( info.duration - info.current_time <= 1 ) {
+				this.playerNext();
+			}
 		},
 
-		clearElapsed : function()
-		{
+		clearElapsed : function() {
 			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		},
 
