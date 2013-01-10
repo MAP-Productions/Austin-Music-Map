@@ -33,30 +33,30 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			App.players.on('update_title', this.onFrameChange, this);
 		},
 
-		serialize : function(){ return this.model.toJSON(); },
-		
-		afterRender: function(){
-			var _this=this;
-			_.delay(function(){_this.playlistMap = new PlaylistMap.Model();},500);
-			this.updatePlaylistToggle();
+		serialize: function() {
+			return this.model.toJSON();
+		},
 
+		afterRender: function() {
+			var _this=this;
+			_.delay(function() {
+				_this.playlistMap = new PlaylistMap.Model();
+			}, 500 );
+			this.updatePlaylistToggle();
 		},
 
 		updatePlaylistToggle : function() {
 			var flag = false;
-			if( _.isUndefined(App.players.get('remix')) )
-			{
+
+			if ( _.isUndefined(App.players.get('remix')) ) {
 				this.$('.remix-toggle .remix').addClass('disabled');
 				flag = true;
 			}
-			if( _.isUndefined(App.players.get('story')) )
-			{
+			if ( _.isUndefined(App.players.get('story')) ) {
 				this.$('.remix-toggle .stories').addClass('disabled');
 				flag = true;
 			}
-
-			if(flag)
-			{
+			if ( flag ) {
 				this.$('.slider-track').css('background','#444');
 				this.$('.slider').css('opacity',0.25);
 				this.undelegateEvents();
@@ -136,13 +136,10 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				$('.player-slider').toggleClass('view-remix');
 
 				// update current player
-				if( $('.player-slider').hasClass('view-remix') )
-				{
+				if( $('.player-slider').hasClass('view-remix') ) {
 					this.amm_player_type = 'remix';
 					App.players.set('current', App.players.get('remix'));
-				}
-				else
-				{
+				} else {
 					this.amm_player_type = 'story';
 					App.players.set('current', App.players.get('story'));
 				}
@@ -159,20 +156,21 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			return false;
 		},
 
-		updateURL : function()
-		{
+		updateURL : function() {
 			this.amm_player_type = App.router.playerType;
 			App.router.item_id = App.players.get('current').project.getFrameData().id;
 //			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
-			if( this.amm_player_type == 'story') App.router.navigate('playlist/'+ App.router.collection_id +'/story/'+ App.router.item_id );
-			else if( App.router.slide_id ) App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id +'/slide/'+ App.router.slide_id );
-			else App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id );
+			if( this.amm_player_type == 'story') {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/story/'+ App.router.item_id );
+			} else if ( App.router.slide_id ) {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id +'/slide/'+ App.router.slide_id );
+			} else {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id );
+			}
 		},
 
-		startPlayerEvents : function()
-		{
-			if(App.players.get('current'))
-			{
+		startPlayerEvents : function() {
+			if ( App.players.get('current') ) {
 				App.players.get('current').project.on('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').project.on('media_timeupdate', this.onTimeUpdate, this);
 				//auto advance
@@ -180,33 +178,27 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			}
 		},
 
-		endPlayerEvents : function()
-		{
-			if(App.players.get('current'))
-			{
+		endPlayerEvents : function() {
+			if(App.players.get('current')) {
 				App.players.get('current').project.off('frame_rendered', this.onFrameChange, this);
 				App.players.get('current').project.off('media_timeupdate', this.onTimeUpdate, this);
 				App.players.get('current').project.off('playback_ended', this.playerNext, this);
 			}
 		},
 
-		playerPrev : function()
-		{
+		playerPrev : function() {
 			App.players.get('current').project.cuePrev();
 		},
-		playerNext : function()
-		{
+		playerNext : function() {
 			App.players.get('current').project.cueNext();
 			if( _.isNull( App.players.get('current').project.getFrameData().next ) ) this.remixToggle();
 		},
-		playPause : function()
-		{
+		playPause : function() {
 			App.players.get('current').project.playPause();
 			this.$('.play-pause').toggleClass('paused');
 		},
 
-		onPlay : function()
-		{
+		onPlay : function() {
 			var _this = this;
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
@@ -221,8 +213,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			},5000);
 		},
 
-		onFrameChange : function( info )
-		{
+		onFrameChange : function( info ) {
 
 			if ( info ) {
 				
@@ -262,33 +253,35 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 		},
 
-		updateControlsState : function( info )
-		{
+		updateControlsState : function( info ) {
 			// updates the visual status of the the prev / next buttons on the controller
 			var next = this.$('.transport .forward');
 			var prev = this.$('.transport .back');
-			if(info.next)
-			{
+console.log('	update control states', info )
+			if ( info._next ) {
 				if(next.hasClass('disabled')) next.removeClass('disabled');
+			} else if( !next.hasClass('disabled')) {
+				next.addClass('disabled');
 			}
-			else if( !next.hasClass('disabled')) next.addClass('disabled');
-			if(info.prev)
-			{
-				if(prev.hasClass('disabled')) prev.removeClass('disabled');
+
+			if ( info._prev ) {
+				if(prev.hasClass('disabled')) {
+					prev.removeClass('disabled');
+				}
+			} else if( !prev.hasClass('disabled')) {
+				prev.addClass('disabled');
 			}
-			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
-			
-			if (App.players.get('current').project.get('div_id') == 'player-remix') $('.remix-toggle').addClass('remix');
-			else $('.remix-toggle').removeClass('remix');
+			if (App.players.get('current').project.get('div_id') == 'player-remix') {
+				$('.remix-toggle').addClass('remix');
+			} else {
+				$('.remix-toggle').removeClass('remix');
+			}
 		},
 
-		updatePlaylistDropdown : function()
-		{
+		updatePlaylistDropdown : function() {
 
 			this.$('.playlist-container .playlist').empty();
 			_.each( App.players.get('current').project.getProjectData().frames, function(frame){
-
-console.log('	--frames', frame)
 
 				var isActive = frame.id == App.players.get('current').project.getFrameData().id;
 				var LIView = new PlaylistItemView({
