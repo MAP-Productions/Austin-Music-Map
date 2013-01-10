@@ -310,7 +310,11 @@ define([
 					_.delay(function(){ $(popupContent).find('.rollover-title-wrapper').fadeIn(); },500);
 					
 					var thumbImg = document.createElement('img');
-					thumbImg.src = feature.properties.thumbnail_url;
+					if(feature.properties.media_type=="Audio"){
+						thumbImg.src = "assets/img/audio-icon.png";
+					} else {
+						thumbImg.src = feature.properties.thumbnail_url;
+					}
 					var r=0;
 					drawThumb = function(){
 						if(_.isNull(document.getElementById("canvas-"+feature.id))){
@@ -394,9 +398,11 @@ define([
 								var largeImg = document.createElement('img');
 		
 
-								if(feature.properties.media_type=="Image") largeImg.src = feature.properties.uri;
-								else
-								{
+								if(feature.properties.media_type=="Image"){
+									largeImg.src = feature.properties.uri;
+								} else if(feature.properties.media_type=="Audio"){
+									largeImg.src ="assets/img/audio"+Math.floor(Math.random()*5)+".png";
+								} else {
 									largeImg.src =feature.properties.thumbnail_url;
 								}
 								
