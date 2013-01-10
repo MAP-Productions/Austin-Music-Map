@@ -12,9 +12,7 @@ define([
 	
 ],
 
-function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
-
-{
+function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 
 	// Create a new module
 	var Playlist = App.module();
@@ -28,7 +26,6 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 		template : 'playlist',
 
 		initialize: function() {
-			console.log('	initialize playlist')
 			App.players.on('play', this.onPlay, this);
 			App.players.on('update_title', this.onFrameChange, this);
 		},
@@ -154,7 +151,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				// start new player events
 				this.startPlayerEvents();
 				this.clearElapsed();
-				this.onFrameChange(App.players.get('current').project.getFrameData() );
+				this.onFrameChange( App.players.get('current').project.getFrameData() );
 
 				App.players.get('current').project.play();
 
@@ -278,7 +275,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			} else if( !prev.hasClass('disabled')) {
 				prev.addClass('disabled');
 			}
-			if (App.players.get('current').project.get('div_id') == 'player-remix') {
+			if ( App.players.get('current').project.get('target').hasClass('player-remix') ) {
 				$('.remix-toggle').addClass('remix');
 			} else {
 				$('.remix-toggle').removeClass('remix');
