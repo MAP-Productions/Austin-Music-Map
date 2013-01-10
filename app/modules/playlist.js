@@ -117,9 +117,16 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 		goToTime: function(e) {
 			//disabled for now
 			// for now this just updates the progress bar
-			var progressBar = $(e.currentTarget);
-			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
-			this.$('.elapsed').css('width',percentClicked + '%');
+			var progressBar = $(e.currentTarget),
+				percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ),
+				mediaLayer = App.players.get("current").project.status.get("current_frame_model").layers.at(0),
+				duration = mediaLayer ? mediaLayer.visualElement.mediaPlayer.getDuration() : null;
+
+			if ( mediaLayer ) {
+				mediaLayer.visualElement.mediaPlayer.setCurrentTime( duration * percentClicked );
+			}
+			
+			this.$('.elapsed').css('width', ( percentClicked * 100 ) + '%');
 			
 		},
 
@@ -255,9 +262,9 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 		updateControlsState : function( info ) {
 			// updates the visual status of the the prev / next buttons on the controller
-			var next = this.$('.transport .forward');
-			var prev = this.$('.transport .back');
-console.log('	update control states', info )
+			var next = this.$('.transport .forward'),
+				prev = this.$('.transport .back');
+
 			if ( info._next ) {
 				if(next.hasClass('disabled')) next.removeClass('disabled');
 			} else if( !next.hasClass('disabled')) {
