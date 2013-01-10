@@ -61,9 +61,9 @@ define([
 		slideShelf : function(e) {
 			$(e.target).toggleClass('active');
 			if ( $(e.target).hasClass('active') ) {
-				this.$('.shelf-content').stop().animate({ top: -330, opacity: 1 }, 1000);
+				this.$('.shelf-content').stop().animate({ top: -330, opacity: 1 }, 1000, this.fadeMetaIn);
 			} else {
-				this.$('.shelf-content').stop().animate({ top: 0, opacity: 0 }, 1000);
+				this.$('.shelf-content').stop().animate({ top: 0, opacity: 0 }, 1000, this.hideMeta);
 			}
 		},
 		showPlaylists : function(e) {
@@ -75,6 +75,18 @@ define([
 			$(e.currentTarget)
 				.find('.spotlight-featured').fadeOut(300)
 				.siblings().find('h2, h3').fadeIn(300);
+		},
+		fadeMetaIn : function(e) {
+			$(this).find('.rollover-info').each( function(i,v) {
+				var _this = this;
+				_.delay( function() {
+					console.log(this);
+					$(_this).fadeIn(500 * (i + 1));
+				}, 1000);
+			});
+		},
+		hideMeta : function(e) {
+			$(this).find('.rollover-info').hide();
 		}
 	});
 

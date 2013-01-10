@@ -72,59 +72,71 @@
 		}
 
 		.spotlight-title-wrapper {
-			background: rgba(255,255,255,0.6);
 			border-radius: 109px;
-			box-shadow: 0px 5px 20px;
 			font-family: 'florencesans', sans-serif;
 			height: 218px;
 			position:absolute;
 			width: 218px;
-			
-			.marker-container {
-				position: absolute;
-				left: -10px;
-				top: -5px;
-				background: url(../img/marker-circle-orange.png);
-				background-repeat:no-repeat;
-				width: 234px;
-				height: 229px;
-			}
-
-			.rollover-title {
-
-				height: 50%;
-				position: absolute;
-				width: 100%;
-				text-align: center;
-				h2
-				{
-					bottom:0;
-					color:#222;
-					position: absolute;
-					font-weight: bold;
-					padding: 0 10%;
-					text-transform:uppercase;
-				}
-			}
-
-			.rollover-meta {
-				position: absolute;
-				top: 50%;
-				width: 100%;
-				text-align: center;
-				color: #222;
-				font-size: 12px;
-				margin-top: 10px;
-			}
 
 			.rollover-thumb {
 				width: 100%;
 				position: absolute;
-				z-index: -1;
+				z-index: 1;
 				left: 0;
 				top: 0;
 				border-radius: 109px;
 			}
+
+			.rollover-info {
+				background: rgba(255,255,255,0.6);
+				box-shadow: 0px 5px 20px;
+				display: none;
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				z-index: 2;
+				left: 0;
+				top: 0;
+				border-radius: 109px;
+
+				.marker-container {
+					position: absolute;
+					left: -10px;
+					top: -5px;
+					background: url(../img/marker-circle-orange.png);
+					background-repeat:no-repeat;
+					width: 234px;
+					height: 229px;
+				}
+
+				.rollover-title {
+
+					height: 50%;
+					position: absolute;
+					width: 100%;
+					text-align: center;
+					h2
+					{
+						bottom:0;
+						color:#222;
+						position: absolute;
+						font-weight: bold;
+						padding: 0 10%;
+						text-transform:uppercase;
+					}
+				}
+
+				.rollover-meta {
+					position: absolute;
+					top: 50%;
+					width: 100%;
+					text-align: center;
+					color: #222;
+					font-size: 12px;
+					margin-top: 10px;
+				}
+
+			}			
 
 		}
 
@@ -135,6 +147,7 @@
 			position: absolute;
 			top: -2px;
 			width: 228px;
+			z-index: 3;
 
 			.marker {
 				position: absolute;
