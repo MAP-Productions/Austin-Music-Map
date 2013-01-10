@@ -16,6 +16,7 @@ function(App, Backbone)
 
 		listening: false,
 		hasPlayed : false,
+		minDuration: 4000,
 		delay : 2000,
 
 		initialize : function() {
@@ -25,13 +26,13 @@ function(App, Backbone)
 
 		afterRender: function() {
 			this.model.on('change:playlist_title', this.updateLoaderTitle);
+
+			this.startTime = new Date();
 		},
 
 		listenToPlayer : function( player ) {
 			if ( !this.listening ) {
 				this.player = player.project;
-
-		console.log('listen to player', this.player);
 
 				this.$('.layer-loading').empty();
 				this.player.on('all', function(e, obj){ if(e!='media_timeupdate') console.log('		e: loader: ',e,obj);});
@@ -70,6 +71,10 @@ function(App, Backbone)
 
 		onPlayerReady : function() {
 			if ( !this.hasPlayed ) {
+
+				var elapsed = new Date() - this.startTime,
+					remaining = this.minDuration - elapsed < 0 ? this.delay : this.delay + this.minDuration - elapsed;
+
 				var _this = this;
 				_.delay(function(){
 					_this.model.ready = true;
@@ -77,7 +82,7 @@ function(App, Backbone)
 					_this.player.play();
 					_this.model.renderPlaylist();
 					App.players.trigger('play');
-				}, this.delay );
+				}, remaining );
 
 				
 				this.hasPlayed = true;
