@@ -1,10 +1,11 @@
 define([
 	"app",
 	// Libs
-	"backbone"
+	"backbone",
+	"modules/submodules/helpers"
 	
 
-], function(App, Backbone) {
+], function(App, Backbone, Helpers) {
 	
 	var Map = App.module();
 
@@ -254,6 +255,7 @@ define([
 			function onEachFeature(feature, layer) {
 			
 				layer.on("mouseover", function (e) {
+					console.log(Helpers);
 					
 					var isFeature = _.contains(feature.properties.tags,'feature');
 
@@ -292,6 +294,9 @@ define([
 								"<div class='rollover-meta'>"+
 									"<h3>"+
 										'by '+ feature.properties.media_creator_username +
+									"</h3>"+
+									"<h3>"+
+										'added '+ Helpers.formatDateCreated(feature.properties.date_created) +
 									"</h3>"+
 								"</div>"+
 							"</div>"+

@@ -73,6 +73,21 @@ function(_,jQuery)
 		return "0123456789ABCDEF".charAt((n-n%16)/16) + "0123456789ABCDEF".charAt(n%16);
 	};
 
+	Helpers.formatDateCreated = function(dateString)
+	{
+		// get only the date, not the time
+		var months = ['Jan.','Feb.','Mar.','Apr.','May','Jun.','Jul.','Aug.','Sept.','Oct.','Nov.','Dec.'],
+			dateOnly = dateString.split(' ')[0],
+			dateArray = dateOnly.split('-'),
+			year = dateArray[0],
+			month = dateArray[1],
+			day = dateArray[2];
+
+
+
+		return  months[month - 1] + " " + day + ", " + year;
+	};
+
 	// firstVisit is equal to true for the duration of your first visit to the site
 	Helpers.firstVisit = (function() {
 		if ( $.cookie('previous_visit') === 'yes' ) {
