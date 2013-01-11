@@ -207,7 +207,6 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
 
-			console.log('	++ frame data', App.players.get('current') )
 			// needs a delay I guess
 			_.delay(function(){
 				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').project.getFrameData() );
