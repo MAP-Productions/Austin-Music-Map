@@ -85,7 +85,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 
 		onMouseoverSlider : function(e) {
 			var POPUP_DELAY = 1000;
-			var popuptext = '<span class="popup">click to switch between KUT produced stories and remixed community audio and visuals</span>';
+			var popuptext = '<span class="popup">Click to switch between KUTX stories and remixed community audio and visuals.</span>';
 			var self = $(e.target);
 			var css = {
 				'left' : '10px',
