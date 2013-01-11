@@ -109,7 +109,7 @@ console.log('	on project data loaded', App,App.players )
 
 			// updateLoader
 			App.players.on('current_ready', function(){
-				console.log('	on current ready', App.players.get('current') );
+				console.log('	on current ready', App.players, App.players.get('current') );
 				_this.loaderView.listenToPlayer( App.players.get('current') );
 			});
 			
@@ -192,6 +192,8 @@ console.log('	on project data loaded', App,App.players )
 
 				this.insertView('.player-slider', projectView );
 
+				projectView.render();
+
 				App.players.set('story', projectView );
 				//this.model.players.story = projectView.project;
 			}
@@ -239,6 +241,8 @@ console.log('	on project data loaded', App,App.players )
 					}
 				});
 				this.insertView( '.player-slider', remixView );
+				remixView.render();
+
 				App.players.set('remix', remixView );
 				//this.model.players.remix = remixView.project;
 			}
@@ -252,9 +256,12 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
 			});
 
+		console.log('slider view', this)
+			if (this.rendered) {
+				this.initZeegas();
+			}
 		},
-
-		afterRender: function() {
+		initZeegas: function() {
 			this.getViews(function(view){
 				view.initPlayer();
 				App.players.trigger('current_ready');
@@ -262,6 +269,11 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 			if( App.router.playerType == 'remix' && App.players.get('story') ) {
 				$('.player-slider').addClass('view-remix');
 			}
+		},
+
+		afterRender: function() {
+			this.initZeegas();
+			this.rendered = true;
 		},
 
 		serialize : function() {
