@@ -108,6 +108,7 @@ define([
 				bounds = new L.LatLngBounds(southWest, northEast);
 			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
+				//homemade = new L.TileLayer('http://dev.zeega.org/paper/paper.php?x={x}&y={y}', {
 					maxZoom: 18,
 					attribution: ''
 				});
@@ -118,12 +119,14 @@ define([
 				scrollWheelZoom:false,
 				doubleClickZoom:false,
 				boxZoom:false,
-				zoomControl:false,
+				zoomControl:true,
 				attribution:'',
 				maxBounds:bounds,
+				maxZoom:17,
+				minZoom:13,
 				layers: [cloudmade,homemade]
 			});
-			this.map.setView(this.latLng, 13);
+			this.map.setView(this.latLng, 14);
 			this.map.featureOn=false;
 			this.animateMap();
 			//this.resetPoints();
