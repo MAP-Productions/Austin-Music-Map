@@ -20,7 +20,9 @@ define([
 			this.mapView.render();
 		},
 		updateMap:function(){
-			this.mapView.updateMap();
+			if ( this.mapView.map ) {
+				this.mapView.updateMap();
+			}
 		}
 	});
 
@@ -52,8 +54,10 @@ define([
 			this.map.setView(this.latLng, 10).addLayer(cloudmade).addLayer(homemade);
 			this.map.featureOn=false;
 		},
-		updateMap:function(){
-			var layer =App.players.get('current').getFrameData().layers[0];
+
+		updateMap: function() {
+			var layer =App.players.get('current').project.getFrameData().layers[0];
+
 			if(!_.isUndefined(this.marker))this.map.removeLayer(this.marker);
 			if(!_.isUndefined(layer)&&!_.isUndefined(layer.attr)&&layer.attr.media_geo_latitude>0){
 

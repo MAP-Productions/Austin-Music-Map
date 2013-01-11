@@ -12,9 +12,7 @@ define([
 	
 ],
 
-function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
-
-{
+function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 
 	// Create a new module
 	var Playlist = App.module();
@@ -27,37 +25,35 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 		template : 'playlist',
 
-		initialize: function()
-		{
+		initialize: function() {
 			App.players.on('play', this.onPlay, this);
 			App.players.on('update_title', this.onFrameChange, this);
 		},
 
-		serialize : function(){ return this.model.toJSON(); },
-		
-		afterRender: function(){
-			var _this=this;
-			_.delay(function(){_this.playlistMap = new PlaylistMap.Model();},500);
-			this.updatePlaylistToggle();
-
+		serialize: function() {
+			return this.model.toJSON();
 		},
 
-		updatePlaylistToggle : function()
-		{
+		afterRender: function() {
+			var _this=this;
+			_.delay(function() {
+				_this.playlistMap = new PlaylistMap.Model();
+			}, 500 );
+			this.updatePlaylistToggle();
+		},
+
+		updatePlaylistToggle : function() {
 			var flag = false;
-			if( _.isUndefined(App.players.get('remix')) )
-			{
+
+			if ( _.isUndefined(App.players.get('remix')) ) {
 				this.$('.remix-toggle .remix').addClass('disabled');
 				flag = true;
 			}
-			if( _.isUndefined(App.players.get('story')) )
-			{
+			if ( _.isUndefined(App.players.get('story')) ) {
 				this.$('.remix-toggle .stories').addClass('disabled');
 				flag = true;
 			}
-
-			if(flag)
-			{
+			if ( flag ) {
 				this.$('.slider-track').css('background','#444');
 				this.$('.slider').css('opacity',0.25);
 				this.undelegateEvents();
@@ -87,8 +83,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'mouseleave .stories-remix-slider' : 'onMouseoutSlider'
 		},
 
-		onMouseoverSlider : function(e)
-		{
+		onMouseoverSlider : function(e) {
 			var POPUP_DELAY = 1000;
 			var popuptext = '<span class="popup">click to switch between KUT produced stories and remixed community audio and visuals</span>';
 			var self = $(e.target);
@@ -102,55 +97,53 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			}, POPUP_DELAY);
 		},
 
-		onMouseoutSlider : function()
-		{
+		onMouseoutSlider : function() {
 			if($('.popup')) $('.popup').remove();
 			clearTimeout(this.timeout);
 		},
 
-		doNothing : function()
-		{
+		doNothing : function() {
 			return false;
 		},
 
-		togglePlaylist: function(e)
-		{
+		togglePlaylist: function(e) {
 			this.$('.toggle-playlist').toggleClass('open');
 			$('.playlist-container').stop().slideToggle();
 		},
 
-		goToTime: function(e)
-		{
+		goToTime: function(e) {
 			//disabled for now
 			// for now this just updates the progress bar
-			var progressBar = $(e.currentTarget);
-			var percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ) * 100;
-			this.$('.elapsed').css('width',percentClicked + '%');
+			var progressBar = $(e.currentTarget),
+				percentClicked = ( (e.pageX - progressBar.offset().left) / progressBar.width() ),
+				mediaLayer = App.players.get("current").project.status.get("current_frame_model").layers.at(0),
+				duration = mediaLayer ? mediaLayer.visualElement.mediaPlayer.getDuration() : null;
+
+			if ( mediaLayer ) {
+				mediaLayer.visualElement.mediaPlayer.setCurrentTime( duration * percentClicked );
+			}
+
+			this.$('.elapsed').css('width', ( percentClicked * 100 ) + '%');
 			
 		},
 
-		remixToggle : function()
-		{
+		remixToggle : function() {
 
 			Fuzz.show();
 
-			if( App.players.get('story') && App.players.get('remix') )
-			{
+			if( App.players.get('story') && App.players.get('remix') ) {
 				// close off old player
-				App.players.get('current').pause();
+				App.players.get('current').project.pause();
 				this.endPlayerEvents();
 	
 				// slide player into view
 				$('.player-slider').toggleClass('view-remix');
 
 				// update current player
-				if( $('.player-slider').hasClass('view-remix') )
-				{
+				if( $('.player-slider').hasClass('view-remix') ) {
 					this.amm_player_type = 'remix';
 					App.players.set('current', App.players.get('remix'));
-				}
-				else
-				{
+				} else {
 					this.amm_player_type = 'story';
 					App.players.set('current', App.players.get('story'));
 				}
@@ -158,90 +151,85 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				// start new player events
 				this.startPlayerEvents();
 				this.clearElapsed();
-				this.onFrameChange(App.players.get('current').getFrameData() );
+				this.onFrameChange( App.players.get('current').project.getFrameData() );
 
-				App.players.get('current').play();
+				App.players.get('current').project.play();
 
 				this.updateURL();
 			}
 			return false;
 		},
 
-		updateURL : function()
-		{
+		updateURL : function() {
 			this.amm_player_type = App.router.playerType;
-			App.router.item_id = App.players.get('current').getFrameData().id;
+			App.router.item_id = App.players.get('current').project.getFrameData().id;
 //			App.router.navigate('playlist/'+ App.Player.get('collection_id') +'/'+ this.amm_player_type +'/'+ App.players.get('current').getFrameData().id );
-			if( this.amm_player_type == 'story') App.router.navigate('playlist/'+ App.router.collection_id +'/story/'+ App.router.item_id );
-			else if( App.router.slide_id ) App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id +'/slide/'+ App.router.slide_id );
-			else App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id );
+			if( this.amm_player_type == 'story') {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/story/'+ App.router.item_id );
+			} else if ( App.router.slide_id ) {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id +'/slide/'+ App.router.slide_id );
+			} else {
+				App.router.navigate('playlist/'+ App.router.collection_id +'/remix/'+ App.router.item_id );
+			}
 		},
 
-		startPlayerEvents : function()
-		{
-			if(App.players.get('current'))
-			{
-				App.players.get('current').on('frame_rendered', this.onFrameChange, this);
-				App.players.get('current').on('media_timeupdate', this.onTimeUpdate, this);
+		startPlayerEvents : function() {
+			if ( App.players.get('current') ) {
+				App.players.get('current').project.on('frame_rendered', this.onFrameChange, this);
+				App.players.get('current').project.on('media_timeupdate', this.onTimeUpdate, this);
 				//auto advance
-				App.players.get('current').on('playback_ended', this.playerNext, this);
+//				App.players.get('current').project.on('playback_ended', this.playerNext, this);
 			}
 		},
 
-		endPlayerEvents : function()
-		{
-			if(App.players.get('current'))
-			{
-				App.players.get('current').off('frame_rendered', this.onFrameChange, this);
-				App.players.get('current').off('media_timeupdate', this.onTimeUpdate, this);
-				App.players.get('current').off('playback_ended', this.playerNext, this);
+		endPlayerEvents : function() {
+			if(App.players.get('current')) {
+				App.players.get('current').project.off('frame_rendered', this.onFrameChange, this);
+				App.players.get('current').project.off('media_timeupdate', this.onTimeUpdate, this);
+				App.players.get('current').project.off('playback_ended', this.playerNext, this);
 			}
 		},
 
-		playerPrev : function()
-		{
-			App.players.get('current').cuePrev();
+		playerPrev : function() {
+			App.players.get('current').project.cuePrev();
 		},
-		playerNext : function()
-		{
-			App.players.get('current').cueNext();
-			if( _.isNull( App.players.get('current').getFrameData().next ) ) this.remixToggle();
+		playerNext : function() {
+			App.players.get('current').project.cueNext();
+			if( _.isNull( App.players.get('current').project.getFrameData().next ) ) this.remixToggle();
 		},
-		playPause : function()
-		{
-			App.players.get('current').playPause();
+		playPause : function() {
+			App.players.get('current').project.playPause();
 			this.$('.play-pause').toggleClass('paused');
 		},
 
-		onPlay : function()
-		{
+		onPlay : function() {
 			var _this = this;
 			App.players.off('update_title', this.onFrameChange, this);
 			this.startPlayerEvents();
+
+			console.log('	++ frame data', App.players.get('current') )
 			// needs a delay I guess
 			_.delay(function(){
-				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').getFrameData() );
+				App.BaseLayout.playlistView.onFrameChange( App.players.get('current').project.getFrameData() );
 			},1000);
 			_.delay(function(){
 				_this.togglePlaylist();
 			},5000);
 		},
 
-		onFrameChange : function( info )
-		{
+		onFrameChange : function( info ) {
 
-			if(info)
-			{
+			if ( info ) {
 				
 				//check if necessary to fetch master playlist collection
-				if(_.isUndefined(App.playlistCollection)){
+				if ( _.isUndefined( App.playlistCollection ) ) {
 					var _this=this;
 					App.playlistCollection = new Map.PlaylistCollection();
 					App.playlistCollection.fetch({success:function(collection,response){
 						App.playlistCollection.createKeys();
 						_this.updateRelatedPlaylists(info);
 					}});
-				}else{
+				} else {
 					this.updateRelatedPlaylists(info);
 				}
 
@@ -269,32 +257,37 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 
 		},
 
-		updateControlsState : function( info )
-		{
+		updateControlsState : function( info ) {
 			// updates the visual status of the the prev / next buttons on the controller
-			var next = this.$('.transport .forward');
-			var prev = this.$('.transport .back');
-			if(info.next)
-			{
+			var next = this.$('.transport .forward'),
+				prev = this.$('.transport .back');
+
+			if ( info._next ) {
 				if(next.hasClass('disabled')) next.removeClass('disabled');
+			} else if( !next.hasClass('disabled')) {
+				next.addClass('disabled');
 			}
-			else if( !next.hasClass('disabled')) next.addClass('disabled');
-			if(info.prev)
-			{
-				if(prev.hasClass('disabled')) prev.removeClass('disabled');
+
+			if ( info._prev ) {
+				if(prev.hasClass('disabled')) {
+					prev.removeClass('disabled');
+				}
+			} else if( !prev.hasClass('disabled')) {
+				prev.addClass('disabled');
 			}
-			else if( !prev.hasClass('disabled')) prev.addClass('disabled');
-			
-			if (App.players.get('current').get('div_id') == 'player-remix') $('.remix-toggle').addClass('remix');
-			else $('.remix-toggle').removeClass('remix');
+			if ( App.players.get('current').project.get('target').hasClass('player-remix') ) {
+				$('.remix-toggle').addClass('remix');
+			} else {
+				$('.remix-toggle').removeClass('remix');
+			}
 		},
 
-		updatePlaylistDropdown : function()
-		{
+		updatePlaylistDropdown : function() {
 
 			this.$('.playlist-container .playlist').empty();
-			_.each( App.players.get('current').getProjectData().frames, function(frame){
-				var isActive = frame.id == App.players.get('current').getFrameData().id;
+			_.each( App.players.get('current').project.getProjectData().frames, function(frame){
+
+				var isActive = frame.id == App.players.get('current').project.getFrameData().id;
 				var LIView = new PlaylistItemView({
 					model: new Backbone.Model( _.extend(frame, {is_active:isActive? 'pause':''}) ),
 					attributes : { 'class': isActive? 'active':'' }
@@ -307,15 +300,18 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			if(!_.isUndefined(this.playlistMap)) this.playlistMap.updateMap();
 		},
 
-		onTimeUpdate : function( info )
-		{
+		onTimeUpdate : function( info ) {
 			this.$('.progress-bar .elapsed').css( 'width', (info.current_time/info.duration *100) +'%' );
 			this.$('.time-elapsed').text( Helper.convertTime(info.current_time) );
 			this.$('.time-duration').text( Helper.convertTime(info.duration) );
+
+			// this is a hack because the popcorn `ended` event is busted :(
+			if ( info.duration - info.current_time <= 1 ) {
+				this.playerNext();
+			}
 		},
 
-		clearElapsed : function()
-		{
+		clearElapsed : function() {
 			this.$('.progress-bar .elapsed').css( 'width', '0' );
 		},
 
@@ -370,9 +366,8 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 			'mouseleave' : 'stopScrollTitle'
 		},
 
-		onClickPlaylistItem : function()
-		{
-			App.players.get('current').cueFrame( this.model.id );
+		onClickPlaylistItem: function() {
+			App.players.get('current').project.cueFrame( this.model.id );
 			return false;
 		},
 		runScrollTitle : false,
@@ -403,9 +398,8 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz )
 				}
 
 			}
-
-
 		},
+
 		stopScrollTitle: function() {
 			this.runScrollTitle = false;
 			$('.media-name').stop().animate({'left':0}, 1000);

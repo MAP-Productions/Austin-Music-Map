@@ -97,21 +97,36 @@
 		}
 	}
 
-	.transport
-	{
+	.transport {
 		float: left;
 		height: 52px;
 		line-height: 52px;
 		vertical-align: middle;
 		margin: 0 5px 0 13px;
 
-		.disabled
-		{
-			opacity: 0.1;
+
+		.back, .forward, .play-pause {
+			&:hover{
+				-webkit-filter: drop-shadow(0 0 5px #3CF);
+				-moz-filter: drop-shadow(0 0 5px #3CF);
+				-ms-filter: drop-shadow(0 0 5px #3CF);
+				-o-filter: drop-shadow(0 0 5px #3CF);
+				filter: drop-shadow(0 0 5px #3CF);
+			}
 		}
 
-		.back
-		{
+		.disabled {
+			opacity: 0.1;
+			&:hover{
+				-webkit-filter: none;
+				-moz-filter: none;
+				-ms-filter: none;
+				-o-filter: none;
+				filter: none;
+			}
+		}
+
+		.back {
 			cursor: pointer;
 			display: inline-block;
 			width: 11px;
@@ -121,8 +136,7 @@
 			background-repeat: no-repeat;
 			vertical-align: middle;
 		}
-		.forward
-		{
+		.forward {
 			cursor: pointer;
 			display: inline-block;
 			width: 11px;
@@ -132,8 +146,7 @@
 			background-repeat: no-repeat;
 			vertical-align: middle;
 		}
-		.play-pause
-		{
+		.play-pause {
 			cursor: pointer;
 			display: inline-block;
 			width: 22px;
@@ -143,8 +156,7 @@
 			background-repeat: no-repeat;
 			vertical-align: middle;
 
-			&.paused
-			{
+			&.paused {
 				background: url(../img/icon_play-sm.png);
 				background-size: 100% 100%;
 				background-repeat: no-repeat;
