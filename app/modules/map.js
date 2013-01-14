@@ -106,13 +106,14 @@ define([
 			
 			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
 				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
-				bounds = new L.LatLngBounds(southWest, northEast);
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+				bounds = new L.LatLngBounds(southWest, northEast),
+				cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
 				//homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
 				homemade = new L.TileLayer('http://dev.zeega.org/paper/paper.php?x={x}&y={y}', {
 					maxZoom: 18,
 					attribution: ''
-				});
+				}),
+				_this=this;
 
 			this.map = new L.Map(this.el,{
 				// dragging:false,
@@ -120,7 +121,7 @@ define([
 				scrollWheelZoom:false,
 				doubleClickZoom:false,
 				boxZoom:false,
-				zoomControl:true,
+				zoomControl:false,
 				attribution:'',
 				maxBounds:bounds,
 				maxZoom:17,
@@ -134,6 +135,14 @@ define([
 			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
+
+			$('.zoom-in').click(function(){
+				_this.map.zoomIn();
+			});
+
+			$('.zoom-out').click(function(){
+				_this.map.zoomOut();
+			});
 		
 		},
 		
