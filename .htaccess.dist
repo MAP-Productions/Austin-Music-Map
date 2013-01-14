@@ -19,6 +19,19 @@ RewriteRule (.*) $1 [L]
 RewriteCond %{REQUEST_URI} "/soundcloud-callback.html"
 RewriteRule (.*) $1 [L]
 
+
+#check if is an ipad
+RewriteCond %{HTTP_USER_AGENT} ^.*iPad.*$
+RewriteRule ^ /tablet.html [R,L,NE]
+
+#check for old ie
+RewriteCond %{HTTP_USER_AGENT} "MSIE 5" [OR]
+RewriteCond %{HTTP_USER_AGENT} "MSIE 6" [OR]
+RewriteCond %{HTTP_USER_AGENT} "MSIE 7" [OR]
+RewriteCond %{HTTP_USER_AGENT} "MSIE 8"
+RewriteRule ^ old-browser.html [R,L,NE]
+
+
 RewriteBase /
 
 # Check if this is the noredirect query string
