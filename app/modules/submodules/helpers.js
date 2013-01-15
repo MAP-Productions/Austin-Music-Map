@@ -95,8 +95,7 @@ function(_,jQuery)
 		// } else {
 		// 	$.cookie('previous_visit', 'yes', { expires: 30 } );
 		// 	return true;
-		// }
-		return false;
+		// }		return false;
 	}());
 
 	// make capital case

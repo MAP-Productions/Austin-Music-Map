@@ -15,7 +15,7 @@ define([
 	Map.recentCollectionId = 62472;
 	Map.featuredCollectionId = 53567;
 	Map.defaultCenter = new L.LatLng(30.266702991845,-97.745532989502);
-		
+	Map.defaultZoom = 14;
 	
 
 	Map.Model = Backbone.Model.extend({
@@ -94,6 +94,7 @@ define([
 		id : 'base-map',
 		template: 'map',
 		latLng: Map.defaultCenter,
+		zoom: Map.defaultZoom,
 		featureCollection: { "type": "FeatureCollection", "features": []},
 
 		initialize : function(options){
@@ -105,12 +106,14 @@ define([
 			
 			var southWest = new L.LatLng(30.06708702605154, -98.14959352154544),
 				northEast = new L.LatLng(30.567750855154863, -97.43685548443608),
-				bounds = new L.LatLngBounds(southWest, northEast);
-			var cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
-				homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
+				bounds = new L.LatLngBounds(southWest, northEast),
+				cloudmade = new L.TileLayer('http://{s}.tiles.mapbox.com/v3/zeega.map-17habzl6/{z}/{x}/{y}.png', {maxZoom: 18, attribution: ''}),
+				//homemade = new L.TileLayer('http://dev.zeega.org/paper/_tiles/paper_{x}_{y}.png', {
+				homemade = new L.TileLayer('http://dev.zeega.org/paper/paper.php?x={x}&y={y}', {
 					maxZoom: 18,
 					attribution: ''
-				});
+				}),
+				_this=this;
 
 			this.map = new L.Map(this.el,{
 				// dragging:false,
@@ -121,15 +124,25 @@ define([
 				zoomControl:false,
 				attribution:'',
 				maxBounds:bounds,
+				maxZoom:17,
+				minZoom:13,
 				layers: [cloudmade,homemade]
 			});
-			this.map.setView(this.latLng, 13);
+			this.map.setView(this.latLng, this.zoom);
 			this.map.featureOn=false;
 			this.animateMap();
 			//this.resetPoints();
 			//This loads neighborhood polygons
 			//this.loadNeighborhoods();
 			this.loadSpotlightShelf();
+
+			$('.zoom-in').click(function(){
+				_this.map.zoomIn();
+			});
+
+			$('.zoom-out').click(function(){
+				_this.map.zoomOut();
+			});
 		
 		},
 		
@@ -147,18 +160,20 @@ define([
 		},
 
 		parseFeatures:function(collection,features){
-			var p=[];
+			var p=[],
+				_this=this,
+				newTags;
 			_.each(_.toArray(collection), function(item){
 				if(!_.isNull(item.get('media_geo_longitude')))
 				{
 					
 					if(collection.id == Map.recentCollectionId){
-						var newTags = item.get('tags');
+						newTags = item.get('tags');
 						newTags[newTags.length]="recent";
 						item.set('tags',newTags);
 					}
 					item.attributes.playlists=App.playlistCollection.getMatches(item.get('tags'));
-					if(_.isUndefined(_.find(features,function(obj){return item.get('media_geo_latitude')==obj.geometry.coordinates[1];}))){
+					if(_.isUndefined(_.find(features,function(obj){return Math.abs(item.get('media_geo_latitude')-obj.geometry.coordinates[1])<0.001&&Math.abs(item.get('media_geo_longitude')-obj.geometry.coordinates[0])<0.001;}))){
 						features.push({
 							"type": "Feature",
 							"geometry": {
@@ -187,7 +202,7 @@ define([
 		loadPlaylist:function(id){
 			var _this=this,
 				collection = new Map.Collection({id:id});
-			
+			this.map.setView(this.latLng, this.zoom);
 			collection.fetch({success:function(collection,response){
 				_this.addFeatures(collection,true);
 				_this.resetPoints();

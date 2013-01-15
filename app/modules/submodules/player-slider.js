@@ -103,8 +103,6 @@ console.log('	super fetch', this, key );
 			var _this = this;
 			this.off('change:remixItems');
 
-console.log('	on project data loaded', App,App.players )
-
 			App.players.clear({ silent: true });
 
 			// updateLoader
@@ -137,6 +135,7 @@ console.log('	on project data loaded', App,App.players )
 			var height = $('.visual-element-slideshow').closest(".ZEEGA-player").height();
 
 			$(".slideshow-slider").css("bottom", 0 );
+
 			$('.visual-element-slideshow').css({
 				height:  height + "px"
 			});
@@ -257,7 +256,6 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 				App.players.trigger('update_title', App.players.get('current').getFrameData() );
 			});
 
-		console.log('slider view', this)
 			if (this.rendered) {
 				this.initZeegas();
 			}
@@ -294,7 +292,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 			this.project = new Zeega.player( _.extend({ window_fit: true }, this.options.args ) );
 
 			// this.project.on('all', function(e, obj){
-			// 	if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
+			// if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
 			// }.bind( this ));
 
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
@@ -306,7 +304,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 			// this.project = new Zeega.player( _.extend({ window_fit: true }, this.options.args ) );
 
 			// this.project.on('all', function(e, obj){
-			// 	if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
+			// if(e!='media_timeupdate') console.log('e:', this.cid,e,obj);
 			// }.bind( this ));
 
 			// this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
