@@ -34,7 +34,7 @@ function(App, Backbone)
         console.log('LISTENING TO PLAYER before',this, player);
 			if ( !this.listening ) {
 
-        console.log('LISTENING TO PLAYER', player);
+        console.log('LISTENING TO PLAYER', player, player.project);
 				this.player = player.project;
 
 				this.$('.layer-loading').empty();

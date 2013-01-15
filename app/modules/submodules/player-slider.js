@@ -243,6 +243,8 @@ console.log('	super fetch', this, key );
 				this.insertView( '.player-slider', remixView );
 				remixView.render();
 
+				console.log('				remix view', remixView, this.model.get('remixItems') )
+
 				App.players.set('remix', remixView );
 				//this.model.players.remix = remixView.project;
 			}
@@ -261,16 +263,31 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 			}
 		},
 		initZeegas: function() {
-			this.getViews(function(view){
+
+			console.log("		init zeegas", this.getViews() )
+			var views = this.getViews();
+			console.log( views, views._wrapped.length )
+			views.each(function( view, i ) {
 				view.initPlayer();
-				App.players.trigger('current_ready');
+				console.log('		iii', i, views._wrapped.length );
+				if ( i == views._wrapped.length - 1 ) {
+					console.log('trigger current ready');
+					App.players.trigger('current_ready');
+				}
 			});
+			// this.getViews(function(view){
+			// 	view.initPlayer();
+			// });
+
+			
+
 			if( App.router.playerType == 'remix' && App.players.get('story') ) {
 				$('.player-slider').addClass('view-remix');
 			}
 		},
 
 		afterRender: function() {
+			console.log('	after render')
 			this.initZeegas();
 			this.rendered = true;
 		},
@@ -285,7 +302,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 		template : 'single-player',
 
 		initPlayer : function() {
-			var _this = this;
+
 			//this.project.on('data_loaded', function(){ _this.project.play(); });
 
 			//this.project.load(this.options.args);
@@ -297,6 +314,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 			this.project.on('slideshow_update', this.updateSlideshowURL, this);
+			console.log('			init player', this.project)
 			
 		},
 
