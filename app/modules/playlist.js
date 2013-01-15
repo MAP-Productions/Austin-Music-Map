@@ -133,6 +133,7 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 
 			if( App.players.get('story') && App.players.get('remix') ) {
 				// close off old player
+console.log( App.players.get('current').project );
 				App.players.get('current').project.pause();
 				this.endPlayerEvents();
 	
@@ -148,13 +149,16 @@ function(App, Backbone, PlaylistMap,Map, Helper,Fuzz ) {
 					App.players.set('current', App.players.get('story'));
 				}
 
+	console.log( App.players.get('current').project );
+
 				// start new player events
 				this.startPlayerEvents();
 				this.clearElapsed();
 				this.onFrameChange( App.players.get('current').project.getFrameData() );
 
+console.log(App.players.get('current').project.state);
 				App.players.get('current').project.play();
-
+console.log(App.players.get('current').project.state, App.players.get('current').project);
 				this.updateURL();
 			}
 			return false;

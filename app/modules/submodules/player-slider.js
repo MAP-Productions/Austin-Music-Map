@@ -133,6 +133,9 @@ console.log('	super fetch', this, key );
 
 		frameUpdated : function(info) {
 			var height = $('.visual-element-slideshow').closest(".ZEEGA-player").height();
+
+			$(".slideshow-slider").css("bottom", 0 );
+
 			$('.visual-element-slideshow').css({
 				height:  height + "px"
 			});

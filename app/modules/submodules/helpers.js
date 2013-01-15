@@ -90,13 +90,12 @@ function(_,jQuery)
 
 	// firstVisit is equal to true for the duration of your first visit to the site
 	Helpers.firstVisit = (function() {
-		/*if ( $.cookie('previous_visit') === 'yes' ) {
-			return false;
-		} else {
-			$.cookie('previous_visit', 'yes', { expires: 30 } );
-			return true;
-		}*/
-		return false;
+		// if ( $.cookie('previous_visit') === 'yes' ) {
+		// 	return false;
+		// } else {
+		// 	$.cookie('previous_visit', 'yes', { expires: 30 } );
+		// 	return true;
+		// }		return false;
 	}());
 
 	// make capital case
