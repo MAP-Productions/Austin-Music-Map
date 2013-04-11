@@ -243,14 +243,12 @@ console.log('	super fetch', this, key );
 				this.insertView( '.player-slider', remixView );
 				remixView.render();
 
-				console.log('				remix view', remixView, this.model.get('remixItems') )
 
 				App.players.set('remix', remixView );
 				//this.model.players.remix = remixView.project;
 			}
 
 			App.players.set('current', App.router.playerType == 'story' && App.players.get('story') ? App.players.get('story') : App.players.get('remix') );
-console.log('	current ready', App.players.get('current'), App.players.get('remix'), App.players.get('story'));
 
 			var _this = this;
 
@@ -264,9 +262,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 		},
 		initZeegas: function() {
 
-			console.log("		init zeegas", this.getViews() )
 			var views = this.getViews();
-			console.log( views, views._wrapped.length )
 			views.each(function( view, i ) {
 				view.initPlayer();
 				console.log('		iii', i, views._wrapped.length );
@@ -275,11 +271,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 					App.players.trigger('current_ready');
 				}
 			});
-			// this.getViews(function(view){
-			// 	view.initPlayer();
-			// });
-
-			
+	
 
 			if( App.router.playerType == 'remix' && App.players.get('story') ) {
 				$('.player-slider').addClass('view-remix');
@@ -287,7 +279,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 		},
 
 		afterRender: function() {
-			console.log('	after render')
+
 			this.initZeegas();
 			this.rendered = true;
 		},
@@ -314,7 +306,7 @@ console.log('	current ready', App.players.get('current'), App.players.get('remix
 
 			this.project.on('frame_rendered window_resized', this.updateYoutubeSize, this);
 			this.project.on('slideshow_update', this.updateSlideshowURL, this);
-			console.log('			init player', this.project)
+
 			
 		},
 
