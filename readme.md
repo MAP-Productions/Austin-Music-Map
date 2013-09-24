@@ -1,26 +1,55 @@
-               _____________*       __*
-              /             \  __  |  \  ____________*
-             /          .  . \|  \ |  .\|            \
-            /          /|  |\   . \|  |\   .          \
-           /          /_|  | \  |\ .  | \  |\          \
-          /          ___   |  \_| \   |  \_| \          \
-         /          /   \__|       \__|       \          \
-        /__________/                           \__________\
+# Austin Music Map
 
-![Zeega](https://raw.github.com/Zeega/Zeega-Core/master/web/images/zeega-logo-large.png)
-# ZEEGA app boilerplate
+### Install at the web root or sub-domain, not in a sub-directory.
 
-Zeega is an open-source HTML5 platform for creating interactive documentaries and inventing new forms of storytelling. To read more about Zeega go to [zeega.org](http://zeega.org).
+## Production Install
 
-## Documentation ##
+Tested on Linux version 2.6.18-028stab101.1 with Apache/2.2.22. Be sure mod_rewrite module is installed. htaccess file may need to be modified if app is not run from root directory.
 
-View the Backbone Boilerplate documentation here:
+### Using ssh and git
 
-[GitHub Wiki](https://github.com/tbranyen/backbone-boilerplate/wiki)
+Clone repository into web directory and checkout stable branch.
 
-## Build process ##
+```bash
+cd /path/to/web
+git clone https://github.com/MAP-Productions/Austin-Music-Map.git .
+git checkout stable
+```
 
-To use the new and improved build process, please visit the 
-[grunt-bbb](https://github.com/backbone-boilerplate/grunt-bbb)
-plugin repo and follow the instructions to install.  Basing your project off
-this repo will allow the `bbb` commands to work out-of-the-box.
+Copy htaccess and index dist files.
+
+```bash
+cp .htaccess.dist .htaccess
+cp index.html.dist index.html
+
+
+## Setup
+
+
+```bash
+npm install
+```
+
+```bash
+git submodule update --init --recursive
+```
+
+## Build Commands
+
+```bash
+bbb watch
+```
+
+```bash
+bbb debug
+```
+
+```bash
+bbb release
+```
+
+## Notes
+
+Vendor deps:
+
+- Bootstrap http://twitter.github.com/bootstrap
